@@ -160,7 +160,7 @@ if (isset($_GET['details'])) {
 				</tr>
 				<tr>
 					<td colspan="2"><b>&nbsp;<?=_("globaler Status:")?>&nbsp;</b></td>
-					<td>&nbsp;<? print $perm->perm_sel("perms", $db->f("perms")) ?></td>
+					<td>&nbsp;<? print $perm->perm_sel("perms", 'autor') ?></td>
 				</tr>
 				<tr>
 					<td colspan="2"><b>&nbsp;<?=_("Sichtbarkeit")?>&nbsp;</b></td>
@@ -244,9 +244,9 @@ if (isset($_GET['details'])) {
 					<td class="steel1">&nbsp;
 					<?
 					if (StudipAuthAbstract::CheckField("auth_user_md5.username", $db->f('auth_plugin'))) {
-						echo $db->f("username");
+						echo htmlReady($db->f("username"));
 					} else {
-					?><input type="text" name="username" size=24 maxlength=63 value="<?php $db->p("username") ?>"><?
+					?><input type="text" name="username" size=24 maxlength=63 value="<?=htmlReady($db->f("username"))?>"><?
 					}
 					?>
 					</td>
@@ -272,9 +272,9 @@ if (isset($_GET['details'])) {
 					<td class="steel1">&nbsp;
 					<?
 					if (StudipAuthAbstract::CheckField("auth_user_md5.Vorname", $db->f('auth_plugin'))) {
-						echo $db->f("Vorname");
+						echo htmlReady($db->f("Vorname"));
 					} else {
-						?><input type="text" name="Vorname" size=24 maxlength=63 value="<?php $db->p("Vorname") ?>"><?
+						?><input type="text" name="Vorname" size=24 maxlength=63 value="<?=htmlReady($db->f("Vorname"))?>"><?
 					}
 					?>
 					</td>
@@ -284,9 +284,9 @@ if (isset($_GET['details'])) {
 					<td class="steel1">&nbsp;
 					<?
 					if (StudipAuthAbstract::CheckField("auth_user_md5.Nachname", $db->f('auth_plugin'))) {
-						echo $db->f("Nachname");
+						echo htmlReady($db->f("Nachname"));
 					} else {
-						?><input type="text" name="Nachname" size=24 maxlength=63 value="<?php $db->p("Nachname") ?>"><?
+						?><input type="text" name="Nachname" size=24 maxlength=63 value="<?=htmlReady($db->f("Nachname"))?>"><?
 					}
 					?>
 					</td>
@@ -296,7 +296,7 @@ if (isset($_GET['details'])) {
 				</td><td class="steel1" align="right">
 				<?
 				if (StudipAuthAbstract::CheckField("user_info.title_front", $db->f('auth_plugin'))) {
-						echo "&nbsp;</td><td class=\"steel1\">&nbsp;" . $db->f("title_front");
+						echo "&nbsp;</td><td class=\"steel1\">&nbsp;" . htmlReady($db->f("title_front"));
 				} else {
 				?>
 				<select name="title_front_chooser" onChange="document.edit.title_front.value=document.edit.title_front_chooser.options[document.edit.title_front_chooser.selectedIndex].text;">
@@ -305,11 +305,11 @@ if (isset($_GET['details'])) {
 					 echo "\n<option";
 					 if($TITLE_FRONT_TEMPLATE[$i] == $db->f("title_front"))
 					 	echo " selected ";
-					 echo ">$TITLE_FRONT_TEMPLATE[$i]</option>";
+					 echo ">".htmlReady($TITLE_FRONT_TEMPLATE[$i])."</option>";
 					}
 				?>
 				</select></td>
-				<td class="steel1">&nbsp;<input type="text" name="title_front" value="<?=$db->f("title_front")?>" size=24 maxlength=63>
+				<td class="steel1">&nbsp;<input type="text" name="title_front" value="<?=htmlReady($db->f("title_front"))?>" size=24 maxlength=63>
 				<?
 				}
 				?>
@@ -320,7 +320,7 @@ if (isset($_GET['details'])) {
 				</td><td class="steel1" align="right">
 				<?
 				if (StudipAuthAbstract::CheckField("user_info.title_rear", $db->f('auth_plugin'))) {
-						echo "&nbsp;</td><td class=\"steel1\">&nbsp;" . $db->f("title_rear");
+						echo "&nbsp;</td><td class=\"steel1\">&nbsp;" . htmlReady($db->f("title_rear"));
 				} else {
 				?>
 				<select name="title_rear_chooser" onChange="document.edit.title_rear.value=document.edit.title_rear_chooser.options[document.edit.title_rear_chooser.selectedIndex].text;">
@@ -329,11 +329,11 @@ if (isset($_GET['details'])) {
 					 echo "\n<option";
 					 if($TITLE_REAR_TEMPLATE[$i] == $db->f("title_rear"))
 					 	echo " selected ";
-					 echo ">$TITLE_REAR_TEMPLATE[$i]</option>";
+					 echo ">".htmlReady($TITLE_REAR_TEMPLATE[$i])."</option>";
 					}
 				?>
 				</select></td>
-				<td class="steel1">&nbsp;<input type="text" name="title_rear" value="<?=$db->f("title_rear")?>" size=24 maxlength=63>
+				<td class="steel1">&nbsp;<input type="text" name="title_rear" value="<?=htmlReady($db->f("title_rear"))?>" size=24 maxlength=63>
 				<?
 				}
 				?>
@@ -359,9 +359,9 @@ if (isset($_GET['details'])) {
 					<td class="steel1">&nbsp;
 					<?
 					if (StudipAuthAbstract::CheckField("auth_user_md5.Email", $db->f('auth_plugin'))) {
-						echo $db->f("Email");
+						echo htmlReady($db->f("Email"));
 					} else {
-					?><input type="text" name="Email" size=48 maxlength=63 value="<?php $db->p("Email") ?>">&nbsp;
+					?><input type="text" name="Email" size=48 maxlength=63 value="<?=htmlReady($db->f("Email"))?>">&nbsp;
 					<?
 					}
 					?>
@@ -390,11 +390,11 @@ if (isset($_GET['details'])) {
                                 	echo "  </td>\n";
                                 	echo "  <td class=\"steel1\">\n";
                                 	echo "    &nbsp;"._("Kommentar:")."&nbsp;\n";
-                                	echo "    <INPUT TYPE=\"text\" NAME=\"lock_comment\" VALUE=\"".$db->f("lock_comment")."\" SIZE=\"24\" MAXLENGTH=\"255\">\n";
+                                	echo "    <INPUT TYPE=\"text\" NAME=\"lock_comment\" VALUE=\"".htmlReady($db->f("lock_comment"))."\" SIZE=\"24\" MAXLENGTH=\"255\">\n";
                                 	echo "  </td>\n";
                                		echo "</tr>\n";
 					if ($db->f("locked")==1) 
-                                        	echo "<TR><TD CLASS=\"steel1\" COLSPAN=\"3\" ALIGN=\"center\"><FONT SIZE=\"-2\">"._("Gesperrt von:")." ".get_fullname($db->f("locked_by"))." (<A HREF=\"about.php?username=".get_username($db->f("locked_by"))."\">".get_username($db->f("locked_by"))."</A>)</FONT></TD></TR>\n";
+                                        	echo "<TR><TD CLASS=\"steel1\" COLSPAN=\"3\" ALIGN=\"center\"><FONT SIZE=\"-2\">"._("Gesperrt von:")." ".htmlReady(get_fullname($db->f("locked_by")))." (<A HREF=\"about.php?username=".get_username($db->f("locked_by"))."\">".get_username($db->f("locked_by"))."</A>)</FONT></TD></TR>\n";
 				}
 				?>
 
@@ -437,7 +437,14 @@ if (isset($_GET['details'])) {
 				printf("&nbsp;" . _("pers&ouml;nliche Homepage") . " <a href=\"about.php?username=%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/einst.gif\" border=0 alt=\"Zur pers&ouml;nlichen Homepage des Benutzers\" align=\"texttop\"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp", $db->f("username"));
 				printf("&nbsp;" . _("Nachricht an BenutzerIn") . " <a href=\"sms_send.php?rec_uname=%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/nachricht1.gif\" alt=\"Nachricht an den Benutzer verschicken\" border=0 align=\"texttop\"></a>", $db->f("username"));
 			print "</td></tr>";
-
+			if ($perm->have_perm('root') && @file_exists('user_activities.php')){
+				echo "<tr><td class=\"steel2\" colspan=3 align=\"center\">";
+				echo "&nbsp;" . _("Datei- und Aktivitätenübersicht") . "&nbsp;";
+				printf('<a href="user_activities.php?username=%s">
+						<img src="'.$GLOBALS['ASSETS_URL'].'images/icon-disc.gif" align="absmiddle" border="0">
+						</a>' , $db->f('username'));
+				echo "</td></tr>\n";
+			}
 			$temp_user_id = $db->f("user_id");
 			if ($perm->have_perm("root"))
 				$db2->query("SELECT Institute.Institut_id, Name FROM user_inst LEFT JOIN Institute USING (Institut_id) WHERE user_id ='$temp_user_id' AND inst_perms != 'user'");
@@ -533,6 +540,8 @@ if (isset($_GET['details'])) {
 				if (is_object($userkillplugin)){
 					echo "<tr valign=\"top\"><td colspan=\"7\"><a href=\"" . PluginEngine::getLink($userkillplugin,array('transfer_search' => 1))."\">"._("Suchergebnis in Löschformular übernehmen")."</a></td></tr>";
 				}
+			} else if ($perm->have_perm('root') && @file_exists('admin_user_kill.php')){
+				echo "<tr valign=\"top\"><td colspan=\"7\"><a href=\"admin_user_kill.php?transfer_search=1\">"._("Suchergebnis in Löschformular übernehmen")."</a></td></tr>";
 			}
 			
 			print "<tr valign=\"top\" align=\"middle\">";
