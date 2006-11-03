@@ -764,10 +764,10 @@ if (!sizeof($term_data["turnus_data"])) {
 								$edit=FALSE;
 
 							//Zusatz erstellen
-							if ((!$admin_dates_data["insert_id"]) && ($show_id  != $db->f("termin_id")) && (!$show_all))
-								$zusatz="<input type=\"CHECKBOX\" ".((($mark_all_x) || ($kill_selected)) ? "checked" : "")." name=\"kill_date[]\" value=\"". $db->f("termin_id")."\"><a href=\"$PHP_SELF?kill_single_date=".$db->f("termin_id")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/trash.gif\" border=\"0\" style=\"style=\"vertical-align:bottom\"\"/></a>";
-							else
-								$zusatz='';
+							if ((!$admin_dates_data["insert_id"]) && ($show_id  != $db->f("termin_id")) && (!$show_all)){
+								$zusatz = getRoom($db->f("termin_id"));								
+								$zusatz .= "<input type=\"CHECKBOX\" ".((($mark_all_x) || ($kill_selected)) ? "checked" : "")." name=\"kill_date[]\" value=\"". $db->f("termin_id")."\"><a href=\"$PHP_SELF?kill_single_date=".$db->f("termin_id")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/trash.gif\" border=\"0\" style=\"style=\"vertical-align:bottom\"\"/></a>";
+							} else $zusatz='';
 
 							//Link erstellen
 							if (($show_id  == $db->f("termin_id")) || ($show_all))
@@ -790,7 +790,7 @@ if (!sizeof($term_data["turnus_data"])) {
 							} else {
 								$titel .= substr(strftime("%a",$db->f("date")),0,2);
 								$titel.= date (". d.m.Y, H:i", $db->f("date"));
-								if ($db->f("date") <$db->f("end_time"))
+								if ($db->f("date") < $db->f("end_time"))
 									$titel.= " - ".date ("H:i", $db->f("end_time"));
 								if ($db->f("content")) {
 									$tmp_titel=htmlReady(mila($db->f("content"))); //Beschneiden des Titels
@@ -977,7 +977,7 @@ if (!sizeof($term_data["turnus_data"])) {
 				$db->query("SELECT COUNT(*) FROM termine LEFT JOIN resources_assign ON (assign_user_id=termin_id) WHERE assign_id IS NULL AND range_id='{$admin_dates_data['range_id']}'");
 				$db->next_record();
 				if ($not_booked_rooms = $db->f(0)){
-					$times_inf .= "<hr><b>" ._("Fehlende Raumbuchungen:")."</b><br>" .  sprintf(_("%s ihrer Termine haben keinen gebuchten Raum!"), $not_booked_rooms);
+					$times_inf .= "<hr><font color=\"red\"><b>" ._("Fehlende Raumbuchungen:")."</b><br></font>" .  sprintf(_("%s ihrer Termine haben keinen gebuchten Raum!"), $not_booked_rooms);
 				}
 			}
 		}
