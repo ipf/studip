@@ -133,7 +133,7 @@ $ASSETS_URL="assets/";                                  //path to constant asset
 
 //path to smileys and symbols
 $SMILE_PATH = "pictures/smile";							//smileys
-$SYMBOL_PATH = "pictures/symbol";						//symbols
+$SYMBOL_PATH = "assets/images/symbol";						//symbols
 
 //path to the temporary folder
 $TMP_PATH ="/tmp";										//the system temp path
