@@ -1,0 +1,18 @@
+# Stud.IP
+# Copyright 2000-2006 (c) The Stud.IP Core Croup
+# http://www.studip.de
+# info@studip.de
+#
+
+There are two necessary confic files. They are stored at the following locations
+
+local.inc -> this file is located in the phplib directory 
+config.inc.php ->this file is located in the studip web-root
+
+You will find basic versions of these files in these folders.
+They should work with the default dumps.
+
+There are some further config files, that may help you:
+
+.htaccess.dist -> use this file if you want to set apache/php values via .htacces file
+studip-httpd.conf.dist -> use this file if you want to set apache/php values via httpd.conf
