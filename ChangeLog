@@ -1,0 +1,554 @@
+15.12.2006 v 1.4.0-4
+- ...
+
+12.09.2006 v 1.4.0-3
+- studip-htdocs/vote/vote_show.inc.php: bugfix BIEST00165 / BIEST00163 wieder entfernt  
+
+06.09.2006 v 1.4.0-2
+- studip-1.4.0/VERSION: 1.4.0-2
+- studip-htdocs/admin_seminare_assi.php: BIEST00174
+- studip-htdocs/admin_statusgruppe.php: BIEST00174
+- studip-htdocs/archiv.php: Bugfix: Bild-Pfad durch Assets Umbau war noch kaputt
+- studip-htdocs/contact_statusgruppen.php: BIEST00174
+- studip-htdocs/datei.inc.php: BIEST00174
+- studip-htdocs/folder.php: BIEST00176 fixed
+- studip-htdocs/forum.inc.php: BIEST00174
+- studip-htdocs/functions.php: BIEST00174
+- studip-htdocs/header.php: Aufbau der Location-ID der Hilfe gefixt
+- studip-htdocs/index.php: BIEST00174
+- studip-htdocs/phplib_local.inc.php: version=1.4.0-2
+- studip-htdocs/scm.php: BIEST00174
+- studip-htdocs/sem_notification.php: BIEST00177 fixed
+- studip-htdocs/show_news.php: BIEST00174
+- studip-htdocs/sms_send.php: BIEST00174
+- studip-htdocs/visual.inc.php: NULL values should not be processed
+- studip-htdocs/wiki.inc.php: BIEST00174
+- studip-htdocs/write_topic.php: BIEST00174
+- studip-htdocs/lib/classes/guestbook.class.php: BIEST00174
+- studip-htdocs/vote/vote_show.inc.php: bugfix mrunge BIEST00165 / BIEST00163
+
+25.08.2006 v 1.4.0-1
+- Sichtbarkeit von NutzerInnen
+- Neues Hilfe-System basierend auf einer zentralen Wiki-Seite
+- Ordnerberechtigungssystemim für den Dateibereich 
+- alternativer Chatclient (AJAX)
+- Literaturlistenimport über Plugins 
+- Externe Seiten: Sichtbarkeit von Veranstaltungstypen, Einschränkung der Veranstaltungsübersichten auf ausgewählte Studienbereiche
+- Anzeige des Namens auf der wer-ist-online konfigurierbar, "Motto" 
+- Nutzerkommentare bei vorläufiger Anmeldung und Anpassung Teilnehmerexport
+- Erweiterungen für Single Sign On 
+- Erweiterung der Plugin-Schnittstelle 
+- Alphabetische Sortierung für Statusgruppen 
+- Löschen des eigenen Homepagebildes nun möglich
+- Konfigurierbare Sperre für den Nutzertitel
+- Root-Funktion zum Sperren einzelner Benutzer 
+- weitere Detailverbesserungen und Bugfixes
+
+10.06.2006 v 1.3.0-2
+- studip-db/studip_default_data.sql: neue Konfigoption: EVAL_AUSWERTUNG_GRAPH_FORMAT, BIEST00128: Fehlende Einträge für PluginEngine in sql-Skripten
+- studip-doc/de/studip_installation_guide.txt: Konfigurationshinweise PluginEngine
+- studip-htdocs/about.php: BIEST00142 und weitere XSS Lücken gefixed, BIEST00119: Externes Anspringen von Stud.IP RSS-Feeds
+- studip-htdocs/admin_admission.php: bugfix: Start-und Endzeitpunkt bei Anmeldeverfahren wurden nicht gelöscht
+- studip-htdocs/admin_seminare_assi.php: bugfix: Vorbesprechungstermincheck war zu drastisch (und außerdem kaputt)
+- studip-htdocs/auswahl_suche.php: Update: Kleine Umstellung: Veranstaltungssuche oben
+- studip-htdocs/browse.php: bugfix, BIEST00142 und weitere XSS Lücken gefixed
+- studip-htdocs/contact.php: BIEST00142 und weitere XSS Lücken gefixed
+- studip-htdocs/crcregister.ihtml: BIEST00110 / reguläre Ausdrücke aus email_validation_class benutzen
+- studip-htdocs/datei.inc.php: bugfix Datei aktualisieren
+- studip-htdocs/dates.inc.php: bugfix: Vorbesprechungstermincheck war zu drastisch (und außerdem kaputt)
+- studip-htdocs/details.php: regex vereinfacht, BIEST00142 und weitere XSS Lücken gefixed
+- studip-htdocs/edit_about.php: BIEST00144 und StEP00060, BIEST00142 und weitere XSS Lücken gefixed, BIEST00110 / reguläre Ausdrücke aus email_validation_class benutzen, bugfix BIEST00113: Layout-Fehler
+- studip-htdocs/elearning_interface.php: bugfix: Sortierreihenfolge von eingebundenen Objekten geaendert
+- studip-htdocs/eval_summary.php: Ausgabeformat der Diagramme konfigurierbar, BIEST00116 fixed
+- studip-htdocs/eval_summary_export.php: Ausgabeformat der Diagramme konfigurierbar, BIEST00116 fixed
+- studip-htdocs/export.php: bugfix: direkten xml export gefixed
+- studip-htdocs/folder.php: bugfix BIEST00115: Layout Glitches in der Dateiverwaltung
+- studip-htdocs/forum.inc.php: bugfix BIEST00143
+- studip-htdocs/ilias3_referrer.php: bugfix: aussagekraeftige Meldung bei fehlgeschlagenem Login
+- studip-htdocs/impressum.php: coregroup aktualisierung
+- studip-htdocs/institut_main.php: BIEST00119: Externes Anspringen von Stud.IP RSS-Feeds
+- studip-htdocs/institut_members.php: BIEST00142 und weitere XSS Lücken gefixed
+- studip-htdocs/links_admin.inc.php: Bugfix: Einbindung nicht per TopNavigation sondern Navigation
+- studip-htdocs/meine_seminare_func.inc.php: bugfix aktuelles Semester nicht vorhanden
+- studip-htdocs/my_elearning.php: Kommentarzeichen entfernt
+- studip-htdocs/mystudip.inc.php: BIEST00142 und weitere XSS Lücken gefixed
+- studip-htdocs/online.php: BIEST00142 und weitere XSS Lücken gefixed
+- studip-htdocs/phplib_local.inc.php: Versionsnummer auf 1.3.0-2, BIEST00142 und weitere XSS Lücken gefixed, BIEST00121
+- studip-htdocs/plugins.php: output buffering
+- studip-htdocs/rss.php: BIEST00119: Externes Anspringen von Stud.IP RSS-Feeds
+- studip-htdocs/sem_notification.php: BIEST00134
+- studip-htdocs/sem_verify.php: BIEST00142 und weitere XSS Lücken gefixed
+- studip-htdocs/seminar_main.php: BIEST00119: Externes Anspringen von Stud.IP RSS-Feeds
+- studip-htdocs/seminar_open.php: bugfix: config.inc.php wurde zu frueh eingebunden (i18n Problem)
+- studip-htdocs/show_news.php: BIEST00119: Externes Anspringen von Stud.IP RSS-Feeds
+- studip-htdocs/sms_box.php: BIEST00142 und weitere XSS Lücken gefixed
+- studip-htdocs/sms_functions.inc.php: htmlReady ergänzt
+- studip-htdocs/sms_send.php: BIEST00142 und weitere XSS Lücken gefixed, bugfix: sms versenden an alle mitarbeiter einer Einrichtung
+- studip-htdocs/statusgruppen.php: BIEST00142 und weitere XSS Lücken gefixed
+- studip-htdocs/studipim.php: Tippfehler
+- studip-htdocs/teilnehmer.php: zusätzliche Absicherung über Seminar_Session::check_ticket(), BIEST00142 und weitere XSS Lücken gefixed, bugfix BIEST00117: Aktivitätsanzeige ist hinüber
+- studip-htdocs/visual.inc.php: BIEST00120
+- studip-htdocs/calendar/lib/driver/MySQL/list_driver.inc.php: BIEST00065
+- studip-htdocs/help/structure.inc.php: update Literaturhilfe
+- studip-htdocs/help/switcher.inc.php: update Literaturhilfe
+- studip-htdocs/lib/classes/Config.class.php: ein NOT NULL Feld sollte nicht auf den String 'NULL' gesetzt werden
+- studip-htdocs/lib/classes/ModulesNotification.class.php: BIEST00129
+- studip-htdocs/lib/classes/StudipLitSearch.class.php: kleine Textaenderung
+- studip-htdocs/lib/classes/phplot.php: Error-Reporting auskommentiert
+- studip-htdocs/locale/en/LC_MESSAGES/* : UPDATE Englisg translation
+- studip-htdocs/modules/evaluation/evaluation_admin_template.inc.php: bugfix: Markierung von Systemtemplates
+- studip-htdocs/modules/evaluation/evaluation_admin_template.lib.php: bugfix: Markierung von Systemtemplates
+- studip-htdocs/modules/evaluation/classes/EvaluationExportManagerCSV.class.php: bugfix: export von mc Fragen
+- studip-htdocs/modules/evaluation/classes/EvaluationTreeEditView.class.php: bugfix: Markierung von Systemtemplates
+- studip-htdocs/plugins/core/AbstractPluginPersistence.class.php: update
+- studip-htdocs/plugins/core/AbstractStudIPAdministrationPlugin.class.php: update
+- studip-htdocs/plugins/core/AbstractStudIPPluginVisualization.class.php: update
+- studip-htdocs/plugins/core/AbstractStudIPStandardPlugin.class.php: update
+- studip-htdocs/plugins/core/AbstractStudIPSystemPlugin.class.php: update
+- studip-htdocs/plugins/core/AdminInfo.class.php: update
+- studip-htdocs/plugins/core/ChangeMessage.class.php: update
+- studip-htdocs/plugins/core/DBEnvironment.class.php: update
+- studip-htdocs/plugins/core/Environment.class.php: update
+- studip-htdocs/plugins/core/HelpInfo.class.php: update
+- studip-htdocs/plugins/core/Permission.class.php: update
+- studip-htdocs/plugins/core/PluginNavigation.class.php: update
+- studip-htdocs/plugins/core/StudIPCore.class.php: update
+- studip-htdocs/plugins/core/StudIPInstitute.class.php: update
+- studip-htdocs/plugins/core/StudIPUser.class.php: update
+- studip-htdocs/plugins/packages/core/PluginAdministrationPlugin.class.php: update
+- studip-htdocs/plugins/packages/core/PluginAdministrationVisualization.class.php: update
+- studip-htdocs/resources/views/msgs_resources.inc.php: BIEST00127
+- studip-htdocs/soap/lib/nusoap.php: bugfix für verbindung über https ohne curl
+- studip-phplib/email_validation.inc: reguläre Ausdrücke angepasst
+- studip-phplib/prepend.php: Absicherung $PHP_SELF
+- studip-phplib/prepend4.php: Absicherung $PHP_SELF
+
+18.03.2006 v 1.3.0-1
+- RSS-Reader für Nutzer
+- RSS-Feeds für alle News (neu: Veranstaltungen, Einrichtungen und Systemnews)
+- neue Schnittstelle zu anderen eLearning-Systemen, insbesondere ILIAS3
+- eMail-Benachrichtigung bei neuen Inhalten in Veranstaltungen
+- neuer Dateiupload für mehrere Dateien per ZIP
+- grafische Evaluationsauswertung
+- neue Plugin-Schnittstelle
+- Loggingfunktionen für wichtige Systembereiche
+- Teilnehmer können aus Listen in Veranstaltungen importiert werden
+- Wartungsmodus
+- history.txt wird nun formatiert ausgegeben ;-)
+- weitere Detailverbesserungen und Bugfixes
+
+08.11.2005 v 1.2.0-2
+- studip-phplib/session4_custom.inc: Bugfix gegen 'deleted' cookie
+- studip-htdocs/folder.php: BIEST00045  - Dateibereich: bei defekter Verlinkung erscheint fehlerhafte Fehlerseite
+- studip-htdocs/details.php: BIEST00046 - fehlender Link für Admins
+- studip-htdocs/locale/de/LC_HELP/pages/ii_passwort.htm: BIEST00047 mailto fehlte
+- studip-htdocs/resources/resourcesControl.inc.php: BIEST00048 und BIEST00051 - Fehler: Gruppenbelegungspläne als Dozent
+- studip-htdocs/resources/views/ShowGroupSchedules.class.php: BIEST00048 und BIEST00051
+- studip-htdocs/resources/views/ShowList.class.php: BIEST00048 und BIEST00051
+- studip-htdocs/resources/views/ShowThread.class.php: BIEST00048 und BIEST00051
+- studip-htdocs/admin_metadates.php: BIEST00050 - Raumbuchung einfach übernommen bei Semesteränderung 
+- studip-config/local.inc.dist: BIEST00052 - neue Konfig $ZIP_OPTIONS
+- studip-phplib/local.inc.dist: BIEST00052 
+- studip-htdocs/archiv.inc.php: BIEST00052
+- studip-htdocs/datei.inc.php: BIEST00052
+- studip-htdocs/sendfile.php: BIEST00052
+- studip-htdocs/header.php BIEST00059 - Abgelaufene, nicht gelöschte, ungelesene News führen zu rotem News-Icon
+- studip-htdocs/meine_seminare.php: BIEST00059
+- studip-htdocs/teilnehmer.php: BIEST00062 - Division by zero on line 709
+- studip-htdocs/resources/lib/AssignObject.class.php: BIEST00063 - Vertauschung von Buchungen beim Auflösen einer Raumanfrage
+- studip-htdocs/resources/lib/evaluate_values.php: BIEST00063
+- studip-htdocs/pers_browse.inc.php: <tr>s ergaenzt
+- studip-htdocs/calendar/lib/CalendarEvent.class.php: pictures Verzeichnis verschoben
+- studip-htdocs/calendar/lib/SeminarEvent.class.php: pictures Verzeichnis verschoben
+- studip-htdocs/dates.inc.php: bugfix - falsche Zuweisung
+- studip-htdocs/phplib_local.inc.php New Versionnumber: 1.2.0-2
+- studip-phplib/local.inc.dist New Versionnumber: 1.2.0-2
+(BIEST = Bug und Inkonsitenz Erkennung für Stud.IP :-)
+ Bug and inconsistency reconnaissance for Stud.IP)
+
+30.08.2005 v 1.2.0-1
+- neuer Zugriff per Tastenkombination auf die wichtigsten Systembereiche
+- Friend-of-Friend Anzeige (Verbindungsketten zu anderen Nutzern) auf der Homepage
+- RSS-Feed für private News
+- News-Kommentare für alle News im System
+- neue Gruppierungsfunktion der Seite "Meine Veranstaltungen" nach Farbgruppen, 
+  Semestern, Typ und Studienbereichen
+- Verschieben von Dateien und Ordnern in andere Veranstaltungen oder Einrichtungen 
+  ist nun möglich
+- Sichtbarkeit und Archivieren kann für Dozenten freigeschaltet werden
+- Erweiterungen an der Ressourcenverwaltung: Listenansicht für Raumanfragen, Sortierung
+  von Raumanfragen nach Dringlichkeit, Belegungsübersichten für Semester, externe 
+  Darstellung von Raumplänen, Raumgruppen und weitere Detailverbesserungen
+- freie Datenfelder können nun weitergehend konfiguriert werden
+- neues Sessionmanagement: Die Stud.IP-PhpLib kann nun mit PHP4-Sessions arbeiten
+- neues Datenbankbasiertes Konfiguratiossystem
+- Erweiterung der Schnellformatierung um Tabellendarstellung
+- Wiki-Seiten werden nun archiviert
+- Performance-Verbesserungen (Datenbankabfragen und -struktur)
+- weitere Detailverbesserungen und Bugfixes 
+
+16.01.2005 v 1.1.5-3
+- get_ticket() build in (anoack new_user_md5.php phplib_local.inc.php)
+- mysql_escape_string() (anoack admin_news.php, forum.inc.php)
+- no refresh for logout (anoack forum.inc.php)
+- _(..) included (anoack edit_about.php)
+- htmlReady() inserted (anoak modules/evaluation/evaluation_admin_overview.lib.php)
+- SECURITY: username studip is no more allowed (anoack studip-phplib/email_validation.inc)
+- New Versionnumber: 1.1.5-3 ( Philipp Huegelmeyer /studip-phplib/local.inc.dist VERSION studip-htdocs/phplib_local.inc.php ) 
+
+30.12.2004 v 1.1.5-2
+- - SECURITY: URLS; that contain parameters, are not included as pictures any more (Jens Schmelzer, André Noak: visual.inc.php)
+- ChangeLog in english now (Philipp Huegelmeyer)
+- New Versionnumber: 1.1.5-2 ( Philipp Huegelmeyer /studip-phplib/local.inc.dist VERSION studip-htdocs/phplib_local.inc.php ) 
+
+26.09.2004 v 1.1.5-1
+- Neue Messaging-Funktionen: Betreff für systeminterne Nachrichten, 
+  erzwungene/ optionale eMail-Weiterleitung, differenzierte Lesebestätigung, 
+  Bild des Absenders in Nachrichtenansicht und verbesserte Anwort-Funktionalität
+- Neue Art der Erfassung von besuchten Bereichen in Veranstaltungen, so dass nun für
+  jeden Bereich einzeln angezeigt werden kann, ob neue Inhalte vorliegen.
+- Optische Kennzeichnung von neuen Inhalten auf der Startseite (News, Evaluationen
+  und Votes)
+- Einfügen von personalisierten Kommentaren an beliebige Stellen in Wiki-Seiten
+  ähnlich der Word-Anmerkungs-Funktion; Anzeige als Textbox oder Hover-Icon
+- Darstellung von Smileys nach Kategorie und eigenen Favoriten, 
+  Statistik für die Smileyverwaltung
+- Verbesserte Eingabe von Bewertungen im Forum
+- Termineingabehilfe/Minikalender für die Eingabe von Terminen an vielen Stellen im
+  System, konfigurierbare Standardzeiten zum Auswählen für regelmäßige Termine
+- Verbesserte Bedienung der Ablaufplansicht und Ablaufplanverwaltung
+- automatische Umsetzung von internen Links, falls mehrere Servername verwendet 
+  werden
+- Intern verbesserte Benutzerverwaltung
+- Zahlreiche Performance-Verbesserungen (Datenbankabfragen und -struktur)
+- weitere Detailverbesserungen und Bugfixes
+
+14.09.2004 v 1.1.0-6
+- studip-htdocs/phplib_local.inc.php - Versionsnummer auf 1.1.0-6
+VERSION - Versionsnummer auf 1.1.0-6 (André Noack)
+- studip-htdocs/sendfile.php - security bugfix, übergebene Variable $file_id wurde ohne Absicherung in einem exec() Aufruf verwendet (André Noack, Jens Schmelzer)
+- studip-phplib/prepend.php - security bugfix, wegen register_globals kann das $GLOBALS Array manipuliert werden (André Noack, Jens Schmelzer)
+
+19.08.2004 v 1.1.0-5
+- Bugfix: Fehlende Htmlready's (Stefan Suchi, about.php, archiv.inc.php, institute_members.php, extern/modules/views/persondetails.inc.php.diff)
+- Neue Versionsnummer. (Philipp Hügelmeyer, /studip-phplib/local.inc.dist
+VERSION studip-htdocs/phplib_local.inc.php)
+
+01.08.2004 v 1.1.0-4
+- Bugfix: Parse Error (visual.inc.php, André Noack)
+- Bugfix: Bugfix: $SMILE_PATH wurde nicht an allen Stellen verwendet (admin_smileys.php, Parse Error Jens Schmelzer & Cornelis Kater).
+- Neue Versionsnummer. (Philipp Hügelmeyer, /studip-phplib/local.inc.dist
+VERSION studip-htdocs/phplib_local.inc.php)
+
+21.07.2004 v 1.1.0-3
+- Bugfix: monsterformatierungen (Jens Schmelzer, /studip-htdocs/visual.inc.php 2.75 -> 2.76)
+- Bugfix:  delete_date(): Check ob topic_id existiert; delete_topic(): nicht löschen,wenn topic_id=0 (André Noack, studip-htdocs/dates.inc.php, 1.3-> 1.4)
+- Bugfix: Beim Einfügen in die Tabelle Termine wird topic_id nicht mehr auf '0' gesetzt (André Noack, admin_seminare_assi.php 1.1 -> 1.2)
+- Neue Versionsnummer. (Philipp Hügelmeyer, /studip-phplib/local.inc.dist
+VERSION studip-htdocs/phplib_local.inc.php)
+
+04.06.2004 v 1.1.0-2
+- Bugfix: Semesterwechsel, Veranstaltungsbeginn und Löschen von Zeiten führt
+nun auch zum Update 
+- Sort ohne Array (beides Cornelis Cater, admin_metadates.php 2.40 -> 2.43)
+- Merkliste - Aktualisieren-Knopf (Cornelis Kater, ClipBoard.class.php 1.2
+-> 1.3)
+- Die allgemeine Ortsangabe (wenn keine Zeiten und Termine vorhanden wird diese
+ausgegben) hat nicht funktioniert. (Cornelis Kater, dates.inc.php 2.44 ->
+2.45)
+-  Termine unregelmäßiger Veranstaltungen die auch ein Forenthema haben, lassen
+sich nicht mehr löschen. (Cornelis Kater admin_dates.php 2.24 -> 2.25,
+dates.inc.php 2.48 -> 2.49)
+- Darstellungsfehler in der Teilnehmerliste (Till Glöggler teilnehmer.php 2.31
+-> 2.32)
+- Löschen für Tutoren im Wiki (Tobias Thelen wiki.inc.php 1.20 -> 1.21)
+- Neue Versionsnummer. (Philipp Hügelmeyer, /studip-phplib/local.inc.dist
+VERSION studip-htdocs/phplib_local.inc.php)
+
+17.05.2004 v 1.1.0-1
+- Evaluations und Umfragemodul zur Erstellung empirischer Online-Fragebögen
+- Möglichkeit der Dateiverlinkung auf geschützte Dokumente auf externen Servern
+- Administrationsebene für Literaturnachweise mit integriertem Bibliothekscheck
+- Erweiterte Raumverwaltung für zentrale Raumvergabe über Raumwünsche
+- Funktion zum Kopieren von Veranstaltungen
+- Mechanismus zum Verstecken und Sichtbarmachen von Veranstaltungen
+- Weiterleitung interner Mail an E-Mail-Adresse schaltbar 
+- Verschiedene Sortierungen der Teilnehmerliste
+- Anzeige von Veranstaltsungnsummern in verschiedenen Listen
+- Blätternavigation in Gästebüchern
+- Smiley-Verwaltung
+- Semester und Ferien-Verwaltung nun mit eigenem Frontend
+- Neue Berechnungsformel der Stud.IP Score ;)
+- neues Sytaxhighlighting für php-Code
+- weitere Detailverbesserungen und Bugfixes
+
+21.3.2004 v 1.0.0-4
+- Security Bug in der sendfile.php (Stefan Suchi, sendfile.php 2.33 -> 2.34) 
+- Falsche Ausgabe der Teilnehmerzahl bei vorläufig Akzeptierten und Kontingentierung (Tobias Thelen , details.php 2.22 -> 2.23)
+- check auf leeres Passwort, wenn anonymous bind aktiviert (André Noak/Philipp Hügelmeyer lib/classes/auth_plugins/StudipAuthLdap.class.php 1.2 -> 1.3)
+- Abräumen von Adresbüchern & Abräumen von internen Nachrichten (Nils Kolja Windisch, messaging.inc.php (2.24 -> 2.25)
+- Statusgruppeneintrag bleib beim löschen erhalten  (Ralf Stockmann , meine_seminare.php 2.53 -> 2.54)
+- Neue Versionsnummer. (Philipp Hügelmeyer, /studip-phplib/local.inc.dist VERSION)
+
+07.3.2004 v 1.0.0-3
+- Sicherheitsloch im Hilfesystem gefixed (Stefan Suchi studip-htdocs/help/index.php)
+- Neue Versionsnummer. (Philipp Hügelmeyer, /studip-phplib/local.inc.dist VERSION)
+
+4.3.2004 v 1.0.0-2
+- $EXTERN_SERVER_NAME jetzt mit http:// (Peter Thienel, visual.inc.php 2.59->2.60)
+- Kein anknabbern von html-Tags mehr durch externe Smileys in short notation
+ (Peter Thiene, visual.inc.php 2.59->2.60)
+- Bugfix: Feiertage werden bei veranstaltung_beginn berücksichtigt (Cornelis Kater, dates.inc.php 1.1 -> 1.2 (release))
+- Die englische Sprachdatei war im Developer-CVS fälschlicherweise nicht als Binär-Datei eingecheckt (Stefan Suchi, studip-htdocs/locale/en/LC_MESSAGES/studip.mo 1.1 -> 1.2 (release))
+- Wenn man in einem frisch installierten System in "Freie" geht, knallt es da noch, da offensichtlich die alte Literaturtabelle abgefragt wird (Andre Noack, freie.php 2.2 -> 2.3))
+- neue literaturtabelle wird berücksichtigt, außerdem wiki und vote eingbaut (Cornelis Kater, functions.php 2.16->2.17)
+- Ausrichtung Veranstaltungsnummer (Stefan Suchi, details.php 2.21->2.22)
+- Wenn die SCM-Seite nicht betreten wird, aber Modul per deafult an, keine hässlichen leeren Reiter mehr (Cornelis Kater, admin_semiare_assi.php 2.49->2.50)
+- Kommnetartext an drei Stellen besagte genau das Gegenteil von dem was Beabsichtigt ist (Cornelis Kater, local.inc.dist 1.25 -> 1.26)
+- Neue Versionsnummer (Philipp Hügelmeyer, /studip-phplib/local.inc.dist VERSION)
+
+29.12.2003 v 1.0.0-1
+- neue WAP-Schnittstelle
+- neue Literaturverwaltung zur direkten Literaturrecherche und -verwaltung aus Stud.IP heraus
+- neue Funktionen zur Verwaltung systeminterner Nachrichten: Ordner, Weiterleiten an anderen Account,
+  Löschschutz, Fallweises Bearbeiten von Signaturen, Vorschau und ein Experten-Modus zum Versenden von 
+  Nachrichten
+- neue Simple-Content-Funktion zum Verwalten von beliebigem Content innerhalb von Veranstaltungen und
+  Einrichtungen
+- neuer vCard-Export für Personendaten
+- neue Funktion zum Erstellen von vorformatierten Veranstaltungslisten als PDF
+- neue Synchronisationsschnittstelle für Termine
+- neue Gästebuchfunktion für persönliche Homepages
+- Viewcounter für perönliche Homepages und News
+- kompletter Download als Zip-Archiv mit Ordnerstruktur für alle Dateien oder einzelne Ordner einer 
+  Veranstaltung und Archivierung von Dateien als Zip-Archiv mit der kompletten Ordnerstruktur 
+  der Veranstaltung
+- neue Formatierung: Einbindung von externen Bildern in Textbeiträge
+- neue Formatierung: Umgehen aller Formatierungen
+- neue Funktion zum Einbinden von grafischen Bannern auf der Startseite
+- überarbeitetes Design im Terminkalender
+- Veranstaltungen und Einrichtungen werden nun zusammen unter "Meine Veranstaltungen" geführt
+- leichte Überarbeitung einiger Icons
+- weitere Detailverbesserungen und Bugfixes
+
+24.12.2003 v 0.9.5-4 (Weihnachtsrelease)
+- Neue Funktion insert_seminar_user. (Cornelis Kater)
+- Bugfix: Entfernt die Schleife Passwortabfrage <-> vorläufig eintragen (Till Glöggler).
+- Bugfix:  teilnehmer.php:  Fehlende $mkdate -Initialisierung (Till Glöggler).
+- Bugfixes: admin_seminare_assi.php: Stunden und Minuten bei der Kontrolle verdreht. 
+  Statt dem aktuellen Datum wird ein Platzhalter eingefügt, was dazu führt, dass Veranstaltungen ohne explizites Startdatum den Wert -1 in der Tabelle stehen haben. (Till Glöggler)
+- Sicherheitslücke in der phplib (Stefan Suchi)
+- Die Unterordner pictures/tex/ und user/ sind wieder im Release (Philipp Hügelmeyer)
+- dvips-Aufruf gefixed, so dass er auch unter Redhat und Fedora tut. (Philipp Hügelmeyer)
+- Neue Versionsnummer (Philipp Hügelmeyer)
+
+07.12.2003 v 0.9.5-3
+- Zwei Bugs im Wiki (Falscher Rechtecheck und Bearbeiten Link) (Tobias Thelen)
+- Tabellendarstellung in show_admission.php unter ns4.7 gefixed (Till Glöggler)
+- Neue Versionsnummer (Philipp Hügelmeyer)
+
+12.11.2003 v 0.9.5-2
+- Behebung zweier Fehler in den Konvertierungsskripten von 0.9.0 nach 0.9.5 (Jens Schmelzer)
+- Fehler beim Anlegen von Ordnern behoben (Cornelis Kater )
+- erster Wiederholungstermin bei jaehricher Wiederholung wird gezaehlt (Peter Thienel)
+- korrekte Verwendung der Variable $TMP_PATH (Jens Schmelzer, Philipp Hügelmeyer)
+- Neue Versionsnummer (Philipp Hügelmeyer)
+
+30.09.2003 v 0.9.5
+- neues Modul für Votings und Tests
+- neues Wiki-Web-Modul zum kollaborativen Erstellen von verlinkten Dokumenten
+- komplette Überarbeitung der Engine für Forensysteme, um neue Funktionen erweitert (Flatview,   
+  Indikatoren, Sortierung, Favoriten, AutoShrink)
+- komplette Überarbeitung des Bereichs zum Versenden von systeminternen-Nachrichten: Mehrere
+  Empfänger können ausgewählt werden, gesendete und empfangene Nachrichten, bessere Bedienung
+- StartUp-Checker: Überprüft vor dem Anlegen von Veranstaltungen, ob alle Voraussetzungen zum Anlegen
+  gegebenen sind und bietet gegebenenfalls Hilfestellungen.
+- Erweiterungen am Dateisystem: Angabe eines freien Namens für Dateien, Möglichkeit zur
+  Aktualisierung bestehenden Dateien
+- Erweiterungen am Anmeldesystem: Einstellen des Anmeldezeitraumes, Verfahren um Nutzer vorläufig
+  in Veranstaltungen aufzunehmen.
+- neues Verfahren zur Erweiterung der Metadaten von Veranstaltungen, Einrichtungen und Nutzer um
+  generische Felder
+- Modularisierung von Veranstaltungen und Einrichtungen: Alle Bereiche können jederzeit für einzelne
+  Veranstaltungen und Einrichtungen an- bzw. abgeschaltet werden.
+- externe Authentifizierungen (LDAP, Radius, andere Stud.IP Installationen) sind über eine Plug-In-
+  Architektur möglich
+- Internationalisierung: Die Internationalisierung und Erstellung einer englischen Sprachversion ist
+  komplett abgeschlossen.
+- weitere Detailverbesserungen und Bugfixes
+
+31.03.2003 v 0.9
+- erweitertes Chatsystem: eigene Chaträume für Veranstaltungen, Personen und Einrichtungen, Protokoll-
+  Funktion, Chaträume können mit einem Passwort gesichert werden
+- Verknüpfungsmöglichkeit mit Lernmodulen von ILIAS Open Source (muss ebenfalls installiert werden)
+- systemweiter TeX-Support
+- personalisierte Übersicht der persönlichen Veranstaltungen im Archiv
+- automatische Verwaltung und Konfiguration für externe Seiten (zur Einbindung des Stud.IP Contents in
+  bestehende Internetseiten)
+- Veranstaltungssuche / Browser umgebaut und erweitert, verwendet nun zur Darstellung die neuen Bäume
+- Internationalisierung: weite Teile des Systems können nun auch in Englisch benutzt werden
+- Ressourcenverwaltung wird nun für Verwaltung der Räume von Veranstaltungen genutzt (falls aktiviert)
+- neue Ressourcenverwaltung (eigenständiges Modul) zur Verwaltung von Räumen, Gebäuden, Geräten und 
+  weiteren Ressourcen. 
+- neues Adressbuch auf Grundlage der Buddyverwaltung
+- neues Exporttool, unterstützt Ausgaben in XML, RTF, TXT und PDF
+- neue Einrichtungssuche, verwendet den Einrichtungsbaum
+- neuer Einrichtungsbaum zur Darstellung der Uni-Hierachie
+- neuer Vorlesungsbaum zur Darstellung von Veranstaltungshierachien (etwa Vorlesungsverzeichnis)
+- bei regelmäßigen Veranstaltungen kann nun ein Raum für jeden Termin angegeben werden
+- Ablaufplanverwaltung überarbeitet
+- neue Titelverwaltung für Nutzernamen mit vor- und nachgestellten Titeln
+- überarbeitete Startseite
+- verbesserte Konfigurierbarkeit des Mailversands
+- weitere Detailverbesserungen und Bugfixes
+
+13.10.2002 v 0.8.15 ;-)
+- Neue Übersicht der persönlichen Termine auf der Startseite
+- Terminkalender überarbeitet
+- Kürzel für Symbole wie Pfeile oder Copyright-Zeichen eingebaut
+- neue Verwaltungsebene "Funktionen / Gruppen", verwendbar für Einrichtungen und Veranstaltungen
+- grafische Aktivitätsanzeige in Veranstaltungen kann vom Dozenten aktiviert werden
+- Anpassungen für die Funktionalität von Veranstaltungen als "Work Groups"
+- weitere Detailverbesserungen und Bugfixes
+
+31.08.2002 v 0.8 release candidate 3
+- Verschieben von Postings in andere Einrichtungen nun möglich
+- neues Wartungstool um die Integrität der Datenbank zu testen und wiederherzustellen
+- beliebige Teilnehmer können nun von Berechtigten direkt berufen werden
+- neues Hovern von Tabellen eingebaut
+- Umstrukturierung der Reiter im Adminbereich in logische Einheiten
+- neue Übersichtsseite "Meine Einrichtungen" für direkten Zugriff auf Einrichtungsobjekte eingebaut. 
+- Äusserst umfangreiche und flexible Funktionen zur Teilnehmerbegrenzung von Veranstaltungen. Veranstaltungen können
+  mit einem eigenen Losverfahren oder nach chronologischer Anmeldung mit unterschiedlichen Kontingenten für beliebig viele
+  Studiengänge begrenzt werden
+- neue Ebene "Studienfach" eingebaut. Studenten können nun im System hinterlegen, welche Studienfächer sie
+  studieren
+- neuer Archivierungsassistent
+- System zur optischen Gewichtung des Alters von Objekten eingeführt (Pfeile sind je nach alter mehr oder weniger rot)
+- Veranstaltungssuche/Übersicht verbessert: optische besser hervorgehobene Gliederung, frei wählbare Gliederungsmodi,
+  verbesserte und übersichtlichere Darstellung
+- Rundmails an alle Buddies können verschickt werden
+- neue Einrichtungssuche eingebaut
+- Selbstbezeichnung für Einrichtungen kann nun verändert werden
+- Einrichtungen können nun als eigenes Objekt betrachtet werden: Damit gibt es eigene Foren, Dateibereich, Mitarbeiterlisten und
+  Veranstaltungsübersicht an jedem Institut innerhalb des Systems
+- leichte Veränderung des Designs, neues Hintergrundbild
+- Geschwindigkeitsoptimierungen
+- weitere Detailverbesserungen und Bugfixes
+
+10.03.2002 v 0.7.5 release candidate 2
+- bessere Performance der Veranstaltungsübersicht
+- Druckansicht für ein komplettes Forum einer Veranstaltung
+- beim Archivieren wird ein Forumdump mit archiviert
+- der Terminkalender wurde weiter verbessert, insbesondere das Handling von Ganztagsterminen
+- Zitierfunktion im Forum und SMS eingefügt
+- v 2.0 des Chats fertig gestellt: neue Funktionen: SMS aus dem Chat, private Nachrichten, alle Schnellformatierungen verfügbar,
+  Performance optimiert
+- Druckansicht für das Stundenplanmodul eingefügt
+- umfangreiche Schnellformatierungen eingeführt. Dafür wird aus Sicherheitsgründen kein html-Code mehr akzeptiert
+- Linkerkennung verbessert, Formatierungstag für Linknamen eingeführt
+- Smiley-Funktion überarbeitet: Neue Smileys, Smiley-Tag wird auf Alt-Tag eingeblendet, Smiley-Übersichtsseite als Link auf jedes Smiley
+- v 2.0 des SMS-Systems: Nachrichten werden nicht mehr sofort gelöscht, automatisches Löschen beim Logout auf Wunsch, Signatur für SMS
+- Messsenger verbessert
+- Buddylisten eingefüngt
+- neue Konfigurationsseite Messaging: Buddieverwaltung, Funktion zum automatischen Starten des Messengers, Einstellungen für 
+  SMS-System
+- Hilfeseiten auf den aktuellen Stand gebracht
+- mehr Smileys :)
+- weitere Detailverbesserungen und Bugfixes
+
+13.01.2002 v 0.7.0 release candidate 1
+- Komplett neu geschriebener Terminkalender: Tages-, Monats-, Wochen- und Jahresansicht, flexible Wiederholungstermine, 
+  farbliche Kennungen für Termine, freie Einbindung vom Veranstaltungsterminen, PIM-Optik, zahlreiche Optionen über
+  MyStudip-Bereich frei konfigurierbar
+- verbesserte Ablaufplanverwaltung: Optik an Fluid-Design angepasst, nachträgliches Anlegen von Datei und Forenordnern
+  nun möglich, verbesserte Bedienung
+- Veranstaltungsübersicht für Instituts-Admins durch Stundenplanmodul realisiert
+- Semesterauswahl für Stundenplan nun möglich
+- MyStud.IP Bereich als eingeständiges Modul erstellt und ausgebaut: Optionen für Forum, Stundenplan und Terminkalender 
+  können hier zentral verwaltet werden.
+- Neuer Autologin, der html-Datei als Login Script an den Benutzer verschickt
+- v 3.0 der Newsverwaltung: Übersichtliches Auswählen von gewünschten Bereichen, verbesserte Bedienung, zahlreiche
+  Detailverbesserungen
+- Aufteilung aller Veranstaltung in beliebig viele Kategorien, etwa Kultur und Lehre
+- TOP Listen bei der Veranstaltungsauswahl zeigen meistbesuchte, zuletzt angelegte, aktivste und teilnehmerstärkste
+  Veranstaltungen an
+- Veranstaltungsauswahl über Reiter in Bereiche strukturiert
+- Persönliche Seite in der Bedienung verbessert: Einzelne Bereiche können direkt angesprungen werden
+- v 2.0 der Verwaltung eigener Kategorien
+- Optik der Startseite verbessert und differenzierte Startseiten für verschiedene Nutzergruppen realisiert
+- Adminbereich neustrukturiert: Auswahllisten für einzelne Bereiche sind identisch im Aufbau, Veranstaltungen können vorge-
+  wählt werden, so dass das Verwalten mehrerer Aspekte einer Veranstaltung leicht fällt
+- Optik des Archivs verbessert, es kann auf selbst besuchte Veranstaltungen eingegrenzt werden
+- Der Download wurde verbessert: Download ist als ZIP-Archiv für alle Dateitypen möglich, MIME-Typen werden für die 
+  wichtigsten Dateien erkannt
+- Aussagekräftigere Fehlermeldungen in vielen Bereichen umgesetzt
+- Geschlecht kann bei der Registrierung mit angegeben werden, Zeitpunkt der Erstanmeldung wird gespeichert
+- Übersichtliche Kennzeichnung von Veränderungen in besuchten Seminaren auf der Übersichtsseite
+- Verschieben ist im Forum möglich, etliche Detailverbesserungen im Forenbereich
+- Impressum neu strukturiert
+- Optik des Literaturbereichs verbessert
+- Handling von Sonderzeichen systemweit optimiert
+- weitere Detailverbesserungen und Bugfixes
+
+01.10.2001 v 0.6.0 beta 4
+- erste komplett überarbeitete und in vielen Details neu durchdachte und strukturierte Version
+- v.2.0 des Forensystems (NT Version): Komplett graphischer Treeview, JavaScript Effekte zur schnellen
+  Verarbeitung der Informationen
+- Assistent zum Anlegen von Seminaren
+- Neues Terminsystem, das flexible Verwaltung von Terminmetadaten ermöglicht
+- Neue Suchfunktion in der globalen Nutzerverwaltung
+- v.2.0 der Terminverwaltung und des Assistenten zum Erstellen eines Ablaufplans
+- v.3.0 der Ordnerverwaltung: rekursive Ordnerverwaltung, flexibles Anpassen an unterschiedliche Anforderungen,
+  Download per send-Methode
+- Optimierung der Dateiverwaltung durch das OS
+- Optimierung des Zusammenspiels zwischen Terminen und Dokumenten/Ordnern
+- deutlich verbesserte Archivsuche
+- nachträgliches Vergeben von Berechtigungen im Archiv nun möglich
+- Anzeigen der berechtigten Personen im Archiv möglich
+- Scorefunktion eingefügt (Codename geschnitten Brot)
+- freies Verwalten von Kategorien auf der persönlichen Homepage (Codename Extrawurst) eingefügt
+- mystudip eingefügt
+- Stud.IP Messenger eingefügt (beta)
+- Fluid 'n' Steel Optik eingeführt
+- Ersetzen von Buttons durch Grafikbuttons begonnen
+- Detailverbesserungen am Seminar-Browser
+- Neue Reiteroptik
+- weitere Detailverbesserungen und Bugfixes
+
+07.06.2001 v 0.5.0 beta 3 
+- Release bei Sourceforge
+- weitere Fixes
+- Graphische Ausgabe des Stundenplans
+- SMS nicht mehr auf 255 Zeichen begrenzt
+
+01.05,2001 v 0.4.0 beta 2
+- Archiv eingefügt
+- neuer Seminar-Browser (Suchfunktion für Veranstaltungen)
+- automatisches Archivieren der Veranstaltungen
+- Bereichs- und Fachverwaltung
+- v.2.0 der Dateiverwaltung: Upload nun über grafische Oberfläche, orientiert am Explorerlook
+- kontextsensitives Hilfesystem
+- Gruppierung von "Meine Veranstaltungen" über Farbcodes
+- v.2.0 des Newssystems 
+- Facelifting beim Design: neue Buttons, konsequenter Fensterlook
+
+19.03.2001 v 0.3.0 beta 1
+- erster Release bei Sourceforge
+- unzählige Buxfixes
+- viele Detail-Verbesserungen, die sich im laufenden Betrieb ergeben haben
+- diese Version hat den Betrieb über ein Semester als Produktivsystem am Zentrum für interdisziplinäre Medien-
+  wissenschaft ohne Probleme überstanden 
+
+16.10.2000 v 0.2.0 alpha 
+- In letzter Sekunde wird pünktlich zum Start des WS 2000/01 die erste Version im öffentlichen Einsatz fertig gestellt
+- Neue Funktionen: Dateiordner, Chat, SMS-System, Anzeige von Personen, die Online sind,
+  Terminplaner, Personensuche und persönliche Homepage
+- Erste Version mit durchgängiger CI
+- Navigation per Reitersystem
+- Anbindung an externe Seiten
+- Das Chatmodul wird eingefügt
+
+11.01.2000 v 0.1.0
+- Die erste Version im Lehreinsatz: Die Veranstaltung "Kurzfilmpraxis" von Ralf Stockmann nutzt 
+  das personalisierte Forum zur Entwicklung von Drehbüchern
