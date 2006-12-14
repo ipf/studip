@@ -1,0 +1,87 @@
+Update Notes
+============
+
+Ursprungsversion: 1.1.5
+Updateversion 1.2
+
+1. Ablauf
+---------
+
+Zunächst werden Datenbank und Webserver heruntergefahren. Anschließend wird ein Backup der Datenbank und aller Scripte im vorliegenden 
+Zustand vorgenommen. Die neue Version wird über die alte vorhandene Version installiert - auf diese Weise bleiben die Konfigurationsdateien 
+local.inc und config.inc.php erhalten. Weitere eigene Scripte, die nur auf diesem Server zum Einsatz kommen, bleiben ebenfalls erhalten.
+Aktualisiert werden muss das Stud.IP-Webroot und das Verzeichnis der PHP-Lib.
+
+Anpassung der Konfigurationsdateien:
+
+Die Konfigurationsdateien local.inc im Verzeichnis der php-lib und die config.inc im Stud.IP-Root Verzeichnis müssen mit dem aktuellen
+Stand der entsprechenden Distributionsversionen abgeglichen werden. Dabei können die alten Konfigurationsdateien als Ausgangszustand 
+genommen werden und neu hinzugekommene Werte ergänzt (und nach eigenen Wünschen angepasst) sowie alte Einträge entfernt werden. 
+Je nach Umfang der eigenen Anpassungen kann natürlich auch die aktuelle Distributionsversion eingespielt werden und alte Einträge wieder 
+gesetzt werden. Dabei muss jedoch sehr genau darauf geachtet werden, dass keine Inkonsitenzen zwischen der alten und der neuen Version 
+auftreten.
+Es empfielt sich, den Abgleich der neuen Distributionsversionen und der eigenen Datei mit einem Differ vorzunehmen.
+
+Datenbankupdate:
+
+Das Datenbankupdate erfolgt in der Reihenfolge, wie sie in der Datei migration_1.1.5to1.2.0.sql angegeben ist. Die Konvertierungsscripte,
+die jeweils angesprochen werden, müssen an den entsprechenden Positionen ausgeführt werden. In der Regel ist es nötig, dass die Scripte
+einen als Root angemeldeten Stud.IP-Nutzer verlangen.
+Die Scripte müssen zudem vor dem Ausführen aus dem Verzeichnis studip-update/<version> in das Webroot kopiert werden. Nach dem Ausführen 
+sollten die Scripte wieder entfernt werden.
+
+2. Anmerkungen & Neuerungen zur aktuellen Version
+-------------------------------------------------
+
+2.1 Neues Sessionmanagement
+Die neue Version des Sessionmanagements basiert auf nativen PHP4 Sessions. Mit
+der Nutzung sind Performanceverbesserungen verbunden, außerdem werden
+Sessiondaten von den Nutzerdaten getrennt in einer separaten Tabelle
+gespeichert. Die Nutzung dieses Features ist vorerst optional, eine Umschaltung
+zwischen den Varianten geschieht durch das Einbinden von entweder prepend.php
+(alte Version) oder prepend4.php (neue Version).
+Nach dem Umschalten muss ein Konvertierungsskript ausgeführt werden, damit die
+Nutzereinstellungen in das neue Format konvertiert werden.
+Vorgehen:
+- die Tabellen "session_data" und "user_data" in der Datenbank anlegen (wie in
+  migration_1.1.5to1.2.sql beschrieben)
+- eine Kopie der Tabelle "active_sessions" anlegen (wer mutig ist verzichtet
+  darauf)
+- in der Apache Konfiguration (studip-httpd.conf,evtl .htaccess) oder in der
+  php.ini das auto_prepend_file auf prepend4.php ändern, Webserver neu
+  starten
+- das Skript "convert_active_sessions.php" in studip-httpd kopieren
+- Mit 'root' Rechten in Stud.IP anmelden und direkt das Skript
+  convert_active_sessions.php aufrufen.
+- Damit werden die Benutzereinstellungen aus der Tabelle active_sessions in
+  die neue Tabelle user_data übertragen.
+Während des Updatevorgangs sollte kein Benutzer angemeldet sein, sonst verliert
+er seine Einstellungen (für den root Benutzer läßt sich das nicht vermeiden).
+Sollte das Konvertieren nicht klappen, kann man den Inhalt von "user_data"
+löschen und das ganze nochmal probieren.
+Läuft alles wie gewünscht, kann die Tabelle "active_sessions" entsorgt werden.
+
+2.2 Veränderungen bei der SRI-Schnittstelle (externe Seiten) zur Verbesserung
+    der Sicherheit
+Durch JavaScript in einem präparierten Template war es in vergangenen 
+Versionen möglich, bei Verwendung der SRI-Schnittstelle die Session eines in 
+Stud.IP angemeldeten Benutzers zu übernehmen. Um das zu verhindern wurden zum 
+einen die Konfigurationsmöglichkeiten für die externen Seiten erweitert, zum 
+anderen der Zugriff auf die externen Seiten über die SRI-Schnittstelle 
+eingeschränkt. Über die SRI-Schnittstelle können nur noch in den jeweiligen 
+Modulen der externen Seiten registrierte Templates verarbeitet werden.
+
+Durch die zusätzlichen Konfigurationseinstellungen in der PHPlib local.inc
+sind folgende Einschränkungen möglich:
+
+1. Die SRI-Schnittstelle kann global deaktiviert werden ($EXTERN_SRI_ENABLE).
+2. Bei global aktivierter SRI-Schnittstelle kann root die Verwendung 
+einrichtungsbezogen einschränken ($EXTERN_SRI_ENABLE_BY_ROOT).
+3. Ohne eine Konfiguration für ein Modul kann dieses nicht als externe
+Seite ausgegeben werden. Weder über die SRI-Schnittstelle noch über
+direkten Zugriff. ($EXTERN_ALLOW_ACCESS_WITHOUT_CONFIG)
+
+Bei Verwendung der SRI-Schnittstelle muss in den Konfigurationen der 
+jeweiligen Module im Abschnitt "Grundeinstellungen" >> "URL des 
+SRI-Templates" die vollständige URL des Templates angegeben werden. Ohne 
+diese Angabe ist die SRI-Schnittstelle nicht erreichbar.
