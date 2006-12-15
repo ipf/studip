@@ -6,13 +6,12 @@
 * @version $Revision$
 * $Id$
 * @package pluginengine
+* @subpackage core
 */
-
-require_once("lib/classes/UserManagement.class.php");
 
 class StudIPUser {
 	var $userid;
-	var $username;	
+	var $username;
 	var $permission;
 	var $surname;
 	var $givenname;
@@ -23,45 +22,54 @@ class StudIPUser {
 	*/
     function StudIPUser() {
     	$auth = $GLOBALS["auth"];
-	    $this->setUserid($auth->auth['uid']);	      	   	  
+	    $this->setUserid($auth->auth['uid']);
     }
-    
+
     function getSurname(){
     	return $this->surname;
     }
-    
+
     function getGivenname(){
     	return $this->givenname;
     }
-    
+
     function setUserid($newuserid){
-	    $this->userid=$newuserid;
-	    $usermgmt = new UserManagement($this->userid);
-	    $this->givenname = $usermgmt->user_data["auth_user_md5.Vorname"];
-	    $this->surname = $usermgmt->user_data["auth_user_md5.Nachname"];
-	    $this->username = $usermgmt->user_data["auth_user_md5.username"];	 
-	   	$this->permission = new Permission($this->userid);      
+	    $this->userid = $newuserid;
+		$dbconn =& PluginEngine::getPluginDatabaseConnection();
+		if ($GLOBALS['PLUGINS_CACHING']){
+    		$result =& $dbconn->CacheExecute($GLOBALS['PLUGINS_CACHE_TIME'],"SELECT * FROM auth_user_md5 WHERE user_id=?",array($newuserid));
+		}
+		else {
+			$result =& $dbconn->Execute("SELECT * FROM auth_user_md5 WHERE user_id=?",array($newuserid));
+		}
+		if (!$result->EOF){
+			$this->givenname = $result->fields("Vorname");
+			$this->surname = $result->fields("Nachname");
+			$this->username = $result->fields("username");
+		}
+    	$result->Close();
+	   	$this->permission = new Permission($this->userid);
     }
-    
+
     function getUserid(){
 	    return $this->userid;
     }
-    
+
     function getPermission(){
     	return $this->permission;
     }
-    
+
     function getUsername(){
     	return $this->username;
-    }    
+    }
     /*
     function setUsername($newusername){
     	$this->username = $newusername;
     }
     */
-    
+
     /**
-     * checks, if this user is identical to the otheruser 
+     * checks, if this user is identical to the otheruser
      *
      * @param StudIPUser $otheruser
      * @return false - other user is not the same as this user
@@ -80,12 +88,12 @@ class StudIPUser {
     		return false;
     	}
     }
-    
+
     function getAssignedRoles($withimplicit=false){
     	$rolemgmt = new de_studip_RolePersistence();
 	    $this->assignedroles = $rolemgmt->getAssignedRoles($this->userid,$withimplicit);
     	return $this->assignedroles;
     }
-        
+
 }
 ?>
