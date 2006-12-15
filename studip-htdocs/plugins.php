@@ -21,8 +21,8 @@ include ("seminar_open.php"); 		// initialise Stud.IP-Session
 include ("html_head.inc.php");
 include ("header.php");
 
-// read in the command and pluginid
-$cmd = $_GET["cmd"];
+// read in the command and pluginid, only execute commands with 'action' prefix
+$cmd = 'action' . $_GET["cmd"];
 $pluginid = $_GET["id"];
 
 // create plugin persistence objects

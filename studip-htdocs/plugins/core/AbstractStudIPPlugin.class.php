@@ -369,6 +369,14 @@ class AbstractStudIPPlugin {
 	function isDependentOnOtherPlugin(){
 		return $this->dependentonplugin;
 	}
+	
+	
+	function actionShow($param = null){ 
+		return $this->show($param); 
+	} 
+	
+	function actionShowDescriptionalPage(){ 
+		return $this->showDescriptionalPage(); 
+	}
 }
- 
 ?>
