@@ -1,5 +1,141 @@
-15.12.2006 v 1.4.0-4
-- ...
+18.12.2006 v 1.4.0-4
+r7102: merged r7052 (bugfix BIEST00203)
+   M studip-htdocs/plugins/engine/StudIPTemplateEngine.class.php
+r7101: merged r7051 (bugfix BIEST00200, nur Methoden mit 'action' präfix aufrufen)
+   M studip-htdocs/plugins/core/AbstractStudIPPlugin.class.php
+   M studip-htdocs/plugins/packages/core/PluginAdministrationPlugin.class.php
+   M studip-htdocs/plugins/packages/core/de_studip_core_RoleManagementPlugin.class.php
+   M studip-htdocs/plugins.php
+r7100: merged r7050 (semester_id statt Semester_id)
+   M studip-htdocs/plugins/core/StudIPCore.class.php
+r7099: merged r7049 (i18n Problem, config.inc.php darf nicht zu früh eingebunden werden)
+   M studip-htdocs/plugins/core/StudIPUser.class.php
+r7098: merged r7048 (Mysql 5 Kompatibilität)
+   M studip-htdocs/archiv.inc.php
+r7097: ASSETS_URL eingefuegt
+   M studip-htdocs/edit_about.php
+r7096: htmlReady eingefuegt
+   M studip-htdocs/sem_verify.php
+r7056: portiert r7055 (BIEST00204)
+   M htdocs/meine_seminare.php
+r7054: Fixed BIEST00205 - fehlerhafter Insert-Query
+   M htdocs/datei.inc.php
+r6991: R6982 portiert (bugfix sql, Anzahl der Beiträge in einem Thema)
+   M htdocs/export/export_studipdata_func.inc.php
+   M htdocs/forum.inc.php
+   M htdocs/lib/classes/latexrender.class.php
+   M htdocs/show_bereich.php
+r6961: $UNI_INFO zu "Stud.IP 1.4 ..." korrigiert
+   M htdocs/config.inc.php.dist
+r6959: $SYMBOL_PATH zu "assets/images/symbol" korrigiert
+   M phplib/local.inc.dist
+r6957: $UNI_NAME_CLEAN nach "Stud.IP 1.4" geaendert
+   M phplib/local.inc.dist
+r6955: R6901 portiert und bugfixed (BIEST00190: Fehlerhafte Darstellung der Seite "Alle Dateien")
+   M htdocs/datei.inc.php
+   M htdocs/lib/classes/StudipDocumentTree.class.php
+r6932: bugfix falscher bildpfad
+   M htdocs/visual.inc.php
+r6914: R6910:6912 portiert
+   M htdocs/meine_seminare.php
+   M htdocs/plugins/core/AbstractStudIPStandardPlugin.class.php
+   M htdocs/plugins/engine/StandardPluginIntegratorEnginePersistence.class.php
+r6909: R6908 portiert (bugfix: is_array() gegen Warning eingebaut)
+   M htdocs/elearning/Ilias3ConnectedCMS.class.php
+   M htdocs/elearning/Ilias3ConnectedPermissions.class.php
+r6907: R6906 portiert (bugfix: Dateien konnten in schreibgeschützte Ordner verschoben werden)
+   M htdocs/datei.inc.php
+   M htdocs/folder.php
+r6905: BIEST00194
+   M htdocs/admin_dates.php
+   M htdocs/functions.php
+r6897: chgset 6896 portiert (BIEST00184: Problem bei der Zuordnung eines ILIAS-Lernmodules)
+   M htdocs/elearning/Ilias3ConnectedPermissions.class.php
+   M htdocs/elearning/Ilias3ContentModule.class.php
+   M htdocs/elearning/Ilias3Soap.class.php
+r6894: Version auf 1.4.0-4
+   M htdocs/phplib_local.inc.php
+r6893: chgsets 6874,6874,6876 und 6883 portiert (bugfix Literaturlistenimport, bugfix Druckansicht)
+   M htdocs/admin_lit_list.php
+   M htdocs/admin_seminare_assi.php
+   M htdocs/lib/classes/lit_import_plugins/StudipLitImportPluginAbstract.class.php
+   M htdocs/lib/classes/lit_import_plugins/StudipLitImportPluginGenericXML.class.php
+   M htdocs/lit_import.inc.php
+   M htdocs/mein_stundenplan.php
+r6892: chgsets 6868,6869 und 6871 portiert (Mysql 5 Kombatibiltät, nochmal BIEST00170)
+   M htdocs/admin_dates.php
+   M htdocs/admin_literatur_overview.php
+   M htdocs/edit_about.php
+r6891: chgsets 6855 und 6867 portiert (Performancetweak (Speicherverbrauch),bugfix, visible Feld)
+   M htdocs/lib/classes/SemBrowse.class.php
+r6890: chgsets 6841 bis 6852 portiert 
+   M htdocs/functions.php
+   M htdocs/lib/classes/AdminNewsController.class.php
+   M htdocs/new_user_md5.php
+   M htdocs/resources_extern/sem_plan_view.inc.php
+   M htdocs/statusgruppen.php
+   M htdocs/teilnehmer.php
+r6889: chgsets 6837 und 6853 portiert (BUGFIX "invisible", Umlautproblem mit neuerem gettext)
+   M htdocs/locale/en/LC_MESSAGES/studip.mo
+   M htdocs/locale/en/LC_MESSAGES/studip.po
+   M htdocs/locale/en/LC_MESSAGES/studip_calendar.po
+   M htdocs/locale/en/LC_MESSAGES/studip_calendar.pot
+   M htdocs/locale/en/LC_MESSAGES/studip_chat.po
+   M htdocs/locale/en/LC_MESSAGES/studip_chat.pot
+   M htdocs/locale/en/LC_MESSAGES/studip_core.po
+   M htdocs/locale/en/LC_MESSAGES/studip_core.pot
+   M htdocs/locale/en/LC_MESSAGES/studip_eval.po
+   M htdocs/locale/en/LC_MESSAGES/studip_eval.pot
+   M htdocs/locale/en/LC_MESSAGES/studip_export.po
+   M htdocs/locale/en/LC_MESSAGES/studip_export.pot
+   M htdocs/locale/en/LC_MESSAGES/studip_extern.po
+   M htdocs/locale/en/LC_MESSAGES/studip_extern.pot
+   M htdocs/locale/en/LC_MESSAGES/studip_lernmodule.po
+   M htdocs/locale/en/LC_MESSAGES/studip_lernmodule.pot
+   M htdocs/locale/en/LC_MESSAGES/studip_resources.po
+   M htdocs/locale/en/LC_MESSAGES/studip_resources.pot
+   M htdocs/locale/en/LC_MESSAGES/studip_support.po
+   M htdocs/locale/en/LC_MESSAGES/studip_support.pot
+   M htdocs/locale/en/LC_MESSAGES/studip_vote.po
+   M htdocs/locale/en/LC_MESSAGES/studip_vote.pot
+   M htdocs/locale/en/LC_MESSAGES/studip_wap.po
+   M htdocs/locale/en/LC_MESSAGES/studip_wap.pot
+r6888: chgsets 6828,6830-6836 portiert 
+   M htdocs/admin_config.php
+   M htdocs/check_sem_entry.inc.php
+   M htdocs/elearning_interface.php
+   M htdocs/export/export_studipdata_func.inc.php
+   M htdocs/forum.inc.php
+   M htdocs/visual.inc.php
+r6887: Ausbau StEP00063, rueckportiert aus 1.4er release
+   M htdocs/modules/evaluation/classes/Evaluation.class.php
+   M htdocs/modules/evaluation/classes/EvaluationExportManager.class.php
+   M htdocs/modules/evaluation/classes/EvaluationExportManagerCSV.class.php
+   D htdocs/modules/evaluation/classes/EvaluationLink.class.php
+   M htdocs/modules/evaluation/classes/EvaluationObject.class.php
+   D htdocs/modules/evaluation/classes/EvaluationText.class.php
+   M htdocs/modules/evaluation/classes/EvaluationTree.class.php
+   M htdocs/modules/evaluation/classes/EvaluationTreeEditView.class.php
+   M htdocs/modules/evaluation/classes/EvaluationTreeShowUser.class.php
+   M htdocs/modules/evaluation/classes/db/EvaluationAnswerDB.class.php
+   M htdocs/modules/evaluation/classes/db/EvaluationDB.class.php
+   M htdocs/modules/evaluation/classes/db/EvaluationObjectDB.class.php
+   D htdocs/modules/evaluation/classes/db/EvaluationTextDB.class.php
+   M htdocs/modules/evaluation/evaluation_admin_edit.inc.php
+   D htdocs/modules/evaluation/evaluation_admin_link.inc.php
+   D htdocs/modules/evaluation/evaluation_admin_link.lib.php
+   M htdocs/modules/evaluation/evaluation_admin_overview.inc.php
+   M htdocs/modules/evaluation/evaluation_admin_overview.lib.php
+   M htdocs/modules/evaluation/evaluation_admin_template.inc.php
+   M htdocs/modules/evaluation/evaluation_admin_template.lib.php
+   M htdocs/modules/evaluation/evaluation_show.inc.php
+   M htdocs/modules/evaluation/evaluation_show.lib.php
+   M htdocs/vote/vote_show.inc.php
+r6886: chgset 6812 portiert (bugfix ajax chat)
+   M htdocs/chat/chat_client_ajax.php
+r6866: Stand ca. Version 1.4.0-3
+   A /branches/1.4.0 (from /trunk:6811)
+- Umstellung von cvs auf svn
 
 12.09.2006 v 1.4.0-3
 - studip-htdocs/vote/vote_show.inc.php: bugfix BIEST00165 / BIEST00163 wieder entfernt  
