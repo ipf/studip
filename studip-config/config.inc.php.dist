@@ -8,7 +8,7 @@
 * 
 * @access		public
 * @package		studip_core
-* @modulegroup		library
+* @modulegroup	library
 * @module		config.inc.php
 */
 
@@ -44,8 +44,8 @@ please note the LOCAL.INC.PHP in the php-lib folder for the basic system setting
 $UNI_URL = "http://www.studip.de";
 $UNI_LOGIN_ADD='';
 $UNI_LOGOUT_ADD=sprintf(_("Und hier geht's zur %sStud.IP Portalseite%s&nbsp;"), "<a href=\"http://www.studip.de\"><b>", "</b></a>");
-$UNI_CONTACT = "<please insert your generel contact mail-adress here>";
-$UNI_INFO = "Stud.IP 1.4.0 - Studienbegleitender Internetsupport von Pr&auml;äsenzlehre"; 
+$UNI_CONTACT = "<please insert your general contact mail-adress here>";
+$UNI_INFO = "Stud.IP 1.4 - Studienbegleitender Internetsupport von Präsenzlehre"; 
 
 
 //Festlegen der zulaessigen Typen fuer Veranstaltungen
@@ -87,7 +87,7 @@ $SEM_CLASS[1]=array("name"=>_("Lehre"), 					//the name of the class
 					"scm"=>FALSE,				//simple content module, this modul is stud_ip core; always available 
 					"literature"=>TRUE,			//literature, this module is stud_ip core; always available
 					"chat"=>TRUE,				//chat, only, if the module is global activated; see local.inc
-					"ilias_connect"=>FALSE,			//Ilias-connect, only, if the module is global activated; see local.inc
+					"ilias_connect"=>TRUE,			//Ilias-connect, only, if the module is global activated; see local.inc
 					"wiki"=>TRUE,				//wikiwiki-web, this module is stud_ip core; always available
 					"support"=>FALSE,			//support, only, if the module is global activated; see local.inc (this modul is not part of the main distribution)
 					//descriptions
