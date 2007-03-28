@@ -7,24 +7,24 @@ Updateversion:    1.5
 1. Ablauf
 ---------
 
-Zunächst werden Datenbank und Webserver heruntergefahren. Anschließend wird ein Backup der Datenbank und aller Scripte im vorliegenden 
-Zustand vorgenommen. 
+Zunächst werden Datenbank und Webserver heruntergefahren. Anschließend wird ein
+Backup der Datenbank und aller Scripte im vorliegenden Zustand vorgenommen. 
+Stud.IP benutzt ab Version 1.5 eine überarbeitete neue Verzeichnisstruktur. 
+Ein einfaches hineinkopieren der neuen Dateien in eine alte Installation ist
+deshalb nicht ohne weiteres möglich. ... TODO
 
-TODO:
-/*
-Die neue Version wird über die alte vorhandene Version installiert - auf diese Weise bleiben die Konfigurationsdateien 
-local.inc und config.inc.php erhalten. Weitere eigene Scripte, die nur auf diesem Server zum Einsatz kommen, bleiben ebenfalls erhalten.
-Aktualisiert werden muss das Stud.IP-Webroot und das Verzeichnis der PHP-Lib.
-*/
 Anpassung der Konfigurationsdateien:
 
-Die Konfigurationsdateien config/config_local.inc und config/config.inc.php  müssen mit dem aktuellen
-Stand der entsprechenden Distributionsversionen abgeglichen werden. Dabei können die alten Konfigurationsdateien als Ausgangszustand 
-genommen werden und neu hinzugekommene Werte ergänzt (und nach eigenen Wünschen angepasst) sowie alte Einträge entfernt werden. 
-Je nach Umfang der eigenen Anpassungen kann natürlich auch die aktuelle Distributionsversion eingespielt werden und alte Einträge wieder 
-gesetzt werden. Dabei muss jedoch sehr genau darauf geachtet werden, dass keine Inkonsitenzen zwischen der alten und der neuen Version 
-auftreten.
-Es empfielt sich, den Abgleich der neuen Distributionsversionen und der eigenen Datei mit einem Differ vorzunehmen.
+Die Konfigurationsdateien config/config_local.inc und config/config.inc.php 
+müssen mit dem aktuellen Stand der entsprechenden Distributionsversionen abgeglichen werden.
+Dabei können die alten Konfigurationsdateien als Ausgangszustand genommen werden und neu
+hinzugekommene Werte ergänzt (und nach eigenen Wünschen angepasst) sowie alte Einträge
+entfernt werden. 
+Je nach Umfang der eigenen Anpassungen kann natürlich auch die aktuelle Distributionsversion
+eingespielt werden und alte Einträge wieder gesetzt werden. Dabei muss jedoch sehr genau darauf
+geachtet werden, dass keine Inkonsitenzen zwischen der alten und der neuen Version auftreten.
+Es empfielt sich, den Abgleich der neuen Distributionsversionen und der eigenen Datei mit 
+einem Differ vorzunehmen.
 
 Datenbankupdate:
 
