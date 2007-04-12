@@ -1,23 +1,23 @@
+# translation of studip.po to
 # translation of studip-1.5.po to
-# translation of studip_eval.po to
-# translation of studip_eval.po to
-# This file is distributed under the same license as the PACKAGE package.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER, 2004.
+# This file is distributed under the same license as the Stud.IP package.
+# Copyright (C) 2007 Hartje Kriete.
 # Jens Schmelzer <jens.schmelzer@fh-jena.de>, 2005.
-# Stefan Suchi <suchi@data-quest.de>, 2006.
+# Stefan Suchi <suchi@data-quest.de>, 2006, 2007.
+# Hartje Kriete <kriete@math.uni-goettingen.de>, 2006, 2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: studip-1.5\n"
+"Project-Id-Version: studip\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-03-19 12:21+0100\n"
-"PO-Revision-Date: 2007-04-11 20:55+0200\n"
-"Last-Translator: \n"
-"Language-Team:  <en@li.org>\n"
+"PO-Revision-Date: 2007-04-12 16:50+GMT\n"
+"Last-Translator: Stefan Suchi <suchi@data-quest.de>\n"
+"Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.1\n"
+"X-Generator: KBabel 1.10\n"
 
 #: ../public/wap/directory_search.php:265 ../public/wap/dates_search.php:160
 #, c-format
@@ -3033,7 +3033,6 @@ msgid "Niemand gefunden!"
 msgstr "No-one found!"
 
 #: ../public/sem_portal.php:160
-#, fuzzy
 msgid "ErgebnisVeranstaltungssuche.xls"
 msgstr "ResultCoursesearch.xls"
 
@@ -4706,13 +4705,12 @@ msgstr "In courses marked %s blue you can only read and download documents."
 
 #: ../public/freie.php:170
 #, c-format
-#, fuzzy
 msgid ""
 "In den %s orange markierten Veranstaltungen k&ouml;nnen Sie sich zus&auml;"
 "tzlich mit eigenen Beitr&auml;gen im Forum beteiligen."
 msgstr ""
 "In courses %s marked in orange you can additionally take part with "
-"your=20own postings in the forum."
+"your own postings in the forum."
 
 #: ../public/freie.php:173
 msgid ""
@@ -8876,7 +8874,7 @@ msgstr "Graphic type for Likert scales"
 
 #: ../public/eval_config.php:238
 msgid "Grafiktyp f&uuml;r Multiplechoice"
-msgstr "GRaphic type for multiple choice"
+msgstr "Graphic type for multiple choice"
 
 #: ../public/lit_search.php:66 ../public/admin_seminare_assi.php:2445
 #: ../public/admin_seminare1.php:1024
@@ -8884,7 +8882,7 @@ msgstr "GRaphic type for multiple choice"
 #: ../lib/extern/views/ExternEditModule.class.php:419
 #, c-format
 msgid "Ihre Suche ergab %s Treffer."
-msgstr "Your query yielded to %2 hits."
+msgstr "Your query yielded to %s hits."
 
 #: ../public/lit_search.php:198 ../public/lit_search.php:259
 #, c-format
@@ -9068,6 +9066,8 @@ msgid ""
 "Oldenburg, Bremen, Hannover, Jena und weiteren). Die Koordination der "
 "Entwicklung erfolgt durch die %sStud.IP-CoreGroup.%s "
 msgstr ""
+"Stud.IP is an opensource project for supporting attendance courses offered by universities, institutions of higher education and other educational institutions. The system was established at the %sZentrum für "
+"interdisziplin&auml;re Medienwissenschaft (ZiM)%s in the  %sGeorg-August-Universit&auml;t G&ouml;ttingen%s in cooperation with %sSuchi & Berg GmbH (data-quest)%s , G&ouml;ttingen. At the present further developing takes place at various locations (among others G&ouml;ttingen, Osnabr&uuml;ck, Oldenburg, Bremen, Hannover, Jena) under coordination through the %sStud.IP-CoreGroup.%s "
 
 #: ../public/impressum.php:135
 msgid "Stud.IP steht unter der GNU General Public License, Version 2."
@@ -13139,7 +13139,6 @@ msgid "Alle Veranstaltungen der Einrichtung <b>%s</b>"
 msgstr "All courses in the institute <b>%s</b>"
 
 #: ../public/show_bereich.php:96
-#, fuzzy
 msgid "Veranstaltungsübersicht.xls"
 msgstr "Courseoverview.xls"
 
@@ -17821,14 +17820,12 @@ msgid "Sie haben eine leere Datei zum Hochladen ausgewählt!"
 msgstr "You have selected an empty file to upload!"
 
 #: ../lib/classes/lit_import_plugins/StudipLitImportPluginAbstract.class.php:105
-#, fuzzy
 msgid ""
 "Es ist ein Fehler beim Kopieren der Datei $this->xmlfile aufgetreten. Die "
 "Datei wurde nicht hochgeladen!§"
 msgstr "An error has occurred while copying the file $this->xmlfile. The file has not been uploaded!§"
 
 #: ../lib/classes/lit_import_plugins/StudipLitImportPluginAbstract.class.php:110
-#, fuzzy
 msgid "could not open input file"
 msgstr "could not open input file"
 
@@ -18418,9 +18415,8 @@ msgstr "Latex error: formula too long"
 
 #: ../lib/classes/latexrender.class.php:157
 #, c-format
-#, fuzzy
 msgid "Latexfehler: nicht erlaubtes Element: '%s'"
-msgstr "Latex error: element %s not allowed'"
+msgstr "Latex error: element '%s' not allowed"
 
 #: ../lib/classes/latexrender.class.php:243
 #, c-format
@@ -20637,7 +20633,6 @@ msgstr "The folder authorisations require activating of <b>%s</b>"
 #: ../lib/soap/StudipSoapClient_PHP5.class.php:32
 #: ../lib/soap/StudipSoapClient.class.php:28
 #, c-format
-#, fuzzy
 msgid "Soap-Fehler, Funktion \"%s\":"
 msgstr "Soap error, function \"%s\":"
 
@@ -22557,7 +22552,6 @@ msgid "Alle Studienbereiche anzeigen:"
 msgstr "Display all study areas:"
 
 #: ../lib/extern/elements/ExternElementSelectSubjectAreas.class.php:96
-#, fuzzy
 msgid ""
 "Wählen Sie diese Option, wenn alle Veranstaltungen aus allen "
 "Studienbereichen angezeigt werden sollen. Unabhängig von unten vorgenommener "
@@ -29417,7 +29411,6 @@ msgid "Sie k&ouml;nnen mehrere Antworten ausw&auml;hlen."
 msgstr "You can select more than one answer."
 
 #: ../lib/vote/view/vote_show.lib.php:811
-#, c-format
 msgid " Die Summe kann daher über 100% liegen."
 msgstr "The total can therefore be greater than 100%."
 
@@ -32444,7 +32437,6 @@ msgid "Kommentar von"
 msgstr "Comment by"
 
 #: ../lib/visual.inc.php:477
-#, fuzzy
 msgid "unparseable or potentially dangerous latex formula"
 msgstr "unparseable or potentially dangerous latex formula"
 
