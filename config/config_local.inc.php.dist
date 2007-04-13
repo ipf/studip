@@ -129,6 +129,7 @@ $WEBSERVICES_ENABLE = FALSE;							//Stud.IP module: webservices
 
 $WAP_ENABLE = FALSE;							//Stud.IP module: WAP
 
+//Example config Ilias 3
 $ELEARNING_INTERFACE_MODULES = array(
 	"ilias3" =>	array(
 		"name" => "ILIAS 3",
@@ -166,6 +167,26 @@ $ELEARNING_INTERFACE_MODULES = array(
 						)
 		)
 	);
+
+//Example config pmwiki
+$ELEARNING_INTERFACE_MODULES["pmwiki-farm"] = array(
+	"name" => "Stud.IP Wikifarm",
+	"ABSOLUTE_PATH_ELEARNINGMODULES" => "http://<pmwiki URL>/fields/",
+	"WEBSERVICE_CLASS" => "xml_rpc_webserviceclient",
+	"ABSOLUTE_PATH_SOAP" => "http://<pmwiki URL>/pmwiki.php",
+	"URL_PARAMS" => "action=xmlrpc",
+	"CLASS_PREFIX" => "PmWiki",
+	"auth_necessary" => false,
+	"field_script" => "field.php",
+	"logo_file" => "assets/images/pmwiki-32.gif",
+	"soap_data" => array("api-key" => "<password>"), //Passwort
+	"types" =>  array(
+		"wiki" => array(
+			"name" => "PmWiki-Lerneinheit",
+			"icon" => "assets/images/icon-lern.gif"
+			)
+		)
+);
 
 $PLUGINS_ENABLE = TRUE;
 $PLUGINS_UPLOAD_ENABLE = TRUE; 					//Upload of Plugins is enabled
