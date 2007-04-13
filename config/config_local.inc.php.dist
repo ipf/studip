@@ -4,7 +4,7 @@
 you find here the basic system settings. You shouldn't have to touch much of them...
 please note the CONFIG.INC.PHP in the system folder for the indivual settings of your installation!*/
 
-$UNI_NAME_CLEAN = "Stud.IP 1.5-dev";							//the clean-name of your master-faculty (e.g. University of Göttingen), without html-entities (used for mail-system)
+$UNI_NAME_CLEAN = "Stud.IP 1.5.0";							//the clean-name of your master-faculty (e.g. University of Göttingen), without html-entities (used for mail-system)
 $AUTH_LIFETIME = 60;									//the length of a session in minutes, zero means unlimited lifetime
 
 
@@ -114,7 +114,6 @@ $ILIAS_CONNECT_ENABLE = FALSE;								//Stud.IP module: ilias 2 connect
 $ABSOLUTE_PATH_ILIAS = "http://<your.server.name/ilias/>";
 
 $EXTERN_ENABLE = TRUE;									//Stud.IP module: "external pages" and SRI-System
-$EXTERN_SERVER_NAME = "";								//define name, if you use special setup
 $EXTERN_SRI_ENABLE = TRUE;								//allow the usage of SRI-interface (Stud.IP Remote Include)
 $EXTERN_SRI_ENABLE_BY_ROOT = FALSE;							//only root allows the usage of SRI-interface for specific institutes
 $EXTERN_ALLOW_ACCESS_WITHOUT_CONFIG = FALSE;						//free access to external pages (without the need of a configuration), independent of SRI settings above
