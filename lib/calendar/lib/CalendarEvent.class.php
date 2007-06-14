@@ -591,5 +591,10 @@ class CalendarEvent extends Event {
 
 		return parent::toStringDate($mod);
 	}
+	
+	function getClone () {
+		$clone =& new CalendarEvent($this->properties, $this->id);
+		return $clone;
+	}
 
 } // class CalendarEvent
