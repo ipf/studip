@@ -177,8 +177,8 @@ class SeminarEvent extends Event {
 					'color' => $TERMIN_TYP[$index]['color']);
 	}
 	
-	function getClone () {
-		$clone =& new SeminarEvent($this->id, $this->properties, $this->sem_id);
+	function &getClone () {
+		$clone = new SeminarEvent($this->id, $this->properties, $this->sem_id);
 		return $clone;
 	}
 
