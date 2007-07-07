@@ -1,3 +1,74 @@
+07.07.2007 v 1.5.0-2
+r7420: r7417-7419 portiert
+       BIEST00242: Missverständlicher Eintrag in der history.txt 
+       BIEST00243: Fehler und Merkwürdigkeiten in den Textstrings 
+   M /lib/classes/lit_import_plugins/StudipLitImportPluginAbstract.class.php
+   M /lib/dbviews/sem_tree.view.php
+   M /lib/elearning/Ilias3ConnectedCMS.class.php
+   M /lib/extern/elements/ExternElementSelectSubjectAreas.class.php
+   M /lib/plugins/engine/StudIPTemplateEngine.class.php
+   M /lib/soap/StudipSoapClient.class.php
+   M /lib/soap/StudipSoapClient_PHP5.class.php
+   M /lib/visual.inc.php
+   M /public/history.txt
+   M /public/impressum.php
+   M /public/plugins.php
+r7430: merge r7427 - r7429
+       bugfix: "Enddatum der Kontingentierung" bei chronolog. Anmeldung entschärft
+       bugfix: Druckansicht "Studienbuch"
+       bugfix: Baumadministration falsche Linien, Neueintrag Veranstaltungshierarchie
+   M /lib/classes/DbView.class.php
+   M /lib/classes/StudipRangeTreeViewAdmin.class.php
+   M /lib/classes/StudipSemTreeViewAdmin.class.php
+   M /lib/export/recordofstudy.lib.php
+   M /lib/export/recordofstudyDB.php
+   M /public/admin_admission.php
+   M /public/recordofstudy.php
+   M /public/sendfile.php
+r7434: merge r7433 - bugfix: Druckansicht "Studienbuch"
+   M /lib/export/recordofstudyDB.php
+r7451: ein " zuviel :-)
+   M /public/index.php
+r7461: Fixes BIEST00247 - Formatname wird in LaTex-Hash-Code mit einbezogen
+   M /lib/classes/latexrender.class.php
+r7463: Fixes BIEST00132 - Fehler in der Weiter/Zurueck-Navigation im Event-Log
+   M /public/show_log.php
+r7466: merge r7465
+       Bugfix BIEST00246: DB-Fehler beim kopieren und importieren von Literaturlisten 
+   M /lib/classes/StudipLitList.class.php
+   M /lib/classes/StudipLitListViewAdmin.class.php
+   M /lib/dbviews/literatur.view.php
+r7470: merge r7468 r7469
+       Bugfix BIEST00248: Exportverzeichnis automatisch anlegen 
+       Bugfix BIEST00249: Löschen von Nutzern: Bild wird nicht gelöscht 
+   M /lib/classes/UserManagement.class.php
+   M /lib/evaluation/classes/EvaluationExportManager.class.php
+r7497: merge r7496 - Bugfix BIEST00252: Der Upload des Plugins ist fehlgeschlagen 
+   M /public/plugins_packages/core/PluginAdministration.class.php
+r7657: BIEST00150, BIEST00255: Probleme mit externen Seiten 
+   M /lib/extern/elements/main/ExternElementMainLecturestable.class.php
+r7668: BIEST00259: Darstellungsfehler im Kalender Tagesansicht 
+   M /lib/calendar/calendar_visual.inc.php
+r7672: BIEST00260: Fehlerhafte Endzeiten von Terminen im Kalender mit PHP5 
+   M /lib/calendar/calendar_visual.inc.php
+   M /lib/calendar/lib/CalendarEvent.class.php
+   M /lib/calendar/lib/SeminarEvent.class.php
+r7676: BIEST00260, Referenzen entfernt
+   M /lib/calendar/calendar_visual.inc.php
+   M /lib/calendar/lib/CalendarEvent.class.php
+   M /lib/calendar/lib/SeminarEvent.class.php
+r7710: Bugfix: Popupkalender beim editieren des Endatums eines Termins
+   M /lib/calendar/views/edit.inc.php
+r7724: merge r7723 - kaputtes HTML bei skype info korrigiert 
+   M /public/edit_about.php
+r7725: merge r7691 - fehlendes >
+   M /lib/classes/RSSFeed.class.php
+r7771: merge r7769 - Bugfix Archivsuche
+   M /lib/archiv.inc.php
+   M /public/archiv.php
+r7780: merge r7778 - bugfix Ressourcenrechte zuweisen 
+   M /lib/resources/views/EditResourceData.class.php
+
 27.03.2007 v 1.5.0-1
 - PmWiki läßt sich jetzt über die Ilias-Schnittstelle anbinden
 - Anzeige des Skype Namen und Links von Usern auf der Homepage
