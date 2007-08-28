@@ -46,7 +46,7 @@ Basic components
 
 - Apache Webserver (version 1.3 or better) (http://httpd.apache.org)
 - MySQL database server (version 3.23 or better, we recommend version 4.0 or better) (http://www.mysql.com)
-- PHP-Apache module (version 4.2.1 or better) (http://www.php.net)
+- PHP-Apache module (version 4.4.1 or better) (http://www.php.net)
 
 Tools
 
