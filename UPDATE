@@ -1,0 +1,17 @@
+Achtung!
+
+Es gibt bis jetzt noch keinen einfachen Updatemechanismus für Stud.IP.
+
+Ein erster Schritt in Richtung Updatemöglichkeiten ergibt sich für Benutzer und 
+Benutzerinnnen ab StudIP-0.6. Zum Update auf Version ab 0.7 können die convert_*.php 
+Skripte im Verzeichnis db/update genutzt werden. 
+
+Seit dem Update von 0.8.15 auf 0.9 gibt zu jedem Versionssprung auch ein Migrationsskript,
+das von Hand Schritt für Schritt durchgegangen werden muss. Daneben gibt es ein detailliertes
+Updateprotokoll, dass wir bei dem jeweiligen Update der Göttinger Referenzinstallation erstellt
+haben. Damit sollte es kein groesseres Problem sein, eine bestehende Version zu aktualisieren.
+
+Bitte die README im entsprechenden Verzeichnis beachten,
+denn es handelt sich um keine Out-Of-Box Lösung!
+
+- The StudIP Core Group <info@studip.de> 2007

@@ -1,3 +1,9 @@
+__02.10.2007 v 1.6.0__
+
+-
+-
+-
+
 __27.03.2007 v 1.5.0__
 - PmWiki läßt sich jetzt über die E-Learning-Schnittstelle anbinden
 - Anzeige des Skype Namen und Links von Usern auf der Homepage
