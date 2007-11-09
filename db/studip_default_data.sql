@@ -54,6 +54,7 @@ INSERT INTO `config` (`config_id`, `parent_id`, `field`, `value`, `is_default`, 
 INSERT INTO `config` (`config_id`, `parent_id`, `field`, `value`, `is_default`, `type`, `range`, `section`, `position`, `mkdate`, `chdate`, `description`, `comment`, `message_template`) VALUES ('93da66ca9e2d17df5bc61bd56406add7', '', 'RESOURCES_ROOM_REQUEST_DEFAULT_ACTION', 'NO_ROOM_INFO_ACTION', 1, 'string', 'global', '', 0, 0, 0, 'Designates the pre-selected action for the room request dialog', 'Valid values are: NO_ROOM_INFO_ACTION, ROOM_REQUEST_ACTION, BOOKING_OF_ROOM_ACTION, FREETEXT_ROOM_ACTION', '');
 INSERT INTO `config` (`config_id`, `parent_id`, `field`, `value`, `is_default`, `type`, `range`, `section`, `position`, `mkdate`, `chdate`, `description`, `comment`, `message_template`) VALUES ('0d3f84ed4dd6b7147b504ffb5b6fbc2c', '', 'RESOURCES_ENABLE_EXPERT_SCHEDULE_VIEW', '0', 1, 'boolean', 'global', '', 0, 12, 12, 'Enables the expert view of the course schedules', '', '');
 INSERT INTO `config` (`config_id`, `parent_id`, `field`, `value`, `is_default`, `type`, `range`, `section`, `position`, `mkdate`, `chdate`, `description`, `comment`, `message_template`) VALUES ('bc3004618b17b29dc65e10e89be9a7a0', '', 'RESOURCES_ENABLE_BOOKINGSTATUS_COLORING', '1', 1, 'boolean', 'global', '', 0, 0, 0, 'Enable the colored presentation of the room booking status of a date', '', '');
+INSERT INTO `config` (`config_id`, `parent_id`, `field`, `value`, `is_default`, `type`, `range`, `section`, `position`, `mkdate`, `chdate`, `description`, `comment`, `message_template`) VALUES ('0c81083086adc66714864b1abcff650a', '', 'EXTERNAL_IMAGE_EMBEDDING', 'deny', 1, 'string', 'global', '', 0, 0, 0, 'Sollen externe Bilder über [img] eingebunden werden? deny=nicht erlaubt, allow=erlaubt, proxy=image proxy benutzen', '', '');
 
 -- 
 -- Daten für Tabelle `evalanswer`
@@ -216,4 +217,4 @@ INSERT INTO `roles_user` (`roleid`, `userid`) VALUES (7, 'nobody');
 -- Daten für Tabelle `schema_version`
 -- 
 
-INSERT INTO `schema_version` (`domain`, `version`) VALUES ('studip', 9);
+INSERT INTO `schema_version` (`domain`, `version`) VALUES ('studip', 10);

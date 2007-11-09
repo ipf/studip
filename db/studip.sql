@@ -780,6 +780,20 @@ CREATE TABLE `his_stg` (
 ) TYPE=MyISAM COMMENT='Studienfaecher aus der HIS DB';
 
 -- --------------------------------------------------------
+-- 
+-- Tabellenstruktur für Tabelle `image_proxy_cache`
+-- 
+
+DROP TABLE IF EXISTS `image_proxy_cache`;
+CREATE TABLE `image_proxy_cache` (
+  `id` char(32) NOT NULL,
+  `type` char(10) NOT NULL,
+  `length` int(10) unsigned NOT NULL,
+  `error` char(15) NOT NULL,
+  `chdate` timestamp NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `chdate` (`chdate`,`id`)
+) TYPE=MyISAM;
 
 -- 
 -- Tabellenstruktur für Tabelle `kategorien`
