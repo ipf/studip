@@ -73,7 +73,8 @@ if (isset($SessSemName[1]) && (!$make_aux)) {
 // Get a database connection
 $db = new DB_Seminar();
 $rules = AuxLockRules::getAllLockRules();
-//echo "<body>";
+if(!is_array($rules)) $rules = array();
+
 $containerTable=new ContainerTable();
 echo $containerTable->openRow();
 echo $containerTable->openCell(array("colspan"=>"2"));
@@ -134,7 +135,6 @@ echo $contentTable->close();
 
 echo $containerTable->blankRow();
 echo $containerTable->close();
-echo "</body>";
-echo "</html>";
+include "lib/include/html_end.inc.php";
 page_close();
-
+?>
