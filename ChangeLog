@@ -1,4 +1,25 @@
 02.10.2007 v 1.6.0-1
+- Abbildung von Studienmodulstrukturen (Hallesche Lösung)
+- Erweiterung der Teilnehmeransicht
+- Introducing Safiré (Einführung eines neuen generischen Designs)
+- Anzeige des Nutzernamens und des Freitexts im Belegungsplan von Ressourcen
+- Darstellung von Systemsplugins auf der Startseite
+- Erweiterung Anmeldesystem
+- "Flexi"-bilisierung der Infobox ( = als Tempalteversion)
+- Erweiterung der Gruppenfunktion / Dateiordner für Gruppen
+- Erweiterungen IIlias Verknüpfung
+- Erweiterung des Teilnehmerexports bzgl. Sortierung nach Anmeldedatum
+- Query-Caching on Demand
+- Online-Konfiguration der Typisierung generischer Datenfelder
+- Suchfunktion für Wikis
+- Migrations
+- Vereinfachte Nachrichten an Rechtegruppen innerhalb einer Veranstaltung
+- Hinzufügen von Konfigurationsoptionen für Verzeichnisse mit dynamischen Inhalt
+- Externe Seiten templatebasiert
+- Sperrung von Veranstaltung gegen Selbsteintrag
+- Caching
+- Neue Admin-Seiten für "Zeiten" und "Ablaufplan"
+- weitere Detailverbesserungen und Bugfixes
 
 
 07.07.2007 v 1.5.0-2

@@ -3,20 +3,21 @@ The Stud.IP CoreGroup
 ----------------------------------------------------------------------------
 
 Marco Bohnsack		<bohnsack@data-quest.de>
+Thomas Hackl		<thomas.hackl@uni-passau.de>
 Torsten Heinrich	<t.heinrich@fhos.de>
 Cornelis Kater		<kater@data-quest.de>
 Hartje Kriete		<kriete@math.uni-goettingen.de>
 Jan Kulmann		<jankul@tzi.de>
 Marcus Luzenauer	<mlunzena@uos.de>
+Nico Müller		<nico.mueller@uni-oldenburg.de>
 André Noack		<noack@data-quest.de>
 Frank Ollermann		<follerma@uni-osnabrueck.de>
-Dennis Reil		<Dennis.Reil@offis.de>
+Jörg Röpke		<roepke@uni-trier.de>
 Jens Schmelzer		<jens.schmelzer@fh-jena.de>
 Ralf Stockmann		<rstockm@gwdg.de>
 Stefan Suchi		<suchi@data-quest.de>
 Tobias Thelen		<tthelen@uni-osnabrueck.de>
 Peter Thienel		<thienel@data-quest.de>
-Nils Kolja Windisch	<info@nkwindisch.de>
 
 ----------------------------------------------------------------------------
 Credits and Comments
@@ -65,10 +66,16 @@ Hartje Kriete		<kriete@math.uni-goettingen.de>
 Englisch translation
 
 Oliver Brakel 		<obrakel@studip.de>
-einer der Initiatoren von Stud.IP
+One of the initiators of Stud.IP
 
 Arne Schröder 		<schroeder@data-quest.de>
 Ilias2-Interface, E-Learning-Modules-Interface, Export
+
+Dennis Reil				<Dennis.Reil@offis.de>
+PlugIn-Interface
+
+Nils Kolja Windisch	<info@nkwindisch.de>
+Messaging System, Stud.IP Blog
 
 ----------------------------------------------------------------------------
 Any others whose names we probably forgot to add (email us and we'll put you

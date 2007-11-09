@@ -7,11 +7,10 @@ __02.10.2007 v 1.6.0__
 - Erweiterung Anmeldesystem
 - "Flexi"-bilisierung der Infobox ( = als Tempalteversion)
 - Erweiterung der Gruppenfunktion / Dateiordner für Gruppen
-- Eweiterungen IIlias Verknüpfung
+- Erweiterungen IIlias Verknüpfung
 - Erweiterung des Teilnehmerexports bzgl. Sortierung nach Anmeldedatum
 - Query-Caching on Demand
 - Online-Konfiguration der Typisierung generischer Datenfelder
-- Regeln für AJAX-Nutzung
 - Suchfunktion für Wikis
 - Migrations
 - Vereinfachte Nachrichten an Rechtegruppen innerhalb einer Veranstaltung
