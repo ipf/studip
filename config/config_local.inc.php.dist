@@ -39,10 +39,12 @@ $DB_ILIAS_DATABASE = "ilias";
 // ABSOLUTE_PATH_STUDIP should end with a '/'
 $ABSOLUTE_PATH_STUDIP = $STUDIP_BASE_PATH . '/public/';
 
+$CANONICAL_RELATIVE_PATH_STUDIP = dirname($_SERVER['PHP_SELF']);
 
 // CANONICAL_RELATIVE_PATH_STUDIP should end with a '/'
-$CANONICAL_RELATIVE_PATH_STUDIP = dirname($_SERVER['PHP_SELF']) . '/';
-
+if (substr($CANONICAL_RELATIVE_PATH_STUDIP,-1) != "/"){
+	$CANONICAL_RELATIVE_PATH_STUDIP .= "/";
+}
 
 // ABSOLUTE_URI_STUDIP: insert the absolute URL to your Stud.IP installation; it should end with a '/'
 $ABSOLUTE_URI_STUDIP = "";
