@@ -384,6 +384,9 @@ $_lit_search_plugins[] = array('name' => "Studip",'display_name' =>'Katalog der 
 /* Universitätsbibliothek Trier */
 //$_lit_search_plugins[] = array('name' => 'UB_Trier', 'display_name' =>'Universitätsbibliothek Trier', 'link' => 'https://ub-aleph.uni-trier.de/F/?func=find-c&local_base=tri01&ccl_term={accession_number}');
 
+/* IWF Campusmedien */
+//$_lit_search_plugins[] = array('name' => "IWFdigiClips", 'display_name' => "IWF Campusmedien", 'link' => 'http://gso.gbv.de/DB=1.65/SET=1/TTL=1/CMD?ACT=SRCHA&IKT=12&SRT=YOP&TRM={accession_number}');
+
 /*authentication plugins
 ----------------------------------------------------------------
 the following plugins are available:
