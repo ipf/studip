@@ -94,7 +94,7 @@ r7780: merge r7778 - bugfix Ressourcenrechte zuweisen
    M /lib/resources/views/EditResourceData.class.php
 
 27.03.2007 v 1.5.0-1
-- PmWiki läßt sich jetzt über die Ilias-Schnittstelle anbinden
+- PmWiki läßt sich jetzt über die E-Learning-Schnittstelle anbinden
 - Anzeige des Skype Namen und Links von Usern auf der Homepage
 - Erweiterung SCM-Seite in Seminaren
 - die Reihenfolge von  Dozenten in Seminaren läßt sich jetzt ändern

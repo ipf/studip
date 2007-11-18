@@ -5,7 +5,7 @@ Programme laufen ;-)
 
 Vorausgesetzt wird eine Apache mit PHP Modulen und eine MySQL Datenbank.
 Was genau zu tun ist, steht in
-> doc/de/studip_installation_guide.txt
+> doc/de/studip-installation-guide-de1601.pdf
 
 You'll find an (rather old, sorry) installation guide in Englisch in
 > doc/en/studip_installation_guide.txt
