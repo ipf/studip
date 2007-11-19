@@ -125,7 +125,7 @@ define("CHAT_TO_PREV_TIME",2.5);       //in Sekunden
 * 
 * @const CHAT_NICKNAME
 */
-define("CHAT_NICKNAME", "fullname");       //"username" or "fullname"
+define("CHAT_NICKNAME", "username");       //"username" or "fullname"
 /**
 * Global array, contains pre-defined colors (use HTML compliant names)
 * @var array $chatColors
