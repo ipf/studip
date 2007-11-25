@@ -5,7 +5,7 @@ __02.10.2007 v 1.6.0__
 - Anzeige des Nutzernamens und des Freitexts im Belegungsplan von Ressourcen
 - Darstellung von Systemsplugins auf der Startseite
 - Erweiterung Anmeldesystem
-- "Flexi"-bilisierung der Infobox ( = als Tempalteversion)
+- "Flexi"-bilisierung der Infobox ( = als Templateversion)
 - Erweiterung der Gruppenfunktion / Dateiordner für Gruppen
 - Erweiterungen IIlias Verknüpfung
 - Erweiterung des Teilnehmerexports bzgl. Sortierung nach Anmeldedatum

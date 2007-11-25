@@ -84,6 +84,7 @@ function write_toplist_person($rubrik,$query) {
 $reiter=new reiter;
 
 //Topkats
+$structure = array();
 $structure["kontakt"]=array ("topKat"=>"", "name"=>_("Kontakt"), "link"=>"impressum.php?view=ansprechpartner", "active"=>FALSE);
 $structure["programm"]=array ("topKat"=>"", "name"=>_("&Uuml;ber Stud.IP"), "link"=>"impressum.php?view=technik", "active"=>FALSE);
 //Bottomkats
@@ -113,6 +114,7 @@ $reiter->create($structure, $view);
 	$developer[] = array('Cornelis Kater', 'info@ckater.de', _("(Ressourcenverwaltung, Terminverwaltung, Adminbereich, Design)"));
 	$developer[] = array('Hartje Kriete', 'kriete@math.uni-goettingen.de', _("(&Uuml;bersetzung, Internationalisierung)"));
 	$developer[] = array('Jan Kulmann', 'jankul@tzi.de', _("(Evaluationen)"));
+	$developer[] = array('Elmar Ludwig', 'elmar.ludwig@uos.de', _("(...)"));
 	$developer[] = array('Marcus Lunzenauer', 'mlunzena@uos.de', _("(...)"));
 	$developer[] = array('Nico M&uuml;ller', 'nico.mueller@uni-oldenburg.de', _("(PlugIn-Schnittstelle)"));
 	$developer[] = array('André Noack', 'noack@data-quest.de', _("(Chat, Literaturverwaltung, Authentifizierung, Verzeichnisse)"));
@@ -383,14 +385,14 @@ if ($view=="statistik") {?>
 
 			echo "</blockquote></table></td></tr>";
 	}
-	
+
 if ($view == 'history') {?>
-	
+
 	<tr>
 		<td valign="middle" class="blank">
 		<blockquote>
-		<b>Stud.IP history.txt</b><br /><br />		
-		<? 
+		<b>Stud.IP history.txt</b><br /><br />
+		<?
 		$history = file('history.txt');
 		echo formatReady(implode('',$history));
 		?>
