@@ -1,3 +1,77 @@
+02.02.2008 v 1.6.0-2
+r8647: merge r8645: schlankeres Hintergrundbild 
+   M /public/assets/images/bathtile.jpg
+r8668: merge r8648: weitere kleine fixes Raumzeit
+   M /lib/classes/Seminar.class.php
+   M /lib/dates.inc.php
+   M /lib/raumzeit/raumzeit_functions.inc.php
+   M /lib/raumzeit/themen_ablaufplan.inc.php
+   M /lib/raumzeit/themen_expert.inc.php
+   M /lib/raumzeit.inc.php
+   M /public/details.php
+r8690: BIEST00343: Fehlendes PHP_SELF ergänzt
+   M /public/admin_datafields.php
+r8702: updating to flexi 0.1.5
+   M /vendor/flexi/flexi.php
+   M /vendor/flexi/js_template.php
+   M /vendor/flexi/php_template.php
+r8706: BIEST00346: Keine Nutzerbilder in templatebasierten externen Seiten 
+   M /lib/extern/modules/ExternModuleTemplatePersondetails.class.php
+   M /local-branches/goe/1.6.0/lib/extern/modules/ExternModuleTemplatePersondetails.class.php
+   M /trunk/lib/extern/modules/ExternModuleTemplatePersondetails.class.php
+r8714: bugfix TeinehmerInnen
+   M /public/teilnehmer.php
+r8725: merge r8710: fixing possible header injection 
+   M /lib/messaging.inc.php
+r8726: merge r8723: Studienbereichsauswahl berücksichtigt beteiligte Einrichtungen
+   M /lib/classes/StudipSemTreeSearch.class.php
+   M /lib/dbviews/sem_tree.view.php
+   M /public/admin_seminare_assi.php
+r8770: BIEST00349: [8767] merged to 1.6, added missing variable to function call 
+   M /lib/raumzeit/CycleData.class.php
+r8771: BIEST00341: [8768] merged to 1.6, added htmlReady to select-box for folders
+   M /public/folder.php
+r8774: merge r8761 r8764 r8772 
+       bugfix Bereichsauswahl News 
+       Speicherverbrauch gesenkt
+       BIEST00345: Problem bei der Newserstellung als Root 
+   M /lib/classes/AdminNewsController.class.php
+   M /lib/extern/modules/views/ExternSemBrowseTable.class.php
+   M /public/admin_news.php
+r8778: BIEST00350, BIEST00351: fixed - merge [8777] 
+       removing entrys in themen_termine, 
+       returning correct number of changed dates, 
+       changed wording of info message
+   M /lib/classes/Seminar.class.php
+   M /lib/raumzeit/CycleDataDB.class.php
+   M /lib/raumzeit/SingleDateDB.class.php
+r8781: BIEST00350: merged [8779] 
+       Phantomthemen nach Ändern der regelmäßigen Zeiten / Fatal Error 
+   M /lib/raumzeit/CycleDataDB.class.php
+   M /lib/raumzeit/MetaDate.class.php
+   M /lib/raumzeit/SingleDate.class.php
+   M /lib/raumzeit/SingleDateDB.class.php
+r8792: merge r8791
+       BIEST00345: Problem bei der Newserstellung als Root 
+   M /lib/classes/AdminNewsController.class.php
+r8812: merge r8809 r8810
+       BIEST00345 fix für OL
+       bugfix Anzeige alle Dateien ohne range_id, wenn kein Ordner vorhanden 
+   M /lib/classes/AdminNewsController.class.php
+   M /lib/datei.inc.php
+   M /public/folder.php
+r8909: merge [8907] 
+       links in navbar don't work while login form is shown 
+   M /lib/classes/HeaderController.class.php
+r8917: merge [8916]
+       links in navbar don't work while login form is shown (part 2) 
+   M /lib/classes/HeaderController.class.php
+r8917: merge [8916] 
+       links in navbar don't work while login form is shown (part 2) 
+   M /branches/1.6.0/lib/classes/HeaderController.class.php
+r8929: latex blacklist erweitert
+   M /branches/1.6.0/lib/classes/latexrender.class.php
+
 02.10.2007 v 1.6.0-1
 - Abbildung von Studienmodulstrukturen (Hallesche Lösung)
 - Erweiterung der Teilnehmeransicht
