@@ -62,7 +62,8 @@ $messages =  Array('seminar_id'=> _("Kein Seminar gewählt!"),
 									'start_minute'=> _("Startzeitpunkt: Sie haben keine Minuten angegeben.") ,
 									'end_hour'=> _("Endzeitpunkt: Sie haben keine Stunde angegeben."),
 									'end_minute'=> _("Endzeitpunkt: Sie haben keine Minuten angegeben."),
-									'no_days_in_timeslot' => _("Keiner der ausgewählten Tage liegt in dem angegebenen Zeitraum!"));
+									'no_days_in_timeslot' => _("Keiner der ausgewählten Tage liegt in dem angegebenen Zeitraum!"),
+									'art' => _("Geben Sie eine Terminart an!"));
 
 	// do checks
 	$k = 0;
@@ -202,7 +203,7 @@ $messages =  Array('seminar_id'=> _("Kein Seminar gewählt!"),
 			$topic_id=null;
 
 			$query = "INSERT INTO termine (termin_id, range_id, autor_id, content, description, date, end_time, mkdate, chdate, date_typ, topic_id, raum)"
-						. " VALUES ('$date_id', '$seminar_id', '$user_id', '$name', '', '$start_time', '$end_time', '$mkdate', '$chdate', '1', '$topic_id', NULL)";
+						. " VALUES ('$date_id', '$seminar_id', '$user_id', '$name', '', '$start_time', '$end_time', '$mkdate', '$chdate', {$form_data['art']}, '$topic_id', NULL)";
 			$db->query($query);
 			// status messages
 			$status[] = $date["astext"];
