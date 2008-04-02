@@ -1223,8 +1223,8 @@ if (($form == 5) && ($jump_next_x))
 					if ($sem_create_data["sem_admission"] == 1)
 						$errormsg.= sprintf ("error§"._("Das Losdatum liegt nach dem ersten Veranstaltungstermin am %s. Bitte &auml;ndern Sie das Losdatum!")."§", date ("d.m.Y", $tmp_first_date));
 					else
+						$errormsg.= sprintf ("error§"._("Das Enddatum der Kontingentierung liegt nach dem ersten Veranstaltungstermin am %s. Bitte &auml;ndern Sie das Enddatum der Kontingentierung!")."§", date ("d.m.Y", $tmp_first_date));
 				$level=5;
-				$errormsg.= sprintf ("error§"._("Das Enddatum der Kontingentierung liegt nach dem ersten Veranstaltungstermin am %s. Bitte &auml;ndern Sie das Enddatum der Kontingentierung!")."§", date ("d.m.Y", $tmp_first_date));
 			}
 		} elseif (($sem_create_data["sem_admission_date"] > $sem_create_data["term_first_date"]) && ($sem_create_data["term_first_date"])) {
 				if ($sem_create_data["sem_admission"] == 1)
@@ -3123,10 +3123,10 @@ if ($level == 4) {
 					</tr>
 					<?
 					}
-					if (($RESOURCES_ENABLE) && ($resList->roomsExist()) &&
+					if ($RESOURCES_ENABLE && $resList->roomsExist() &&
 						(((is_array($sem_create_data["metadata_termin"]["turnus_data"])) && ($sem_create_data["term_art"] == 0))
-						|| (($sem_create_data["term_first_date"])) && ($sem_create_data["term_art"] == 1))
-						|| ($sem_create_data["sem_vor_termin"] > -1)) {
+						|| (($sem_create_data["term_first_date"])) && ($sem_create_data["term_art"] == 1)
+						|| ($sem_create_data["sem_vor_termin"] > -1))) {
 					?>
 					<tr <? $cssSw->switchClass() ?>>
 						<td class="<? echo $cssSw->getClass() ?>" width="4%" align="right">
