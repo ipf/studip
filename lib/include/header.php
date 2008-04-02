@@ -36,7 +36,7 @@ require_once ('lib/classes/HeaderController.class.php');
 
 if ($GLOBALS['SHOW_TERMS_ON_FIRST_LOGIN']) {
 	require_once ('lib/terms.inc.php');
-	check_terms($user->id, $GLOBALS['language_path']);
+	check_terms($user->id, $GLOBALS['_language_path']);
 }
 
 if ($GLOBALS['USER_VISIBILITY_CHECK']) {
