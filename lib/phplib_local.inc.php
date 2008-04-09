@@ -78,7 +78,7 @@ $GLOBALS['_fullname_sql']['no_title_rev'] = "CONCAT(Nachname ,', ', Vorname)";
 $GLOBALS['_fullname_sql']['no_title_short'] = "CONCAT(Nachname,', ',UCASE(LEFT(TRIM(Vorname),1)),'.')";
 $GLOBALS['_fullname_sql']['no_title_motto'] = "CONCAT(Vorname ,' ', Nachname,IF(motto!='',CONCAT(', ',motto),''))";
 //software version - please leave it as it is!
-$SOFTWARE_VERSION = '1.7.0-1';
+$SOFTWARE_VERSION = '1.7.0';
 
 /*classes for database access
 ----------------------------------------------------------------
@@ -653,7 +653,7 @@ class Seminar_Register_Auth extends Seminar_Auth {
 		$username = trim($username);
 		$Vorname = trim($Vorname);
 		$Nachname = trim($Nachname);
-		
+
 		// accept only registered domains if set
 		$cfg =& Config::GetInstance();
 		$email_restriction = $cfg->getValue('EMAIL_DOMAIN_RESTRICTION');

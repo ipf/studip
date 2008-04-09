@@ -1,19 +1,19 @@
-08.04.2008 v 1.7.0-1
+08.04.2008 v 1.7.0
 - Stud.IP ist nun Shibboleth-Ready
 - Erweiterung der globalen Einstellungen um Regeln zur Sperrung von Veranstaltungsdaten
 - Zukünftig PDO als Standardmethode des Datenbankzugriffs
 - Möglichkeit des automatischen Anforderns eines neuen Passworts durch den Benutzer
-- Ajax-Erweiterung zum automatischen Vervollständigen bei der Personen- und Veranstaltungssuche 
+- Ajax-Erweiterung zum automatischen Vervollständigen bei der Personen- und Veranstaltungssuche
 - bei Bedarf Verwendung von Nutzerbilder-Thumbnails anstelle der Originalbilder
 - Erweiterung Anmeldesystem II - die Kontingentierung ist jetzt optional
 - Einbindung von Flash-Movies über Schnellformatierung und im Dateibereich möglich
 - Möglichkeit zum Anlegen eines Wiki-Inhaltsverzeichnises
 - Beschränkung der freien Nutzeranmeldung nach Email-Adressen möglich
 - Generierung von "Assets"-Verweise vereinfacht
-- Refactoring der Datei "plugins.php" 
+- Refactoring der Datei "plugins.php"
 
 02.02.2008 v 1.6.0-2
-r8647: merge r8645: schlankeres Hintergrundbild 
+r8647: merge r8645: schlankeres Hintergrundbild
    M /public/assets/images/bathtile.jpg
 r8668: merge r8648: weitere kleine fixes Raumzeit
    M /lib/classes/Seminar.class.php
@@ -29,59 +29,59 @@ r8702: updating to flexi 0.1.5
    M /vendor/flexi/flexi.php
    M /vendor/flexi/js_template.php
    M /vendor/flexi/php_template.php
-r8706: BIEST00346: Keine Nutzerbilder in templatebasierten externen Seiten 
+r8706: BIEST00346: Keine Nutzerbilder in templatebasierten externen Seiten
    M /lib/extern/modules/ExternModuleTemplatePersondetails.class.php
    M /local-branches/goe/1.6.0/lib/extern/modules/ExternModuleTemplatePersondetails.class.php
    M /trunk/lib/extern/modules/ExternModuleTemplatePersondetails.class.php
 r8714: bugfix TeinehmerInnen
    M /public/teilnehmer.php
-r8725: merge r8710: fixing possible header injection 
+r8725: merge r8710: fixing possible header injection
    M /lib/messaging.inc.php
 r8726: merge r8723: Studienbereichsauswahl berücksichtigt beteiligte Einrichtungen
    M /lib/classes/StudipSemTreeSearch.class.php
    M /lib/dbviews/sem_tree.view.php
    M /public/admin_seminare_assi.php
-r8770: BIEST00349: [8767] merged to 1.6, added missing variable to function call 
+r8770: BIEST00349: [8767] merged to 1.6, added missing variable to function call
    M /lib/raumzeit/CycleData.class.php
 r8771: BIEST00341: [8768] merged to 1.6, added htmlReady to select-box for folders
    M /public/folder.php
-r8774: merge r8761 r8764 r8772 
-       bugfix Bereichsauswahl News 
+r8774: merge r8761 r8764 r8772
+       bugfix Bereichsauswahl News
        Speicherverbrauch gesenkt
-       BIEST00345: Problem bei der Newserstellung als Root 
+       BIEST00345: Problem bei der Newserstellung als Root
    M /lib/classes/AdminNewsController.class.php
    M /lib/extern/modules/views/ExternSemBrowseTable.class.php
    M /public/admin_news.php
-r8778: BIEST00350, BIEST00351: fixed - merge [8777] 
-       removing entrys in themen_termine, 
-       returning correct number of changed dates, 
+r8778: BIEST00350, BIEST00351: fixed - merge [8777]
+       removing entrys in themen_termine,
+       returning correct number of changed dates,
        changed wording of info message
    M /lib/classes/Seminar.class.php
    M /lib/raumzeit/CycleDataDB.class.php
    M /lib/raumzeit/SingleDateDB.class.php
-r8781: BIEST00350: merged [8779] 
-       Phantomthemen nach Ändern der regelmäßigen Zeiten / Fatal Error 
+r8781: BIEST00350: merged [8779]
+       Phantomthemen nach Ändern der regelmäßigen Zeiten / Fatal Error
    M /lib/raumzeit/CycleDataDB.class.php
    M /lib/raumzeit/MetaDate.class.php
    M /lib/raumzeit/SingleDate.class.php
    M /lib/raumzeit/SingleDateDB.class.php
 r8792: merge r8791
-       BIEST00345: Problem bei der Newserstellung als Root 
+       BIEST00345: Problem bei der Newserstellung als Root
    M /lib/classes/AdminNewsController.class.php
 r8812: merge r8809 r8810
        BIEST00345 fix für OL
-       bugfix Anzeige alle Dateien ohne range_id, wenn kein Ordner vorhanden 
+       bugfix Anzeige alle Dateien ohne range_id, wenn kein Ordner vorhanden
    M /lib/classes/AdminNewsController.class.php
    M /lib/datei.inc.php
    M /public/folder.php
-r8909: merge [8907] 
-       links in navbar don't work while login form is shown 
+r8909: merge [8907]
+       links in navbar don't work while login form is shown
    M /lib/classes/HeaderController.class.php
 r8917: merge [8916]
-       links in navbar don't work while login form is shown (part 2) 
+       links in navbar don't work while login form is shown (part 2)
    M /lib/classes/HeaderController.class.php
-r8917: merge [8916] 
-       links in navbar don't work while login form is shown (part 2) 
+r8917: merge [8916]
+       links in navbar don't work while login form is shown (part 2)
    M /branches/1.6.0/lib/classes/HeaderController.class.php
 r8929: latex blacklist erweitert
    M /branches/1.6.0/lib/classes/latexrender.class.php
@@ -112,8 +112,8 @@ r8929: latex blacklist erweitert
 
 07.07.2007 v 1.5.0-2
 r7420: r7417-7419 portiert
-       BIEST00242: Missverständlicher Eintrag in der history.txt 
-       BIEST00243: Fehler und Merkwürdigkeiten in den Textstrings 
+       BIEST00242: Missverständlicher Eintrag in der history.txt
+       BIEST00243: Fehler und Merkwürdigkeiten in den Textstrings
    M /lib/classes/lit_import_plugins/StudipLitImportPluginAbstract.class.php
    M /lib/dbviews/sem_tree.view.php
    M /lib/elearning/Ilias3ConnectedCMS.class.php
@@ -146,22 +146,22 @@ r7461: Fixes BIEST00247 - Formatname wird in LaTex-Hash-Code mit einbezogen
 r7463: Fixes BIEST00132 - Fehler in der Weiter/Zurueck-Navigation im Event-Log
    M /public/show_log.php
 r7466: merge r7465
-       Bugfix BIEST00246: DB-Fehler beim kopieren und importieren von Literaturlisten 
+       Bugfix BIEST00246: DB-Fehler beim kopieren und importieren von Literaturlisten
    M /lib/classes/StudipLitList.class.php
    M /lib/classes/StudipLitListViewAdmin.class.php
    M /lib/dbviews/literatur.view.php
 r7470: merge r7468 r7469
-       Bugfix BIEST00248: Exportverzeichnis automatisch anlegen 
-       Bugfix BIEST00249: Löschen von Nutzern: Bild wird nicht gelöscht 
+       Bugfix BIEST00248: Exportverzeichnis automatisch anlegen
+       Bugfix BIEST00249: Löschen von Nutzern: Bild wird nicht gelöscht
    M /lib/classes/UserManagement.class.php
    M /lib/evaluation/classes/EvaluationExportManager.class.php
-r7497: merge r7496 - Bugfix BIEST00252: Der Upload des Plugins ist fehlgeschlagen 
+r7497: merge r7496 - Bugfix BIEST00252: Der Upload des Plugins ist fehlgeschlagen
    M /public/plugins_packages/core/PluginAdministration.class.php
-r7657: BIEST00150, BIEST00255: Probleme mit externen Seiten 
+r7657: BIEST00150, BIEST00255: Probleme mit externen Seiten
    M /lib/extern/elements/main/ExternElementMainLecturestable.class.php
-r7668: BIEST00259: Darstellungsfehler im Kalender Tagesansicht 
+r7668: BIEST00259: Darstellungsfehler im Kalender Tagesansicht
    M /lib/calendar/calendar_visual.inc.php
-r7672: BIEST00260: Fehlerhafte Endzeiten von Terminen im Kalender mit PHP5 
+r7672: BIEST00260: Fehlerhafte Endzeiten von Terminen im Kalender mit PHP5
    M /lib/calendar/calendar_visual.inc.php
    M /lib/calendar/lib/CalendarEvent.class.php
    M /lib/calendar/lib/SeminarEvent.class.php
@@ -171,14 +171,14 @@ r7676: BIEST00260, Referenzen entfernt
    M /lib/calendar/lib/SeminarEvent.class.php
 r7710: Bugfix: Popupkalender beim editieren des Endatums eines Termins
    M /lib/calendar/views/edit.inc.php
-r7724: merge r7723 - kaputtes HTML bei skype info korrigiert 
+r7724: merge r7723 - kaputtes HTML bei skype info korrigiert
    M /public/edit_about.php
 r7725: merge r7691 - fehlendes >
    M /lib/classes/RSSFeed.class.php
 r7771: merge r7769 - Bugfix Archivsuche
    M /lib/archiv.inc.php
    M /public/archiv.php
-r7780: merge r7778 - bugfix Ressourcenrechte zuweisen 
+r7780: merge r7778 - bugfix Ressourcenrechte zuweisen
    M /lib/resources/views/EditResourceData.class.php
 
 27.03.2007 v 1.5.0-1
@@ -190,7 +190,7 @@ r7780: merge r7778 - bugfix Ressourcenrechte zuweisen
 - Nicht abonnieren, sondern nur in Stundenplan eintragen nun möglich
 - neue user management tools für Admins
 - Einführung eines abstrakten Interfaces für einen Template-Mechanismus
-- Umstellung der Verzeichnisstruktur und Anpassungen an PHP5 
+- Umstellung der Verzeichnisstruktur und Anpassungen an PHP5
 - weitere Detailverbesserungen und Bugfixes
 
 18.12.2006 v 1.4.0-4
@@ -263,7 +263,7 @@ r6892: chgsets 6868,6869 und 6871 portiert (Mysql 5 Kombatibiltät, nochmal BIEST
    M htdocs/edit_about.php
 r6891: chgsets 6855 und 6867 portiert (Performancetweak (Speicherverbrauch),bugfix, visible Feld)
    M htdocs/lib/classes/SemBrowse.class.php
-r6890: chgsets 6841 bis 6852 portiert 
+r6890: chgsets 6841 bis 6852 portiert
    M htdocs/functions.php
    M htdocs/lib/classes/AdminNewsController.class.php
    M htdocs/new_user_md5.php
@@ -295,7 +295,7 @@ r6889: chgsets 6837 und 6853 portiert (BUGFIX "invisible", Umlautproblem mit neu
    M htdocs/locale/en/LC_MESSAGES/studip_vote.pot
    M htdocs/locale/en/LC_MESSAGES/studip_wap.po
    M htdocs/locale/en/LC_MESSAGES/studip_wap.pot
-r6888: chgsets 6828,6830-6836 portiert 
+r6888: chgsets 6828,6830-6836 portiert
    M htdocs/admin_config.php
    M htdocs/check_sem_entry.inc.php
    M htdocs/elearning_interface.php
@@ -333,7 +333,7 @@ r6866: Stand ca. Version 1.4.0-3
 - Umstellung von cvs auf svn
 
 12.09.2006 v 1.4.0-3
-- studip-htdocs/vote/vote_show.inc.php: bugfix BIEST00165 / BIEST00163 wieder entfernt  
+- studip-htdocs/vote/vote_show.inc.php: bugfix BIEST00165 / BIEST00163 wieder entfernt
 
 06.09.2006 v 1.4.0-2
 - studip-1.4.0/VERSION: 1.4.0-2
@@ -361,18 +361,18 @@ r6866: Stand ca. Version 1.4.0-3
 25.08.2006 v 1.4.0-1
 - Sichtbarkeit von NutzerInnen
 - Neues Hilfe-System basierend auf einer zentralen Wiki-Seite
-- Ordnerberechtigungssystemim für den Dateibereich 
+- Ordnerberechtigungssystemim für den Dateibereich
 - alternativer Chatclient (AJAX)
-- Literaturlistenimport über Plugins 
+- Literaturlistenimport über Plugins
 - Externe Seiten: Sichtbarkeit von Veranstaltungstypen, Einschränkung der Veranstaltungsübersichten auf ausgewählte Studienbereiche
-- Anzeige des Namens auf der wer-ist-online konfigurierbar, "Motto" 
+- Anzeige des Namens auf der wer-ist-online konfigurierbar, "Motto"
 - Nutzerkommentare bei vorläufiger Anmeldung und Anpassung Teilnehmerexport
-- Erweiterungen für Single Sign On 
-- Erweiterung der Plugin-Schnittstelle 
-- Alphabetische Sortierung für Statusgruppen 
+- Erweiterungen für Single Sign On
+- Erweiterung der Plugin-Schnittstelle
+- Alphabetische Sortierung für Statusgruppen
 - Löschen des eigenen Homepagebildes nun möglich
 - Konfigurierbare Sperre für den Nutzertitel
-- Root-Funktion zum Sperren einzelner Benutzer 
+- Root-Funktion zum Sperren einzelner Benutzer
 - weitere Detailverbesserungen und Bugfixes
 
 10.06.2006 v 1.3.0-2
@@ -477,9 +477,9 @@ r6866: Stand ca. Version 1.4.0-3
 - studip-htdocs/resources/views/ShowGroupSchedules.class.php: BIEST00048 und BIEST00051
 - studip-htdocs/resources/views/ShowList.class.php: BIEST00048 und BIEST00051
 - studip-htdocs/resources/views/ShowThread.class.php: BIEST00048 und BIEST00051
-- studip-htdocs/admin_metadates.php: BIEST00050 - Raumbuchung einfach übernommen bei Semesteränderung 
+- studip-htdocs/admin_metadates.php: BIEST00050 - Raumbuchung einfach übernommen bei Semesteränderung
 - studip-config/local.inc.dist: BIEST00052 - neue Konfig $ZIP_OPTIONS
-- studip-phplib/local.inc.dist: BIEST00052 
+- studip-phplib/local.inc.dist: BIEST00052
 - studip-htdocs/archiv.inc.php: BIEST00052
 - studip-htdocs/datei.inc.php: BIEST00052
 - studip-htdocs/sendfile.php: BIEST00052
@@ -502,13 +502,13 @@ r6866: Stand ca. Version 1.4.0-3
 - Friend-of-Friend Anzeige (Verbindungsketten zu anderen Nutzern) auf der Homepage
 - RSS-Feed für private News
 - News-Kommentare für alle News im System
-- neue Gruppierungsfunktion der Seite "Meine Veranstaltungen" nach Farbgruppen, 
+- neue Gruppierungsfunktion der Seite "Meine Veranstaltungen" nach Farbgruppen,
   Semestern, Typ und Studienbereichen
-- Verschieben von Dateien und Ordnern in andere Veranstaltungen oder Einrichtungen 
+- Verschieben von Dateien und Ordnern in andere Veranstaltungen oder Einrichtungen
   ist nun möglich
 - Sichtbarkeit und Archivieren kann für Dozenten freigeschaltet werden
 - Erweiterungen an der Ressourcenverwaltung: Listenansicht für Raumanfragen, Sortierung
-  von Raumanfragen nach Dringlichkeit, Belegungsübersichten für Semester, externe 
+  von Raumanfragen nach Dringlichkeit, Belegungsübersichten für Semester, externe
   Darstellung von Raumplänen, Raumgruppen und weitere Detailverbesserungen
 - freie Datenfelder können nun weitergehend konfiguriert werden
 - neues Sessionmanagement: Die Stud.IP-PhpLib kann nun mit PHP4-Sessions arbeiten
@@ -516,7 +516,7 @@ r6866: Stand ca. Version 1.4.0-3
 - Erweiterung der Schnellformatierung um Tabellendarstellung
 - Wiki-Seiten werden nun archiviert
 - Performance-Verbesserungen (Datenbankabfragen und -struktur)
-- weitere Detailverbesserungen und Bugfixes 
+- weitere Detailverbesserungen und Bugfixes
 
 16.01.2005 v 1.1.5-3
 - get_ticket() build in (anoack new_user_md5.php phplib_local.inc.php)
@@ -525,16 +525,16 @@ r6866: Stand ca. Version 1.4.0-3
 - _(..) included (anoack edit_about.php)
 - htmlReady() inserted (anoak modules/evaluation/evaluation_admin_overview.lib.php)
 - SECURITY: username studip is no more allowed (anoack studip-phplib/email_validation.inc)
-- New Versionnumber: 1.1.5-3 ( Philipp Huegelmeyer /studip-phplib/local.inc.dist VERSION studip-htdocs/phplib_local.inc.php ) 
+- New Versionnumber: 1.1.5-3 ( Philipp Huegelmeyer /studip-phplib/local.inc.dist VERSION studip-htdocs/phplib_local.inc.php )
 
 30.12.2004 v 1.1.5-2
 - - SECURITY: URLS; that contain parameters, are not included as pictures any more (Jens Schmelzer, André Noak: visual.inc.php)
 - ChangeLog in english now (Philipp Huegelmeyer)
-- New Versionnumber: 1.1.5-2 ( Philipp Huegelmeyer /studip-phplib/local.inc.dist VERSION studip-htdocs/phplib_local.inc.php ) 
+- New Versionnumber: 1.1.5-2 ( Philipp Huegelmeyer /studip-phplib/local.inc.dist VERSION studip-htdocs/phplib_local.inc.php )
 
 26.09.2004 v 1.1.5-1
-- Neue Messaging-Funktionen: Betreff für systeminterne Nachrichten, 
-  erzwungene/ optionale eMail-Weiterleitung, differenzierte Lesebestätigung, 
+- Neue Messaging-Funktionen: Betreff für systeminterne Nachrichten,
+  erzwungene/ optionale eMail-Weiterleitung, differenzierte Lesebestätigung,
   Bild des Absenders in Nachrichtenansicht und verbesserte Anwort-Funktionalität
 - Neue Art der Erfassung von besuchten Bereichen in Veranstaltungen, so dass nun für
   jeden Bereich einzeln angezeigt werden kann, ob neue Inhalte vorliegen.
@@ -542,13 +542,13 @@ r6866: Stand ca. Version 1.4.0-3
   und Votes)
 - Einfügen von personalisierten Kommentaren an beliebige Stellen in Wiki-Seiten
   ähnlich der Word-Anmerkungs-Funktion; Anzeige als Textbox oder Hover-Icon
-- Darstellung von Smileys nach Kategorie und eigenen Favoriten, 
+- Darstellung von Smileys nach Kategorie und eigenen Favoriten,
   Statistik für die Smileyverwaltung
 - Verbesserte Eingabe von Bewertungen im Forum
 - Termineingabehilfe/Minikalender für die Eingabe von Terminen an vielen Stellen im
   System, konfigurierbare Standardzeiten zum Auswählen für regelmäßige Termine
 - Verbesserte Bedienung der Ablaufplansicht und Ablaufplanverwaltung
-- automatische Umsetzung von internen Links, falls mehrere Servername verwendet 
+- automatische Umsetzung von internen Links, falls mehrere Servername verwendet
   werden
 - Intern verbesserte Benutzerverwaltung
 - Zahlreiche Performance-Verbesserungen (Datenbankabfragen und -struktur)
@@ -580,7 +580,7 @@ VERSION studip-htdocs/phplib_local.inc.php)
 
 04.06.2004 v 1.1.0-2
 - Bugfix: Semesterwechsel, Veranstaltungsbeginn und Löschen von Zeiten führt
-nun auch zum Update 
+nun auch zum Update
 - Sort ohne Array (beides Cornelis Cater, admin_metadates.php 2.40 -> 2.43)
 - Merkliste - Aktualisieren-Knopf (Cornelis Kater, ClipBoard.class.php 1.2
 -> 1.3)
@@ -603,7 +603,7 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - Erweiterte Raumverwaltung für zentrale Raumvergabe über Raumwünsche
 - Funktion zum Kopieren von Veranstaltungen
 - Mechanismus zum Verstecken und Sichtbarmachen von Veranstaltungen
-- Weiterleitung interner Mail an E-Mail-Adresse schaltbar 
+- Weiterleitung interner Mail an E-Mail-Adresse schaltbar
 - Verschiedene Sortierungen der Teilnehmerliste
 - Anzeige von Veranstaltsungnsummern in verschiedenen Listen
 - Blätternavigation in Gästebüchern
@@ -614,7 +614,7 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - weitere Detailverbesserungen und Bugfixes
 
 21.3.2004 v 1.0.0-4
-- Security Bug in der sendfile.php (Stefan Suchi, sendfile.php 2.33 -> 2.34) 
+- Security Bug in der sendfile.php (Stefan Suchi, sendfile.php 2.33 -> 2.34)
 - Falsche Ausgabe der Teilnehmerzahl bei vorläufig Akzeptierten und Kontingentierung (Tobias Thelen , details.php 2.22 -> 2.23)
 - check auf leeres Passwort, wenn anonymous bind aktiviert (André Noak/Philipp Hügelmeyer lib/classes/auth_plugins/StudipAuthLdap.class.php 1.2 -> 1.3)
 - Abräumen von Adresbüchern & Abräumen von internen Nachrichten (Nils Kolja Windisch, messaging.inc.php (2.24 -> 2.25)
@@ -642,7 +642,7 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - neue WAP-Schnittstelle
 - neue Literaturverwaltung zur direkten Literaturrecherche und -verwaltung aus Stud.IP heraus
 - neue Funktionen zur Verwaltung systeminterner Nachrichten: Ordner, Weiterleiten an anderen Account,
-  Löschschutz, Fallweises Bearbeiten von Signaturen, Vorschau und ein Experten-Modus zum Versenden von 
+  Löschschutz, Fallweises Bearbeiten von Signaturen, Vorschau und ein Experten-Modus zum Versenden von
   Nachrichten
 - neue Simple-Content-Funktion zum Verwalten von beliebigem Content innerhalb von Veranstaltungen und
   Einrichtungen
@@ -651,8 +651,8 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - neue Synchronisationsschnittstelle für Termine
 - neue Gästebuchfunktion für persönliche Homepages
 - Viewcounter für perönliche Homepages und News
-- kompletter Download als Zip-Archiv mit Ordnerstruktur für alle Dateien oder einzelne Ordner einer 
-  Veranstaltung und Archivierung von Dateien als Zip-Archiv mit der kompletten Ordnerstruktur 
+- kompletter Download als Zip-Archiv mit Ordnerstruktur für alle Dateien oder einzelne Ordner einer
+  Veranstaltung und Archivierung von Dateien als Zip-Archiv mit der kompletten Ordnerstruktur
   der Veranstaltung
 - neue Formatierung: Einbindung von externen Bildern in Textbeiträge
 - neue Formatierung: Umgehen aller Formatierungen
@@ -666,7 +666,7 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - Neue Funktion insert_seminar_user. (Cornelis Kater)
 - Bugfix: Entfernt die Schleife Passwortabfrage <-> vorläufig eintragen (Till Glöggler).
 - Bugfix:  teilnehmer.php:  Fehlende $mkdate -Initialisierung (Till Glöggler).
-- Bugfixes: admin_seminare_assi.php: Stunden und Minuten bei der Kontrolle verdreht. 
+- Bugfixes: admin_seminare_assi.php: Stunden und Minuten bei der Kontrolle verdreht.
   Statt dem aktuellen Datum wird ein Platzhalter eingefügt, was dazu führt, dass Veranstaltungen ohne explizites Startdatum den Wert -1 in der Tabelle stehen haben. (Till Glöggler)
 - Sicherheitslücke in der phplib (Stefan Suchi)
 - Die Unterordner pictures/tex/ und user/ sind wieder im Release (Philipp Hügelmeyer)
@@ -688,7 +688,7 @@ VERSION studip-htdocs/phplib_local.inc.php)
 30.09.2003 v 0.9.5
 - neues Modul für Votings und Tests
 - neues Wiki-Web-Modul zum kollaborativen Erstellen von verlinkten Dokumenten
-- komplette Überarbeitung der Engine für Forensysteme, um neue Funktionen erweitert (Flatview,   
+- komplette Überarbeitung der Engine für Forensysteme, um neue Funktionen erweitert (Flatview,
   Indikatoren, Sortierung, Favoriten, AutoShrink)
 - komplette Überarbeitung des Bereichs zum Versenden von systeminternen-Nachrichten: Mehrere
   Empfänger können ausgewählt werden, gesendete und empfangene Nachrichten, bessere Bedienung
@@ -719,8 +719,8 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - Veranstaltungssuche / Browser umgebaut und erweitert, verwendet nun zur Darstellung die neuen Bäume
 - Internationalisierung: weite Teile des Systems können nun auch in Englisch benutzt werden
 - Ressourcenverwaltung wird nun für Verwaltung der Räume von Veranstaltungen genutzt (falls aktiviert)
-- neue Ressourcenverwaltung (eigenständiges Modul) zur Verwaltung von Räumen, Gebäuden, Geräten und 
-  weiteren Ressourcen. 
+- neue Ressourcenverwaltung (eigenständiges Modul) zur Verwaltung von Räumen, Gebäuden, Geräten und
+  weiteren Ressourcen.
 - neues Adressbuch auf Grundlage der Buddyverwaltung
 - neues Exporttool, unterstützt Ausgaben in XML, RTF, TXT und PDF
 - neue Einrichtungssuche, verwendet den Einrichtungsbaum
@@ -748,7 +748,7 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - beliebige Teilnehmer können nun von Berechtigten direkt berufen werden
 - neues Hovern von Tabellen eingebaut
 - Umstrukturierung der Reiter im Adminbereich in logische Einheiten
-- neue Übersichtsseite "Meine Einrichtungen" für direkten Zugriff auf Einrichtungsobjekte eingebaut. 
+- neue Übersichtsseite "Meine Einrichtungen" für direkten Zugriff auf Einrichtungsobjekte eingebaut.
 - Äusserst umfangreiche und flexible Funktionen zur Teilnehmerbegrenzung von Veranstaltungen. Veranstaltungen können
   mit einem eigenen Losverfahren oder nach chronologischer Anmeldung mit unterschiedlichen Kontingenten für beliebig viele
   Studiengänge begrenzt werden
@@ -782,21 +782,21 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - v 2.0 des SMS-Systems: Nachrichten werden nicht mehr sofort gelöscht, automatisches Löschen beim Logout auf Wunsch, Signatur für SMS
 - Messsenger verbessert
 - Buddylisten eingefüngt
-- neue Konfigurationsseite Messaging: Buddieverwaltung, Funktion zum automatischen Starten des Messengers, Einstellungen für 
+- neue Konfigurationsseite Messaging: Buddieverwaltung, Funktion zum automatischen Starten des Messengers, Einstellungen für
   SMS-System
 - Hilfeseiten auf den aktuellen Stand gebracht
 - mehr Smileys :)
 - weitere Detailverbesserungen und Bugfixes
 
 13.01.2002 v 0.7.0 release candidate 1
-- Komplett neu geschriebener Terminkalender: Tages-, Monats-, Wochen- und Jahresansicht, flexible Wiederholungstermine, 
+- Komplett neu geschriebener Terminkalender: Tages-, Monats-, Wochen- und Jahresansicht, flexible Wiederholungstermine,
   farbliche Kennungen für Termine, freie Einbindung vom Veranstaltungsterminen, PIM-Optik, zahlreiche Optionen über
   MyStudip-Bereich frei konfigurierbar
 - verbesserte Ablaufplanverwaltung: Optik an Fluid-Design angepasst, nachträgliches Anlegen von Datei und Forenordnern
   nun möglich, verbesserte Bedienung
 - Veranstaltungsübersicht für Instituts-Admins durch Stundenplanmodul realisiert
 - Semesterauswahl für Stundenplan nun möglich
-- MyStud.IP Bereich als eingeständiges Modul erstellt und ausgebaut: Optionen für Forum, Stundenplan und Terminkalender 
+- MyStud.IP Bereich als eingeständiges Modul erstellt und ausgebaut: Optionen für Forum, Stundenplan und Terminkalender
   können hier zentral verwaltet werden.
 - Neuer Autologin, der html-Datei als Login Script an den Benutzer verschickt
 - v 3.0 der Newsverwaltung: Übersichtliches Auswählen von gewünschten Bereichen, verbesserte Bedienung, zahlreiche
@@ -811,7 +811,7 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - Adminbereich neustrukturiert: Auswahllisten für einzelne Bereiche sind identisch im Aufbau, Veranstaltungen können vorge-
   wählt werden, so dass das Verwalten mehrerer Aspekte einer Veranstaltung leicht fällt
 - Optik des Archivs verbessert, es kann auf selbst besuchte Veranstaltungen eingegrenzt werden
-- Der Download wurde verbessert: Download ist als ZIP-Archiv für alle Dateitypen möglich, MIME-Typen werden für die 
+- Der Download wurde verbessert: Download ist als ZIP-Archiv für alle Dateitypen möglich, MIME-Typen werden für die
   wichtigsten Dateien erkannt
 - Aussagekräftigere Fehlermeldungen in vielen Bereichen umgesetzt
 - Geschlecht kann bei der Registrierung mit angegeben werden, Zeitpunkt der Erstanmeldung wird gespeichert
@@ -847,7 +847,7 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - Neue Reiteroptik
 - weitere Detailverbesserungen und Bugfixes
 
-07.06.2001 v 0.5.0 beta 3 
+07.06.2001 v 0.5.0 beta 3
 - Release bei Sourceforge
 - weitere Fixes
 - Graphische Ausgabe des Stundenplans
@@ -861,7 +861,7 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - v.2.0 der Dateiverwaltung: Upload nun über grafische Oberfläche, orientiert am Explorerlook
 - kontextsensitives Hilfesystem
 - Gruppierung von "Meine Veranstaltungen" über Farbcodes
-- v.2.0 des Newssystems 
+- v.2.0 des Newssystems
 - Facelifting beim Design: neue Buttons, konsequenter Fensterlook
 
 19.03.2001 v 0.3.0 beta 1
@@ -869,9 +869,9 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - unzählige Buxfixes
 - viele Detail-Verbesserungen, die sich im laufenden Betrieb ergeben haben
 - diese Version hat den Betrieb über ein Semester als Produktivsystem am Zentrum für interdisziplinäre Medien-
-  wissenschaft ohne Probleme überstanden 
+  wissenschaft ohne Probleme überstanden
 
-16.10.2000 v 0.2.0 alpha 
+16.10.2000 v 0.2.0 alpha
 - In letzter Sekunde wird pünktlich zum Start des WS 2000/01 die erste Version im öffentlichen Einsatz fertig gestellt
 - Neue Funktionen: Dateiordner, Chat, SMS-System, Anzeige von Personen, die Online sind,
   Terminplaner, Personensuche und persönliche Homepage
@@ -881,5 +881,5 @@ VERSION studip-htdocs/phplib_local.inc.php)
 - Das Chatmodul wird eingefügt
 
 11.01.2000 v 0.1.0
-- Die erste Version im Lehreinsatz: Die Veranstaltung "Kurzfilmpraxis" von Ralf Stockmann nutzt 
+- Die erste Version im Lehreinsatz: Die Veranstaltung "Kurzfilmpraxis" von Ralf Stockmann nutzt
   das personalisierte Forum zur Entwicklung von Drehbüchern
