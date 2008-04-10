@@ -466,7 +466,8 @@ class Seminar_Auth extends Auth {
 		require_once('lib/visual.inc.php');
 		require_once('config.inc.php');
 		require_once('lib/classes/HeaderController.class.php');
-
+		require_once('lib/msg.inc.php');
+		
 		global $_language, $_language_path, $fail_count;
 		if (!isset($_language)) {
 			$_language = get_accepted_languages();
