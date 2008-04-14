@@ -1,3 +1,34 @@
+14.04.2008 v 1.6.0-3
+r8989: merged [8988] - refs BIEST00349, filefolders are must not be deleted when deleting a regular time
+   M /lib/raumzeit/CycleData.class.php
+r9002: merge r9001
+   M /lib/raumzeit/MetaDate.class.php
+   M /public/admin_seminare_assi.php
+r9005: merge r9000: bugfix mkdate() Warning
+   M /lib/resources/lib/VeranstaltungResourcesAssign.class.php
+r9043: merge r9042 r9035 r9036 r9039 
+       bugfix Verschiebemodus, Raumzeit ohne Ressourcenverwaltung 
+       fixing BIEST00361 (Fehler in Veranstaltungssuche / Autocomplete ), stripslashes()
+   M /lib/dates.inc.php
+   M /lib/functions.php
+   M /lib/raumzeit/MetaDateDB.class.php
+   M /public/admin_seminare_assi.php
+   M /public/folder.php
+r9117: merge r9116: bugfix Studiengang löschen 
+   M /public/admin_studiengang.php
+r9283: merged [9282]: added select-box to choose date-type in blockveranstaltungs-assi 
+   M /public/blockveranstaltungs_assistent.inc.php
+   M /public/blockveranstaltungs_assistent.php
+r9297: merged [9296], fixes BIEST00360 (Freie Raumangabe zu Metazeiten )
+   M /lib/raumzeit/decorator/RoomOverviewUnsteadyDecorator.class.php
+r9437: bugfix: typo
+   M /lib/include/header.php
+r9438: bugfix: falsche Berechnung erster Termin
+   M /lib/dates.inc.php
+   M /public/admin_seminare_assi.php
+r9503: bugfix 1.6: msg.inc.php fehlt wenn Plugins ausgeschaltet
+   M /lib/phplib_local.inc.php
+
 02.02.2008 v 1.6.0-2
 r8647: merge r8645: schlankeres Hintergrundbild 
    M /public/assets/images/bathtile.jpg
