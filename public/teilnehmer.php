@@ -953,6 +953,8 @@ while (list ($key, $val) = each ($gruppe)) {
 		$tutor_count = 0;
 	// die eigentliche Teil-Tabelle
 	if($key != 'dozent') echo "<form name=\"$key\" action=\"$PHP_SELF?studipticket=$studipticket\" method=\"post\">";
+	if ($key == 'accepted') echo '<input type="hidden" name="accepted" value="1">';
+
 	if($rechte && $key == 'autor' 	&& (($db3->f("admission_type") == 1 || $db3->f("admission_type") == 2))){
 		echo '<tr><td class="blank" colspan="'.$colspan.'" align="right"><font size="-1">';
 		printf(_("<b>Teilnahmebeschränkte Veranstaltung</b> -  Teilnehmerkontingent: %s, davon belegt: %s, zusätzlich belegt: %s"),
@@ -1069,8 +1071,7 @@ while (list ($key, $val) = each ($gruppe)) {
 			printf ("<td class=\"steel\" width=\"%s%%\" align=\"center\" valign=\"bottom\"><font size=\"-1\"><a name=\"admission_insert\" onClick=\"return invert_selection('admission_insert','%s');\" %s><b>%s</b></a></font></td>",  $width, $key, $tooltip,  _("Akzeptieren"));
 			printf ("<td class=\"steel\" width=\"%s%%\" align=\"center\" valign=\"bottom\"><font size=\"-1\"><a name=\"admission_delete\" onClick=\"return invert_selection('admission_delete','%s');\" %s><b>%s</b></a></font></td>",  $width, $key, $tooltip, _("BenutzerIn entfernen"));
 			if ($db3->f("admission_type"))
-				print"<td class=\"steel\" width=\"10%\" align=\"center\"><b>&nbsp;</b></td>";
-
+				printf("<td class=\"steel\" width=\"10%%\" align=\"center\" valign=\"bottom\"><font size=\"-1\"><b>%s</b></font></td>", _("Kontingent"));
 		}
 	}
 
@@ -1269,7 +1270,7 @@ while (list ($key, $val) = each ($gruppe)) {
 		}
 
 		if ($db3->f("admission_type") == 1 || $db3->f("admission_type") == 2) {
-			if ($key == "autor" || $key == "user")
+			if ($key == "autor" || $key == "user" || $key == "accepted")
 				printf ("<td width=\"80%%\" align=\"center\" class=\"%s\"><font size=-1>%s%s</font></td>", $class, ($db->f("studiengang_id") == "all") ? _("alle Studieng&auml;nge") : $db->f("name"), (!$db->f("name") && !$db->f("studiengang_id") == "all") ?  "&nbsp; ": "");
 			else
 				printf ("<td width=\"10%%\" align=\"center\" class=\"%s\">&nbsp;</td>", $class);
@@ -1279,6 +1280,7 @@ while (list ($key, $val) = each ($gruppe)) {
 		$show_area = "show_".$key;
 		if ((is_opened($db->f("user_id")) || isset($$show_area)) && $rechte) { // show further userinfosi
 			$info_is_open = true;
+			$user_data = array();
 
 			//get data for user, if dozent or higher
 			if ($perm->have_perm("dozent")) {
@@ -1288,8 +1290,6 @@ while (list ($key, $val) = each ($gruppe)) {
 				 */
 
         $additional_data = get_additional_data($db->f('user_id'), $id);
-
-				$user_data = array();
 
         foreach($additional_data as $key => $val)
         {
