@@ -1,4 +1,4 @@
-08.04.2008 v 1.7.0
+18.04.2008 v 1.7.0
 - Stud.IP ist nun Shibboleth-Ready
 - Erweiterung der globalen Einstellungen um Regeln zur Sperrung von Veranstaltungsdaten
 - Zukünftig PDO als Standardmethode des Datenbankzugriffs
@@ -9,8 +9,37 @@
 - Einbindung von Flash-Movies über Schnellformatierung und im Dateibereich möglich
 - Möglichkeit zum Anlegen eines Wiki-Inhaltsverzeichnises
 - Beschränkung der freien Nutzeranmeldung nach Email-Adressen möglich
-- Generierung von "Assets"-Verweise vereinfacht
+- Generierung von "Assets"-Verweisen vereinfacht
 - Refactoring der Datei "plugins.php"
+
+14.04.2008 v 1.6.0-3
+r8989: merged [8988] - refs BIEST00349, filefolders are must not be deleted when deleting a regular time
+   M /branches/1.6.0/lib/raumzeit/CycleData.class.php
+r9002: merge r9001 to source:branches/1.6.0
+   M /branches/1.6.0/lib/raumzeit/MetaDate.class.php
+   M /branches/1.6.0/public/admin_seminare_assi.php
+r9005: merge r9000 to source:branches/1.6.0
+   M /branches/1.6.0/lib/resources/lib/VeranstaltungResourcesAssign.class.php
+r9043: merge r9042 r9035 r9036 r9039 source:branches/1.6.0
+   M /branches/1.6.0/lib/dates.inc.php
+   M /branches/1.6.0/lib/functions.php
+   M /branches/1.6.0/lib/raumzeit/MetaDateDB.class.php
+   M /branches/1.6.0/public/admin_seminare_assi.php
+   M /branches/1.6.0/public/folder.php
+r9117: merge r9116 source:branches/1.6.0
+   M /branches/1.6.0/public/admin_studiengang.php
+r9283: merged [9282] to 1.7
+   M /branches/1.6.0/public/blockveranstaltungs_assistent.inc.php
+   M /branches/1.6.0/public/blockveranstaltungs_assistent.php
+r9297: merged [9296] to 1.7, fixes BIEST00360
+   M /branches/1.6.0/lib/raumzeit/decorator/RoomOverviewUnsteadyDecorator.class.php
+r9437: bugfix: typo
+   M /branches/1.6.0/lib/include/header.php
+r9438: bugfix: falsche Berechnung erster Termin
+   M /branches/1.6.0/lib/dates.inc.php
+   M /branches/1.6.0/public/admin_seminare_assi.php
+r9503: bugfix 1.6: msg.inc.php fehlt wenn Plugins ausgeschaltet
+   M /branches/1.6.0/lib/phplib_local.inc.php
 
 02.02.2008 v 1.6.0-2
 r8647: merge r8645: schlankeres Hintergrundbild
