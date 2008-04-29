@@ -275,9 +275,9 @@ $UPLOAD_TYPES = array(	"default" =>
 * define presets for the status-groups in courses (refers to the key of the $SEM_CLASS array above)
 * if none is given, the designations of $SEM_STATUS_GROUPS["default"] are used
 */
-$SEM_STATUS_GROUPS["default"] = array ("DozentInnen", "TutorInnen", "AutorInnen", "LeserInnen", "sonstige"); 	//the default. Don't delete this entry!
-$SEM_STATUS_GROUPS["2"] = array ("Organisatoren", "Mitglieder", "Ausschußmitglieder", "sonstige");
-$SEM_STATUS_GROUPS["3"] = array ("Moderatoren des Forums","Mitglieder", "sonstige");
+$SEM_STATUS_GROUPS['default'] = array ( _("DozentInnen"), _("TutorInnen"), _("AutorInnen"), _("LeserInnen"), _("sonstige")); 	//the default. Don't delete this entry!
+$SEM_STATUS_GROUPS['2'] = array (_("Organisatoren"), _("Mitglieder"), _("Ausschußmitglieder"), _("sonstige"));
+$SEM_STATUS_GROUPS['3'] = array (_("Moderatoren des Forums"), _("Mitglieder"), _("sonstige"));
 // ...can be continued accordingly
 
 
@@ -438,21 +438,21 @@ $LIT_LIST_FORMAT_TEMPLATE = "**{dc_creator}** |({dc_contributor})||\n"
 
 //Shortcuts for smileys
 $SMILE_SHORT = array( //diese Kuerzel fuegen das angegebene Smiley ein (Dateiname + ".gif")
-	":)"=>"smile" ,
-	":-)"=>"asmile" ,
-	":#:"=>"zwinker" ,
-	":("=>"frown" ,
-	":o"=>"redface" ,
-	":D"=>"biggrin",
-	";-)"=>"wink");
+	':)'  => 'smile' ,
+	':-)' => 'asmile' ,
+	':#:' => 'zwinker' ,
+	':('  => 'frown' ,
+	':o'  => 'redface' ,
+	':D'  => 'biggrin',
+	';-)' => 'wink');
 
 //Shortcuts for symbols
 $SYMBOL_SHORT = array( //use this shorts to insert an symbols (filename + ".gif")
-	"=)"=>"symbol03" ,
-	"(="=>"symbol04" ,
-	"(c)"=>"symbol05" ,
-	"(r)"=>"symbol06" ,
-	" tm "=>"symbol08");
+	'=)'   => 'symbol03' ,
+	'(='   => 'symbol04' ,
+	'(c)'  => 'symbol05' ,
+	'(r)'  => 'symbol06' ,
+	' tm ' => 'symbol08');
 
 
 /*configuration for additional modules
@@ -518,8 +518,8 @@ $export_icon["csv"] = "xls-icon.gif";
 // PDF- templates for the "record of study" course-export
 // title = Description of the template
 // template = PDF-template in '/export'
-$record_of_study_templates[1] = array("title" => "Allgemeine Druckvorlage", "template" =>"general_template.pdf");
-$record_of_study_templates[2] = array("title" => "Studienbuch", "template" => "recordofstudy_template.pdf");
+$record_of_study_templates[1] = array("title" => _("Allgemeine Druckvorlage"), "template" =>"general_template.pdf");
+$record_of_study_templates[2] = array("title" => _("Studienbuch"), "template" => "recordofstudy_template.pdf");
 // EXPORT -->>
 
 
