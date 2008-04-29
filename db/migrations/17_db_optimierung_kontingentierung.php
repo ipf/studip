@@ -6,22 +6,30 @@ class DbOptimierungKontingentierung extends DBMigration {
 	}
 
 	function up () {
-		set_time_limit(0);
 		$this->announce("add keys...");
-		$this->db->query("ALTER TABLE `admission_seminar_studiengang` ADD INDEX `studiengang_id` ( `studiengang_id` )");
-		$this->db->query("ALTER TABLE `admission_seminar_user` ADD INDEX `seminar_id` ( `seminar_id`, `studiengang_id`, `status` )");
-		$this->db->query("ALTER TABLE `seminar_user` ADD INDEX `Seminar_id` ( `Seminar_id`, `admission_studiengang_id` )");
+
+		$db = DBManager::get();
+		$mode = $db->getAttribute(PDO::ATTR_ERRMODE);
+		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+		$db->query("ALTER TABLE `admission_seminar_studiengang` ADD INDEX `studiengang_id` ( `studiengang_id` )");
+		$db->query("ALTER TABLE `admission_seminar_user` ADD INDEX `seminar_id` ( `seminar_id`, `studiengang_id`, `status` )");
+		$db->query("ALTER TABLE `seminar_user` ADD INDEX `Seminar_id` ( `Seminar_id`, `admission_studiengang_id` )");
+		$mode = $db->setAttribute(PDO::ATTR_ERRMODE, $mode);
 
 		$this->announce("done.");
-		
 	}
-	
+
 	function down () {
 		$this->announce("delete keys...");
-		$this->db->query("ALTER TABLE `admission_seminar_studiengang` DROP INDEX `studiengang_id`");
-		$this->db->query("ALTER TABLE `admission_seminar_user` DROP INDEX `seminar_id`");
-		$this->db->query("ALTER TABLE `seminar_user` DROP INDEX `Seminar_id`");
-		
+
+		$db = DBManager::get();
+		$mode = $db->getAttribute(PDO::ATTR_ERRMODE);
+		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+		$db->query("ALTER TABLE `admission_seminar_studiengang` DROP INDEX `studiengang_id`");
+		$db->query("ALTER TABLE `admission_seminar_user` DROP INDEX `seminar_id`");
+		$db->query("ALTER TABLE `seminar_user` DROP INDEX `Seminar_id`");
+		$mode = $db->setAttribute(PDO::ATTR_ERRMODE, $mode);
+
 		$this->announce("done.");
 	}
 }
