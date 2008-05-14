@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // -- here you have to put initialisations for the current page
 $txt = $message = $count = $verschoben = '';
 $flatviewstartposting = (int)$flatviewstartposting;
-(isset($view) && in_array($view, array('mixed','tree','neue','flat','search','flatfolder'))) or $view = '';
-(isset($open) && preg_match('/[a-z0-9]{1,32}/', $open)) or $open = '';
+(isset($view) && preg_match('/^[a-z]*$/', $view)) or $view = '';
+(isset($open) && preg_match('/^[a-z0-9]{1,32}$/', $open)) or $open = '';
 
 if ($forumsend && $forumsend!="bla") {
 	$HELP_KEYWORD="Basis.ForumEinstellungen";
