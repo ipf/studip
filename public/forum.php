@@ -22,19 +22,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	include ('lib/seminar_open.php'); // initialise Stud.IP-Session
 
 // -- here you have to put initialisations for the current page
+$txt = $message = $count = $verschoben = '';
+$flatviewstartposting = (int)$flatviewstartposting;
+(isset($view) && preg_match('/^[a-z]*$/', $view)) or $view = '';
+(isset($open) && preg_match('/^[a-z0-9]{1,32}$/', $open)) or $open = '';
 
 if ($forumsend && $forumsend!="bla") {
 	$HELP_KEYWORD="Basis.ForumEinstellungen";
 } else {
 	switch($view) {
-		case "neu": 
+		case "neue": 
 			$HELP_KEYWORD="Basis.ForumNeu"; 
 			break;
-		case "letzte": 
+		case "flat": 
 			$HELP_KEYWORD="Basis.Forumlast4"; 
 			break;
-		case "neuesthema": 
-			$HELP_KEYWORD="Basis.ForumBeteiligen"; 
+		case "search": 
+			$HELP_KEYWORD="Basis.ForumSuche"; 
 			break;
 		default:
 			$HELP_KEYWORD="Basis.Forum";
