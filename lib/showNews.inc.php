@@ -61,11 +61,11 @@ function commentbox($num, $authorname, $authoruname, $date, $dellink, $content) 
 	if ($dellink) {
 		$out[].="<a href=\"$dellink\"><img src=\"".$GLOBALS['ASSETS_URL']."images/trash.gif\" border=0></a>";
 	} else {
-		$out[]="&nbsp;";
+		$out[]=" ";
 	}
 	$out[].="</td></tr>";
 	$out[].="<tr style=\"background:#ffffcc;\">";
-	$out[].="<td colspan=2><font size=-1>".quotes_decode(formatReady($content))."<br>&nbsp;</font></td></tr>";
+	$out[].="<td colspan=2><font size=-1>".quotes_decode(formatReady($content))."<br> </font></td></tr>";
 	$out[].="</table>";
 	return implode("\n",$out);
 }
@@ -90,8 +90,8 @@ function delete_comment($comment_id) {
 	return $ok;
 }
 
-function show_news($range_id, $show_admin = FALSE, $limit = "", $open,
-                   $width = "100%", $last_visited = 0, $cmd_data) {
+function show_news($range_id, $show_admin = FALSE, $limit = "", $open, $width = "100%", $last_visited = 0, $cmd_data)
+{
 	global $auth, $SessSemName;
 
 	$db2 = new DB_Seminar;
@@ -121,9 +121,9 @@ function show_news($range_id, $show_admin = FALSE, $limit = "", $open,
 			echo"\n<table  border=\"0\" bgcolor=\"#FFFFFF\" cellspacing=\"0\" cellpadding=\"2\" align=\"center\" width=\"$width\" >";
 			echo"\n<tr><td class=\"topic\" colspan=\"2\" width=\"99%\"><img src=\"".$GLOBALS['ASSETS_URL']."images/news2.gif\" border=\"0\"". tooltip(_("Newsticker. Klicken Sie auf die Pfeile (rechts), um neue News in diesen Bereich einzustellen. Klicken Sie auf die Pfeile am linken Rand, um den ganzen Nachrichtentext zu lesen.")) . "align=\"texttop\"><b>&nbsp;" . _("News") . "</b></td>";
 			echo"\n<td align = \"right\" class=\"topic\">";
-			printf ("&nbsp;<a href=\"admin_news.php?%s&cmd=new_entry\"><img src=\"".$GLOBALS['ASSETS_URL']."images/pfeillink.gif\" border=\"0\"" . tooltip(_("News einstellen")) . "></a>&nbsp;", $admin_link);
+			printf (" <a href=\"admin_news.php?%s&cmd=new_entry\"><img src=\"".$GLOBALS['ASSETS_URL']."images/pfeillink.gif\" border=\"0\"" . tooltip(_("News einstellen")) . "></a> ", $admin_link);
 			echo"\n</td></tr>";
-			echo "\n<tr><td class=\"steel1\" colspan=\"3\"><blockquote><br /><font size=\"-1\">" . _("Es sind keine aktuellen News vorhanden. Um neue News zu erstellen, klicken Sie auf die Doppelpfeile.") . "<br />&nbsp; </font></blockquote>";
+			echo "\n<tr><td class=\"steel1\" colspan=\"3\"><blockquote><br /><font size=\"-1\">" . _("Es sind keine aktuellen News vorhanden. Um neue News zu erstellen, klicken Sie auf die Doppelpfeile.") . "<br />  </font></blockquote>";
 			echo "\n</td></tr></table>";
 			return TRUE;
 		} else {
@@ -144,7 +144,7 @@ function show_news($range_id, $show_admin = FALSE, $limit = "", $open,
 		if ($show_admin) {
 			$colspan++;
 			echo"\n<td align = \"right\" width=\"1%\" class=\"topic\" nowrap>";
-			printf ("&nbsp;<a href=\"admin_news.php?%s&modus=admin&cmd=show\"><img src=\"".$GLOBALS['ASSETS_URL']."images/pfeillink.gif\" border=\"0\"" . tooltip(_("News bearbeiten")) . "></a>&nbsp;", $admin_link);
+			printf (" <a href=\"admin_news.php?%s&modus=admin&cmd=show\"><img src=\"".$GLOBALS['ASSETS_URL']."images/pfeillink.gif\" border=\"0\"" . tooltip(_("News bearbeiten")) . "></a> ", $admin_link);
 			echo"\n</td>";
 		}
 		echo "\n</tr>\n<tr><td colspan=$colspan>";
@@ -163,7 +163,8 @@ function show_news($range_id, $show_admin = FALSE, $limit = "", $open,
 	return TRUE;
 }
 
-function show_rss_news($range_id, $type){
+function show_rss_news($range_id, $type)
+{
 	$RssTimeFmt = '%Y-%m-%dT%H:%MZ';
 	$last_changed = 0;
 	switch ($type){
@@ -196,7 +197,8 @@ function show_rss_news($range_id, $type){
 	$title = htmlspecialchars($title);
 	$RssChannelDesc = htmlspecialchars($RssChannelDesc);
 
-	foreach(StudipNews::GetNewsByRange($range_id, true) as  $news_id => $details) {
+	foreach(StudipNews::GetNewsByRange($range_id, true) as  $news_id => $details)
+	{
 		list ($body,$admin_msg) = explode("<admin_msg>",$details["body"]);
 		$items .= "<item>
 		<title>".utf8_encode(htmlspecialchars($details["topic"]))."</title>
@@ -228,7 +230,8 @@ function show_rss_news($range_id, $type){
 }
 
 
-function show_news_item($news_item, $cmd_data, $show_admin) {
+function show_news_item($news_item, $cmd_data, $show_admin)
+{
 
   global $auth, $_fullname_sql;
 
@@ -263,7 +266,7 @@ function show_news_item($news_item, $cmd_data, $show_admin) {
   $db2->next_record();
 
   $link .= "&username=".$db2->f("username") . "#anker";
-  $zusatz="<a href=\"about.php?username=".$db2->f("username")."\"><font size=-1 color=\"#333399\">".htmlReady($db2->f("fullname"))."</font></a><font size=-1>&nbsp;".date("d.m.Y",$news_item['date'])." | <font color=\"#005500\">".object_return_views($id)."<font color=\"black\"> |</font>";
+  $zusatz="<a href=\"about.php?username=".$db2->f("username")."\"><font size=-1 color=\"#333399\">".htmlReady($db2->f("fullname"))."</font></a> <font size=-1>".date("d.m.Y",$news_item['date'])." | <font color=\"#005500\">".object_return_views($id)."<font color=\"black\"> |</font>";
 
   $unamelink = '&username='.$db2->f('username');
   $uname = $db2->f('username');
@@ -286,7 +289,7 @@ function show_news_item($news_item, $cmd_data, $show_admin) {
              && ($news_item['user_id'] != $auth->auth["uid"]));
   echo "\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" align=\"center\"><tr>";
 
-  $icon="&nbsp;<img src=\"".$GLOBALS['ASSETS_URL']."images/news-icon.gif\" border=0>";
+  $icon="<img src=\"".$GLOBALS['ASSETS_URL']."images/news-icon.gif\" />";
 
   if ($news_item['open'])
     printhead(0, 0, $link, "open", $tempnew, $icon, $titel, $zusatz, $news_item['date']);
@@ -314,9 +317,9 @@ function show_news_item($news_item, $cmd_data, $show_admin) {
   	  $content.="<br>";
 
   	if ($auth->auth["uid"] == $news_item['user_id'] || $show_admin) {
-  		$edit="<a href=\"admin_news.php?cmd=edit&edit_news=".$id."&$admin_link\">" . makeButton("bearbeiten") . "</a>";
-  		$edit.="&nbsp;<a href=\"?touch_news=".$id."#anker\">" . makeButton("aktualisieren") . "</a>";
-  		$edit.="&nbsp;<a href=\"admin_news.php?cmd=kill&kill_news=".$id."&$admin_link\">" . makeButton("loeschen") . "</a>";
+  		$edit=" <a href=\"admin_news.php?cmd=edit&edit_news=".$id."&$admin_link\">" . makeButton("bearbeiten") . "</a>";
+  		$edit.=" <a href=\"?touch_news=".$id."#anker\">" . makeButton("aktualisieren") . "</a>";
+  		$edit.=" <a href=\"admin_news.php?cmd=kill&kill_news=".$id."&$admin_link\">" . makeButton("loeschen") . "</a>";
   	}
 
   	//
@@ -358,7 +361,7 @@ function show_news_item($news_item, $cmd_data, $show_admin) {
   			}
   			$comments .= "</table>";
   			$content  .= $comments;
-  			$formular="&nbsp;<br>\n<form action=\"#anker\" method=\"POST\">";
+  			$formular="<br/>\n<form action=\"#anker\" method=\"POST\">";
   			$formular.="<input type=hidden name=\"comsubmit\" value=\"".$id."\">";
   			$formular.="<input type=hidden name=\"username\" value=\"$uname\">";
   			$formular.="<p align=\"center\">"._("Geben Sie hier Ihren Kommentar ein!")."</p>";
