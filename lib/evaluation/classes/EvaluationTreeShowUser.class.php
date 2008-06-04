@@ -472,7 +472,7 @@ class EvaluationTreeShowUser {
 
 	    $numberOfVisibleAnswers = 0;
 	    foreach( $answerArray as $answer )
-		if( ! ($answer->isFreetext() && $answer->getText()) )
+		if( ! ($answer->isFreetext() && $answer->getText() != '') )
 		    $numberOfVisibleAnswers++;
 
 	    if( $numberOfVisibleAnswers == 0 ) {
@@ -490,7 +490,7 @@ class EvaluationTreeShowUser {
 		    $number = $question->isMultipleChoice() ? "[".$answer->getPosition()."]" : "";
 
 		    /* if not a user's answer */
-		    if( ! ($answer->isFreetext() && $answer->getText()) )  {
+		    if( ! ($answer->isFreetext() && $answer->getText() != '') )  {
 			$html .= "<tr valign=\"middle\">\n";
 
 			/* show text input field ---------- */
