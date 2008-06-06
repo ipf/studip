@@ -5,7 +5,11 @@
 * checks the entry to a Veranstaltung an insert user to the seminar_user table
 *
 *
-* @author		André Noack <noack@data-quest.de>, Cornelis Kater <ckater@gwdg.de>, Stefan Suchi <suchi@data-quest.de>, Suchi & Berg GmbH <info@data-quest.de>
+* @author		André Noack <noack@data-quest.de>
+* @author 		Cornelis Kater <ckater@gwdg.de>
+* @author 		Stefan Suchi <suchi@data-quest.de>
+* @author 		Suchi & Berg GmbH <info@data-quest.de>
+* @author 		Michael Riehemann <michael.riehemann@uni-oldenburg.de>
 * @version		$Id$
 * @access		public
 * @module		sem_verify.php
@@ -168,20 +172,23 @@ $db6=new DB_Seminar;
 	    if ($send_from_search)
 	    	echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 	    echo "<br><br></td></tr></table>";
+	    include ('lib/include/html_end.inc.php');
 	    page_close();
 	    die;
 	    }
 	
 	$current_seminar = Seminar::getInstance($id);
 
-	if ($current_seminar->admission_type == 3) {
+	if ($current_seminar->admission_type == 3) 
+	{
 		parse_msg ("info§"._("Die Veranstaltung ist gesperrt, Sie k&ouml;nnen sich nicht eintragen!"));
-	    	echo"<tr><td class=\"blank\" colspan=2><a href=\"index.php\">&nbsp;&nbsp; "._("Zur&uuml;ck zur Startseite")."</a>";
-	    	if ($send_from_search)
-	    		echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
+	   	echo"<tr><td class=\"blank\" colspan=2><a href=\"index.php\">&nbsp;&nbsp; "._("Zur&uuml;ck zur Startseite")."</a>";
+	   	if ($send_from_search)
+	   		echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 		echo "<br><br></td></tr></table>";
-	    	page_close();
-	    	die;
+		include ('lib/include/html_end.inc.php');
+	   	page_close();
+	   	die;
 	}
 	
 	$group = select_group ($current_seminar->semester_start_time, $user->id);
@@ -201,6 +208,7 @@ $db6=new DB_Seminar;
 		printf(_("Der Anmeldezeitraum dieser Veranstaltung startet erst am %s um %s Uhr."),date("d.m.Y",$current_seminar->admission_starttime), date("G:i",$current_seminar->admission_starttime));;
 		echo "</font>";
 		echo "<br /><br /></td></tr></table>";
+		include ('lib/include/html_end.inc.php');
 		page_close();
 		die;
 	}
@@ -210,6 +218,7 @@ $db6=new DB_Seminar;
 		printf(_("Der Anmeldezeitraum dieser Veranstaltung endete am %s um %s Uhr."),date("d.m.Y",$current_seminar->admission_endtime_sem), date("G:i",$current_seminar->admission_endtime_sem));;
 		echo "</font>";
 		echo "<br /><br /></td></tr></table>";
+		include ('lib/include/html_end.inc.php');
 		page_close();
 		die;
 	}
@@ -257,13 +266,14 @@ $db6=new DB_Seminar;
 					'._("Veranstaltungsgruppe:").'&nbsp;'.htmlReady($group_obj->getValue('name')).'
 					&nbsp;('. $admission_type_text .')
 					<ol>';
-			foreach($group_obj->getMemberIds() as $m_id){
+			foreach($group_obj->getMemberIds() as $m_id)
+			{
 					$target = "details.php?sem_id=$m_id&send_from_search=1&send_from_search_page=sem_verify.php?id=$id";
 					$meldung .=	'<li><a href="'.$target.'">'
 							. htmlReady($group_obj->members[$m_id]->getName())
 							.'</a>&nbsp;('.htmlReady($group_obj->members[$m_id]->getFormattedTurnus(true)).')
 						</li>';
-					}
+			}
 			$meldung .='</ol>
 					'.($group_obj->getValue('status') ? _("Eintrag nur in einer Veranstaltung der Gruppe") : _("Eintrag in einer Veranstaltung und in einer Warteliste der präferierten Veranstaltung der Gruppe")).'
 				</div>';
@@ -356,7 +366,8 @@ $db6=new DB_Seminar;
 			
 			parse_msg("info§" . $meldung, "§", "blank",3);
 
-			if($exit){
+			if($exit)
+			{
 				echo "</td></tr></table>";
 				include 'lib/include/html_end.inc.php';
 				page_close();
@@ -367,7 +378,8 @@ $db6=new DB_Seminar;
 	}
 
 	//nobody darf sogar durch (wird spaeter schon abgefangen)
-	if ($perm->have_perm("user")) {
+	if ($perm->have_perm("user")) 
+	{
 
 		//Sonderfall, Passwort fuer Schreiben nicht eingegeben, Lesen aber erlaubt
 		if ($EntryMode == "read_only"){
@@ -385,6 +397,7 @@ $db6=new DB_Seminar;
 			    		echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 				echo "<br><br></td></tr></table>";
 			}
+			include ('lib/include/html_end.inc.php');
 	 		page_close();
 			die;
 		}
@@ -396,7 +409,8 @@ $db6=new DB_Seminar;
 		//laden von benoetigten Informationen
 		$db=new DB_Seminar;
 		$db->query("SELECT Lesezugriff, Schreibzugriff, Passwort, Name FROM seminare WHERE Seminar_id LIKE '$id'");
-		while ($db->next_record()) {
+		while ($db->next_record()) 
+		{
 			$SemSecLevelRead=$db->f("Lesezugriff");
 			$SemSecLevelWrite=$db->f("Schreibzugriff");
 			$SemSecPass=$db->f("Passwort");
@@ -408,17 +422,20 @@ $db6=new DB_Seminar;
 
 		//Ueberpruefung auf korrektes Passwort
 		if ((isset($pass) && $pass!="" && (md5($pass)==$SemSecPass))  ||  (isset($hashpass) && $hashpass!="" && $hashpass==$SemSecPass)) {
-			if (($SemUserStatus=="user") && ($perm->have_perm("autor"))){
+			if (($SemUserStatus=="user") && ($perm->have_perm("autor")))
+			{
 				$db->query("UPDATE seminar_user SET status='autor' WHERE Seminar_id = '$id' AND user_id = '$user->id'");
 				parse_msg (sprintf("msg§"._("Sie wurden in der Veranstaltung %s auf den Status <b> Autor </b> hochgestuft."), '<b>'.$SeminarName.'</b>'));
 				echo "<tr><td class=\"blank\" colspan=2><a href=\"seminar_main.php?auswahl=$id\">&nbsp; &nbsp; "._("Hier kommen Sie zu der Veranstaltung")."</a>";
 			    	if ($send_from_search)
 				    	echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 				echo "<br><br></td></tr></table>";
+				include ('lib/include/html_end.inc.php');
 				page_close();
 				die;
 			}
-			elseif ($perm->have_perm("autor")) {
+			elseif ($perm->have_perm("autor")) 
+			{
 				if (!seminar_preliminary($id,$user->id)) {
 					$db->query("INSERT INTO seminar_user SET Seminar_id = '$id', user_id = '$user->id', status = 'autor', gruppe = '$group', mkdate = '".time()."'");
 					parse_msg (sprintf("msg§"._("Sie wurden mit dem Status <b>Autor</b> in die Veranstaltung %s eingetragen."), '<b>'.$SeminarName.'</b>'));
@@ -430,6 +447,7 @@ $db6=new DB_Seminar;
 			  	if ($send_from_search)
 				    	echo "&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 				echo "<br><br></td></tr></table>";
+				include ('lib/include/html_end.inc.php');
 				page_close();
 				die;
 			}
@@ -470,6 +488,7 @@ $db6=new DB_Seminar;
 						    	echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 						echo "<br><br></td></tr></table>";
 					}
+					include ('lib/include/html_end.inc.php');
 					page_close();
 					die;
 				}
@@ -481,6 +500,7 @@ $db6=new DB_Seminar;
 						if ($send_from_search)
 						    	echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 						echo "<br><br></td></tr></table>";
+						include ('lib/include/html_end.inc.php');
 						page_close();
 						die;
 					} else {//wenn nicht, informieren
@@ -489,6 +509,7 @@ $db6=new DB_Seminar;
 						if ($send_from_search)
 						    	echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 						echo "<br><br></td></tr></table>";
+						include ('lib/include/html_end.inc.php');
 						page_close();
 						die;
 					}
@@ -499,6 +520,7 @@ $db6=new DB_Seminar;
 				if ($send_from_search)
 					echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 				echo "<br><br></td></tr></table>";
+				include ('lib/include/html_end.inc.php');
 				page_close();
 				die;
 			}
@@ -511,6 +533,7 @@ $db6=new DB_Seminar;
 						if ($send_from_search)
 							echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 						echo "<br	><br></td></tr></table>";
+						include ('lib/include/html_end.inc.php');
 						page_close();
 						die;
 						}
@@ -521,6 +544,7 @@ $db6=new DB_Seminar;
 						if ($send_from_search)
 							echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 						echo "<br	><br></td></tr></table>";
+						include ('lib/include/html_end.inc.php');
 						page_close();
 						die;
 						}
@@ -531,6 +555,7 @@ $db6=new DB_Seminar;
 						if ($send_from_search)
 							echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 						echo "<br	><br></td></tr></table>";
+						include ('lib/include/html_end.inc.php');
 						page_close();
 						die;
 						}
@@ -546,13 +571,15 @@ $db6=new DB_Seminar;
 							if ($send_from_search)
 								echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 							echo "<br	><br></td></tr></table>";
+							include ('lib/include/html_end.inc.php');
 							page_close();
 							die;
 						}
 					}
 					$db->query("SELECT admission_seminar_studiengang.studiengang_id FROM admission_seminar_studiengang LEFT JOIN studiengaenge USING (studiengang_id) LEFT JOIN user_studiengang USING (studiengang_id) WHERE seminar_id LIKE '$id' AND (user_id = '$user->id' OR admission_seminar_studiengang.studiengang_id = 'all')"); //Hat der Studi passende Studiengaenge ausgewaehlt?
 					$user_studiengang = array();
-					while($db->next_record()){
+					while($db->next_record())
+					{
 						$user_studiengang[$db->f('studiengang_id')] = 1;
 					}
 					if (!$sem_verify_suggest_studg) {//Wir wissen noch nicht mit welchem Studiengang der User rein will
@@ -597,6 +624,7 @@ $db6=new DB_Seminar;
 							?>
 							</td></tr></table>
 							<?
+							include ('lib/include/html_end.inc.php');
 							page_close();
 							die;
 						} else { //Keinen passenden Studiengaenge gefunden, abbruch
@@ -608,6 +636,7 @@ $db6=new DB_Seminar;
 						    			echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 								echo "<br	><br></td></tr></table>";
 								page_close();
+								include ('lib/include/html_end.inc.php');
 								die;
 							}
 						}
@@ -627,6 +656,7 @@ $db6=new DB_Seminar;
 								if ($send_from_search)
 					    				echo "&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 								echo "<br	><br></td></tr></table>";
+								include ('lib/include/html_end.inc.php');
 								page_close();
 								die;
 							} else { //Auf die Warteliste
@@ -641,6 +671,7 @@ $db6=new DB_Seminar;
 								if ($send_from_search)
 					    				echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 								echo "<br	><br></td></tr></table>";
+								include ('lib/include/html_end.inc.php');
 								page_close();
 								die;
 							}
@@ -652,6 +683,7 @@ $db6=new DB_Seminar;
 								if ($send_from_search)
 						    			echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 								echo "<br	><br></td></tr></table>";
+								include ('lib/include/html_end.inc.php');
 								page_close();
 								die;
 							} else { //Variante chronologisches Anmelden
@@ -681,6 +713,7 @@ $db6=new DB_Seminar;
 									if ($send_from_search)
 						    				echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 									echo "<br	><br></td></tr></table>";
+									include ('lib/include/html_end.inc.php');
 									page_close();
 									die;
 								}
@@ -708,6 +741,7 @@ $db6=new DB_Seminar;
 					?>
 					</td></tr></table>
 					<?
+					include ('lib/include/html_end.inc.php');
 					page_close();
 					die;
 				}
@@ -753,6 +787,7 @@ $db6=new DB_Seminar;
 					?>
 					</td></tr></table>
 					<?
+					include ('lib/include/html_end.inc.php');
 					page_close();
 					die;
 				} else {//kein Passwortschutz, also wird der Kerl auf jeden Fall autor im Seminar
@@ -765,6 +800,7 @@ $db6=new DB_Seminar;
 					if ($send_from_search)
 					    	echo "&nbsp; |&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 					echo "<br><br></td></tr></table>";
+					include ('lib/include/html_end.inc.php');
 					page_close();
 					die;
 				} else {//Lesen mit Berechtigung 'User' geht
@@ -789,6 +825,7 @@ $db6=new DB_Seminar;
 			if ($send_from_search)
 			    	echo "&nbsp;<a href=\"$send_from_search_page\">"._("Zur&uuml;ck zur letzten Auswahl")."</a>";
 			echo "<br><br></td></tr></table>";
+			include ('lib/include/html_end.inc.php');
 			page_close();
 			die;
 		}
