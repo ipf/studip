@@ -52,6 +52,7 @@ function string_to_unicode ($xml_string)
 	{
 		$char = substr($xml_string, $x, 1);
 		$dosc = ord($char);
+		if($dosc < 32 && $dosc != 10) continue;
 		$ret .= ($dosc > 127) ? "&#".$dosc.";" : $char;
 	}
 	return $ret;
@@ -93,7 +94,7 @@ function export_range($range_id)
 	$db2=new DB_Seminar;
 
 //    Ist die Range-ID eine Einrichtungs-ID?
-	$db->query('SELECT * FROM Institute WHERE Institut_id = "' . $range_id . '"');
+	$db->query("SELECT * FROM Institute WHERE Institut_id = '" . $range_id . "'");
 	if (($db->next_record()) And ($db->f("Name") != ""))
 	{
 		$range_name = $db->f("Name");
@@ -104,7 +105,7 @@ function export_range($range_id)
 	}
 
 //	Ist die Range-ID eine Fakultaets-ID? Dann auch untergeordnete Institute exportieren!
-	$db2->query('SELECT * FROM Institute WHERE fakultaets_id = "' . $range_id . '" ');
+	$db2->query("SELECT * FROM Institute WHERE fakultaets_id = '" . $range_id . "' ");
 	while ($db2->next_record())
 		if (($db2->f("Name") != "") And ($db2->f("Institut_id") != $range_id))
 		{
@@ -113,7 +114,7 @@ function export_range($range_id)
 		}
 
 //    Ist die Range-ID eine Seminar-ID?
-	$db->query('SELECT * FROM seminare WHERE Seminar_id = "' . $range_id . '"');
+	$db->query("SELECT * FROM seminare WHERE Seminar_id = '" . $range_id . "'");
 	if (($db->next_record()) And ($db->f("Name") != ""))
 	{
 		$range_name = $db->f("Name");
@@ -186,7 +187,7 @@ function export_inst($inst_id, $ex_sem_id = "all")
 
 	$db=new DB_Seminar;
 
-	$db->query('SELECT * FROM Institute WHERE Institut_id = "' . $inst_id . '"');
+	$db->query("SELECT * FROM Institute WHERE Institut_id = '" . $inst_id . "'");
 	$db->next_record();
 	$data_object .= xml_open_tag($xml_groupnames_inst["object"], $db->f("Institut_id"));
 	while ( list($key, $val) = each($xml_names_inst))
@@ -198,7 +199,7 @@ function export_inst($inst_id, $ex_sem_id = "all")
 			$data_object .= xml_tag($val, $db->f($key));
 	}
 	reset($xml_names_inst);
-	$db->query('SELECT Name FROM Institute WHERE Institut_id = "' . $db->f("fakultaets_id") . '" AND fakultaets_id = "' . $db->f("fakultaets_id") . '"');
+	$db->query("SELECT Name FROM Institute WHERE Institut_id = '" . $db->f('fakultaets_id') . "' AND fakultaets_id = '" . $db->f('fakultaets_id') . "'");
 	$db->next_record();
 	{
 		if ($db->f("Name") != "")
@@ -287,10 +288,10 @@ function export_sem($inst_id, $ex_sem_id = "all")
 
 	if (!$GLOBALS['perm']->have_perm('root')) $addquery .= " AND visible=1 ";
 
-	$db->query('SELECT * FROM seminar_inst
+	$db->query("SELECT * FROM seminar_inst
 				LEFT JOIN seminare USING (Seminar_id)
-				WHERE seminar_inst.Institut_id = "' . $inst_id . '" ' . $addquery . '
-				ORDER BY ' . $order);
+				WHERE seminar_inst.Institut_id = '" . $inst_id . "' " . $addquery . "
+				ORDER BY " . $order);
 
 	$data_object .= xml_open_tag( $xml_groupnames_lecture["group"] );
 
@@ -363,10 +364,10 @@ function export_sem($inst_id, $ex_sem_id = "all")
 				elseif ($db->f($key) != "")
 					$data_object .= xml_tag($val, $db->f($key));
 			}
-			$db2->query('SELECT seminar_user.position, auth_user_md5.user_id,auth_user_md5.username, auth_user_md5.Vorname, auth_user_md5.Nachname, user_info.title_front, user_info.title_rear FROM seminar_user
+			$db2->query("SELECT seminar_user.position, auth_user_md5.user_id,auth_user_md5.username, auth_user_md5.Vorname, auth_user_md5.Nachname, user_info.title_front, user_info.title_rear FROM seminar_user
 						LEFT JOIN user_info USING(user_id)
 						LEFT JOIN auth_user_md5 USING(user_id)
-						WHERE (seminar_user.status = "dozent") AND (seminar_user.Seminar_id = "' . $db->f("seminar_id") . '") ORDER BY seminar_user.position ');
+						WHERE (seminar_user.status = 'dozent') AND (seminar_user.Seminar_id = '" . $db->f('seminar_id') . "') ORDER BY seminar_user.position ");
 			$data_object .= "<" . $xml_groupnames_lecture["childgroup2"] . ">\n";
 			while ($db2->next_record())
 				{
@@ -479,7 +480,7 @@ function export_teilis($inst_id, $ex_sem_id = "no")
 		}
 		else // Gruppierung nach Status in der Veranstaltung / Einrichtung
 		if ($key1 == 'accepted'){
-			$db->query ("SELECT ui.*, aum.*, asu.studiengang_id as admission_studiengang_id,FROM_UNIXTIME(asu.mkdate) as registration_date , GROUP_CONCAT(studiengaenge.name SEPARATOR ', ') as nutzer_studiengaenge
+			$db->query ("SELECT ui.*, aum.*, asu.comment, asu.studiengang_id as admission_studiengang_id,FROM_UNIXTIME(asu.mkdate) as registration_date , GROUP_CONCAT(studiengaenge.name SEPARATOR ', ') as nutzer_studiengaenge
 				FROM admission_seminar_user asu
 				LEFT JOIN user_info ui USING(user_id)
 				LEFT JOIN auth_user_md5 aum USING(user_id)
@@ -487,7 +488,7 @@ function export_teilis($inst_id, $ex_sem_id = "no")
 				LEFT JOIN studiengaenge ON(user_studiengang.studiengang_id=studiengaenge.studiengang_id)
 				WHERE seminar_id = '$ex_sem_id' AND asu.status = 'accepted'  GROUP BY aum.user_id ORDER BY Nachname");
 		} elseif ($key1 == 'awaiting') {
-			$db->query("SELECT ui.*, aum.*, asu.studiengang_id as admission_studiengang_id, asu.position as admission_position, GROUP_CONCAT(studiengaenge.name SEPARATOR ', ') as nutzer_studiengaenge
+			$db->query("SELECT ui.*, aum.*, asu.comment, asu.studiengang_id as admission_studiengang_id, asu.position as admission_position, GROUP_CONCAT(studiengaenge.name SEPARATOR ', ') as nutzer_studiengaenge
 						FROM admission_seminar_user asu
 						LEFT JOIN user_info ui USING(user_id)
 						LEFT JOIN auth_user_md5 aum USING(user_id)
@@ -605,16 +606,16 @@ function export_pers($inst_id)
 
 	$data_object = xml_open_tag( $xml_groupnames_person["group"] );
 
-	$db->query('SELECT statusgruppen.name,aum.user_id,
+	$db->query("SELECT statusgruppen.name,aum.user_id,
 		aum.Nachname, aum.Vorname, ui.inst_perms, ui.raum,
 		ui.sprechzeiten, ui.Telefon, ui.Fax, aum.Email,
 		aum.username, info.Home, info.geschlecht, info.title_front, info.title_rear FROM statusgruppen
 		LEFT JOIN statusgruppe_user sgu USING(statusgruppe_id)
-		LEFT JOIN user_inst ui ON (ui.user_id = sgu.user_id AND ui.Institut_id = range_id AND ui.inst_perms!="user")
+		LEFT JOIN user_inst ui ON (ui.user_id = sgu.user_id AND ui.Institut_id = range_id AND ui.inst_perms!='user')
 		LEFT JOIN auth_user_md5 aum ON (ui.user_id = aum.user_id)
 		LEFT JOIN user_info info ON (ui.user_id = info.user_id)
-		WHERE range_id = "' . $inst_id . ' "
-		ORDER BY ' . $order);
+		WHERE range_id = '" . $inst_id . "'
+		ORDER BY " . $order);
 
 	$data_found = false;
 
@@ -705,17 +706,18 @@ function export_datafields($range_id, $childgroup_tag, $childobject_tag){
 	$ret = '';
 	$d_fields = false;
 	$localEntries = DataFieldEntry::getDataFieldEntries($range_id);
-	foreach ($localEntries as $entry)
-		if ($entry->getValue()) {
-			if (!$d_fields)
-				$ret .= xml_open_tag( $childgroup_tag );
-			$ret .= xml_open_tag($childobject_tag , $entry->getName());
-			$ret .= htmlspecialchars($entry->getDisplayValue(false));
-			$ret .= xml_close_tag($childobject_tag);
-			$d_fields = true;
+	if(is_array($localEntries )){
+		foreach ($localEntries as $entry){
+			if ($entry->structure->accessAllowed($GLOBALS['perm'], $GLOBALS['user']->id, $range_id) && $entry->getValue()) {
+				if (!$d_fields)	$ret .= xml_open_tag( $childgroup_tag );
+				$ret .= xml_open_tag($childobject_tag , $entry->getName());
+				$ret .= htmlspecialchars($entry->getDisplayValue(false));
+				$ret .= xml_close_tag($childobject_tag);
+				$d_fields = true;
+			}
 		}
-	if ($d_fields)
-		$ret .= xml_close_tag( $childgroup_tag );
+	}
+	if ($d_fields) $ret .= xml_close_tag( $childgroup_tag );
 	return $ret;
 }
 
@@ -728,123 +730,123 @@ function export_datafields($range_id, $childgroup_tag, $childobject_tag){
 * @param	string	$childgroup_tag	name of outer tag
 * @param	string	$childobject_tag	name of inner tags
  */
-
-function get_additional_data($user_id, $range_id)
-{
-  $collected_data = array();
-
-	$db = new DB_Seminar();
-
-  $global_view_rights = array();
-
-  if(is_array($GLOBALS['TEILNEHMER_VIEW']))
-  {
-    foreach($GLOBALS['TEILNEHMER_VIEW'] as $val) {
-      $global_view_rights[] = $val['field'];
-    }
-
-    $db->query("SELECT * FROM teilnehmer_view WHERE seminar_id = '$range_id'");
-
-    while ($db->next_record()) {
-      if (in_array($db->f("datafield_id"), $global_view_rights))
-      {
-        $sem_view_rights[$db->f("datafield_id")] = TRUE;
-      }
-    }
-
-    $collected_data = array();
-
-    foreach($GLOBALS['TEILNEHMER_VIEW'] as $val) {
-
-      if (isset($sem_view_rights[$val["field"]])) {
-
-        $user_data = array();
-
-        switch ($val["table"]) {
-        case "datafields":
-          $query = "SELECT content FROM datafields_entries, datafields WHERE datafields.name = '".$val["field"]."' AND datafields.datafield_id = datafields_entries.datafield_id AND datafields_entries.range_id = '$user_id'";
-          $db->query($query);
-          $db->next_record();
-          if ($db->f("content") != "") {
-            $user_data = array("name" => $val["name"], "content" => $db->f("content"));
-          }
-          break;
-
-        case "special":
-          switch ($val["field"]) {
-          case "groups":
-            $db->query("SELECT name FROM statusgruppen a, statusgruppe_user b WHERE a.range_id = '$range_id' AND a.statusgruppe_id = b.statusgruppe_id AND b.user_id = '$user_id'");
-
-            $zw = array();
-
-            while ($db->next_record()) {
-              $zw []= $db->f("name")." ";
-            }
-
-            $user_data = array("name" => $val["name"], "content" => $zw);
-            break;
-
-          case "user_picture":
-            $user_data = array('name' => 'user_picture', 'content' => true);
-            break;
-          }
-          break;
-
-        default:
-          $query = "SELECT ".$val["field"]." FROM ".$val["table"]." WHERE user_id = '$user_id'";
-          $db->query($query);
-
-          if ($db->next_record()) {
-
-            $user_data = array('name' => $val["field"], $db->f($val["field"]));
-          }
-
-          switch ($val["field"]) {
-          case "geschlecht":
-            if ($content == "0")
-              $content = _("m&#228;nnlich");
-            else
-              $content = _("weiblich");
-
-            $user_data = array("name" => $val["name"], "content" => $content);
-            break;
-
-          case "preferred_language":
-            if (is_null($content) || $content == '')
-              $content = $GLOBALS['DEFAULT_LANGUAGE'];
-
-            if ($content == "de_DE")
-              $content = _("Deutsch");
-            else
-              $content = _("Englisch");
-
-            $user_data = array("name" => $val["name"], "content" => $content);
-            break;
-          }
-          break;
-
-        }
-
-        // display by default, even if display isn't set in config
-        if (!isset($val['export']) || !empty($val["export"]))
-        {
-          $user_data['export'] = 1;
-        }
-
-        // display by default, even if display isn't set in config
-        if (!isset($val['display']) || !empty($val['display']))
-        {
-          $user_data['display'] = 1;
-        }
-
-        $collected_data [$val["field"]]= $user_data;
-      }
-    }
-  }
-
-  return $collected_data;
-
-}
+ function get_additional_data($user_id, $range_id)
+ {
+	 $collected_data = array();
+	 
+	 $db = new DB_Seminar();
+	 
+	 $global_view_rights = array();
+	 
+	 if(is_array($GLOBALS['TEILNEHMER_VIEW']))
+	 {
+		 foreach($GLOBALS['TEILNEHMER_VIEW'] as $val) {
+			 $global_view_rights[] = $val['field'];
+		 }
+		 
+		 $db->query("SELECT * FROM teilnehmer_view WHERE seminar_id = '$range_id'");
+		 
+		 while ($db->next_record()) {
+			 if (in_array($db->f("datafield_id"), $global_view_rights))
+			 {
+				 $sem_view_rights[$db->f("datafield_id")] = TRUE;
+			 }
+		 }
+		 
+		 $collected_data = array();
+		 
+		 foreach($GLOBALS['TEILNEHMER_VIEW'] as $val) {
+			 
+			 if (isset($sem_view_rights[$val["field"]])) {
+				 
+				 $user_data = array();
+				 
+				 switch ($val["table"]) {
+				 case "datafields":
+					 $query = "SELECT content FROM datafields_entries, datafields WHERE datafields.name = '".$val["field"]."' AND datafields.datafield_id = datafields_entries.datafield_id AND datafields_entries.range_id = '$user_id'";
+					 $db->query($query);
+					 $db->next_record();
+					 if ($db->f("content") != "") {
+						 $user_data = array("name" => $val["name"], "content" => $db->f("content"));
+					 }
+					 break;
+					 
+				 case "special":
+					 switch ($val["field"]) {
+					 case "groups":
+						 $db->query("SELECT name FROM statusgruppen a, statusgruppe_user b WHERE a.range_id = '$range_id' AND a.statusgruppe_id = b.statusgruppe_id AND b.user_id = '$user_id'");
+						 
+						 $zw = array();
+						 
+						 while ($db->next_record()) {
+							 $zw []= $db->f("name")." ";
+						 }
+						 
+						 $user_data = array("name" => $val["name"], "content" => $zw);
+						 break;
+						 
+					 case "user_picture":
+						 $user_data = array('name' => 'user_picture', 'content' => true);
+						 break;
+					 }
+					 break;
+					 
+				 default:
+					 $query = "SELECT ".$val["field"]." FROM ".$val["table"]." WHERE user_id = '$user_id'";
+					 $db->query($query);
+					 
+					 if ($db->next_record()) {
+						 $content =  $db->f($val["field"]);
+						 $user_data = array('name' => $val["field"], "content" => $content);
+						 
+						 
+						 switch ($val["field"]) {
+						 case "geschlecht":
+							 if ($content == "0")
+								 $content = _("m&#228;nnlich");
+							 else
+								 $content = _("weiblich");
+							 
+							 $user_data = array("name" => $val["name"], "content" => $content);
+							 break;
+							 
+						 case "preferred_language":
+							 if (is_null($content) || $content == '')
+								 $content = $GLOBALS['DEFAULT_LANGUAGE'];
+							 
+							 if ($content == "de_DE")
+								 $content = _("Deutsch");
+							 else
+							 	$content = _("Englisch");
+							 
+							 $user_data = array("name" => $val["name"], "content" => $content);
+							 break;
+						 }
+					 }
+					 break;
+					 
+				 }
+				 
+				 // display by default, even if display isn't set in config
+				 if (!isset($val['export']) || !empty($val["export"]))
+				 {
+					 $user_data['export'] = 1;
+				 }
+				 
+				 // display by default, even if display isn't set in config
+				 if (!isset($val['display']) || !empty($val['display']))
+				 {
+					 $user_data['display'] = 1;
+				 }
+				 
+				 $collected_data [$val["field"]]= $user_data;
+			 }
+		 }
+	 }
+	 
+	 return $collected_data;
+	 
+ }
 
 function export_additional_data($user_id, $range_id, $childgroup_tag)
 {
