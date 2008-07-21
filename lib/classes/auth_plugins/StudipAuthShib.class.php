@@ -94,7 +94,7 @@ class StudipAuthShib extends StudipAuthSSO
             $remote_user = $_SERVER['REMOTE_USER'];
         }
 
-        if (empty($remote_user)) {
+        if (empty($remote_user) || isset($this->validate_url)) {
             if ($_REQUEST['sso'] == 'shib') {
                 // force Shibboleth authentication (lazy session)
                 $shib_url = $this->session_initiator;
