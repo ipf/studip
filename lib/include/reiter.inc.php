@@ -314,7 +314,7 @@ class reiter {
 
 	function absolutizeLink($link) {
 		if (!(preg_match('#^[a-z]+://#', $link) || $link[0] === '/')) {
-			$link = $GLOBALS['ABSOLUTE_URI_STUDIP'].$link;
+			$link = $GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'].$link;
 		}
 		return $link;
 	}
