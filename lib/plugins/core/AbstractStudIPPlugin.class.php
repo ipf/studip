@@ -177,11 +177,11 @@ abstract class AbstractStudIPPlugin {
 	 */
 	function getPluginiconname() {
 		if ($this->hasNavigation() && $this->navigation->hasIcon()) {
-			return $this->getPluginpath().'/'.$this->navigation->getIcon();
+			return $this->getPluginURL().'/'.$this->navigation->getIcon();
 		} else if (isset($this->pluginiconname)) {
-			return $this->getPluginpath().'/'.$this->pluginiconname;
+			return $this->getPluginURL().'/'.$this->pluginiconname;
 		} else {
-			return Assets::image_path('HelpInfoleer.gif');
+			return Assets::image_path('icon-leer.gif');
 		}
 	}
 
@@ -252,6 +252,10 @@ abstract class AbstractStudIPPlugin {
 
 	function getPluginpath() {
 		return $this->pluginpath;
+	}
+
+	function getPluginURL() {
+		return $GLOBALS['ABSOLUTE_URI_STUDIP'].$this->getPluginpath();
 	}
 
 	function setBasepluginpath($newpath) {

@@ -63,7 +63,7 @@ global  $_html_head_title,
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
-		<? if (in_array(basename($_SERVER['SCRIPT_NAME']), array('dispatch.php', 'plugins.php'))) : ?>
+		<? if (in_array(basename($_SERVER['SCRIPT_NAME']), array('plugins.php'))) : ?>
 		<base href="<?= $GLOBALS['ABSOLUTE_URI_STUDIP'] ?>">
 		<? endif ?>
 		<? if (basename($_SERVER['SCRIPT_NAME']) !== 'logout.php' && $AUTH_LIFETIME > 0) : ?>
