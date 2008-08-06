@@ -37,7 +37,6 @@
 
 require_once($GLOBALS['RELATIVE_PATH_EXTERN'].'/lib/ExternModule.class.php');
 require_once($GLOBALS['RELATIVE_PATH_EXTERN'].'/views/extern_html_templates.inc.php');
-require_once('lib/classes/DataFields.class.php');
 require_once('lib/visual.inc.php');
 require_once('lib/user_visible.inc.php');
 require_once('lib/statusgruppe.inc.php');
@@ -61,6 +60,15 @@ class ExternModuleTemplateDownload extends ExternModule {
 	                         "filesize", "fullname");
 		$this->registered_elements = array(
 				'LinkInternTemplate', 'TemplateGeneric'
+		);
+		
+		$this->field_names = array (
+				_("Icon"),
+				_("Dateiname"),
+				_("Beschreibung"),
+				_("Datum"),
+				_("Gr&ouml;&szlig;e"),
+				_("Upload durch")
 		);
 		
 		parent::ExternModule($range_id, $module_name, $config_id, $set_config, $global_id);
@@ -111,6 +119,7 @@ class ExternModuleTemplateDownload extends ExternModule {
 		$markers['TemplateGeneric'][] = array('###TITLEREAR###', '');
 		$markers['TemplateGeneric'][] = array('###PERSONDETAIL-HREF###', '');
 		$markers['TemplateGeneric'][] = array('###USERNAME###', '');
+		$this->insertDatafieldMarkers('user', $markers, 'TemplateGeneric');
 		$markers['TemplateGeneric'][] = array('###FILE_HREF###', '');
 		$markers['TemplateGeneric'][] = array('###FILE_ICON-HREF###', '');
 		$markers['TemplateGeneric'][] = array('<!-- BEGIN PERSONDETAIL-LINK -->');
@@ -126,21 +135,6 @@ class ExternModuleTemplateDownload extends ExternModule {
 		$markers['TemplateGeneric'][] = array('<!-- END DOWNLOAD -->', '');
 	
 		return $markers[$element_name];
-	}
-	
-	function updateGenericDatafields ($element_name, $object_type) {
-		$datafields_config = $this->config->getValue($element_name, 'genericdatafields');
-		if (!is_array($datafields_config)) {
-			$datafields_config = array();
-		}
-		$datafields = get_generic_datafields($object_type);
-		foreach ($datafields['ids'] as $df) {
-			if (!in_array($df, $datafields_config)) {
-				$datafields_config[] = $df;
-			}
-		}
-		$this->config->setValue($element_name, 'genericdatafields', $datafields_config);
-		$this->config->store();
 	}
 	
 	function checkRangeId ($range_id) {
@@ -193,6 +187,9 @@ class ExternModuleTemplateDownload extends ExternModule {
 		if (!$nameformat = $this->config->getValue('Main', 'nameformat')) {
 			$nameformat = 'no_title_short';
 		}
+		
+		// generic data fields
+		$generic_datafields = $this->config->getValue('TemplateGeneric', 'genericdatafields');
 		
 		$folder_tree =& TreeAbstract::GetInstance('StudipDocumentTree', array('range_id' => $seminar_id));
 		$allowed_folders = $folder_tree->getReadableFolders('nobody');
@@ -282,6 +279,22 @@ class ExternModuleTemplateDownload extends ExternModule {
 					$content['FILES']['FILE'][$i]['PERSONDETAIL-LINK']['LINK_TITLEFRONT'] = ExternModule::ExtHtmlReady($db->f('title_front'));
 					$content['FILES']['FILE'][$i]['PERSONDETAIL-LINK']['LINK_TITLEREAR'] = ExternModule::ExtHtmlReady($db->f('title_rear'));
 				}
+				
+				// generic data fields
+				if (is_array($generic_datafields)) {
+					$localEntries = DataFieldEntry::getDataFieldEntries($db_out->f('user_id'), 'user');
+					$k = 1;
+					foreach ($generic_datafields as $datafield) {
+						if (isset($localEntries[$datafield]) && is_object($localEntries[$datafield])) {
+							$localEntry = trim($localEntries[$datafield]->getDisplayValue());
+							if ($localEntry) {
+								$content['FILES']['FILE'][$i]['DATAFIELD_' . $k] = ExternModule::ExtFormatReady($localEntry, TRUE, TRUE);
+							}
+						}
+						$k++;
+					}
+				}
+				
 				$i++;
 			}
 		}
