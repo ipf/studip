@@ -194,7 +194,7 @@ input, textarea {
 }
 
 table.logintable {background-image: url('../images/login.jpg');}
-td.indexpage {background-image: url('../images/indexpage.jpg'); text-align:left;}
+td.indexpage {background: white url('../images/indexpage.jpg') no-repeat; text-align:left;}
 
 .mainmenu {margin-top: 7px; text-align:left;}
 
