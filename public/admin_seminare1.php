@@ -698,7 +698,7 @@ if ($s_send) {
     {
     	$update_data['Untertitel'] = $Untertitel;
     }
-	
+
 	if (!$lockdata[$lock_status]['status'])
     {
     	$update_data['status'] = $Status;
@@ -733,7 +733,7 @@ if ($s_send) {
     {
     	$update_data['lernorga'] = $lernorga;
     }
-	
+
 	if (!$lockdata[$lock_status]['leistungsnachweis'])
     {
     	$update_data['leistungsnachweis'] = $leistungsnachweis;
@@ -953,12 +953,12 @@ if (($s_id) && (auth_check())) {
 	parse_msg($msg);
 	?>
 	</td></tr><tr><td class="blank" colspan=2>
-	<table border=0 align="center" cellspacing=0 cellpadding=2 width="99%">
 	<?
 
 	// ab hier Anzeigeroutinen ///////////////////////////////////////////////
 	echo "<form name=\"details\" method=\"post\" action=\"$PHP_SELF#anker\">";
 	?>
+	<table border=0 align="center" cellspacing=0 cellpadding=2 width="99%">
 		<input type="hidden" name="s_id"   value="<?php $db->p("Seminar_id") ?>">
 			<tr>
 				<td class="<? echo $cssSw->getClass() ?>" align="center" colspan=3>
@@ -1588,8 +1588,8 @@ if (($s_id) && (auth_check())) {
 				<input type="hidden" name="s_send" value="TRUE">
 				</td>
 			</tr>
-		</form>
-	</table>
+		</table>
+	</form>
 	</td></tr>
 	<tr><td class="blank" colspan=2>&nbsp;</td></tr>
 	<?
