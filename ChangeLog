@@ -1,3 +1,137 @@
+19.09.2008 v 1.7.1
+r9651: BIEST00380: merge [9650]
+   M /lib/classes/Config.class.php
+r9657: svnmerge from trunk
+   M /lib/calendar/calendar.inc.php
+   M /lib/calendar/calendar_settings.inc.php
+   M /lib/calendar/lib/sync/CalendarWriterICalendar.class.php
+   M /lib/calendar/views/bind.inc.php
+   M /lib/calendar/views/day.inc.php
+   M /lib/calendar/views/edit.inc.php
+   M /lib/calendar/views/export.inc.php
+   M /lib/calendar/views/month.inc.php
+   D /lib/calendar/views/navigation.inc.php
+   M /lib/calendar/views/week.inc.php
+   M /lib/calendar/views/year.inc.php
+   M /lib/include/links_sms.inc.php
+   M /public/calendar.php
+r9665: svnmerge 9664: never set empty title for scm page, fixes #67
+   M /public/scm.php
+r9691: svnmerge 9689: security fixes
+   A /config/init_config_arrays.inc.php (von /trunk/config/init_config_arrays.inc.php:9689)
+   M /lib/calendar/calendar.inc.php
+   M /lib/calendar/views/insert_date_popup.php
+   M /lib/include/messagingSettings.inc.php
+   M /lib/object.inc.php
+   M /lib/phplib/prepend4.php
+   M /lib/phplib_local.inc.php
+   M /public/forum.php
+r9693: svnmerge 9690-9692: make view=reset work again, if you do this, do it correctly...
+   M /public/forum.php
+r9708: svnmerge 9707: bugfix Zusatzangaben
+   M /public/seminar_main.php
+r9743: merge fix for PluginNavigation, re #75
+   M /lib/plugins/core/AbstractStudIPLegacyPlugin.class.php
+   M /lib/plugins/core/PluginNavigation.class.php
+   M /lib/plugins/engine/PluginEngine.class.php
+   M /public/meine_seminare.php
+r9750: branch 1.7, fixed #84
+   M /public/admin_modules.php
+r9751:&nbsp; entfernt. zerlegen mal wieder das oldenburger layout. langfristiges ziel durch ein lifter: alle &nbsp; entfernen
+   M /lib/showNews.inc.php
+r9757: svnmerge 9756: fixes #85
+   M /public/meine_seminare.php
+r9783: merge fix for #91
+   M /lib/show_dates.inc.php
+r9814: merge URLHelper into source:branches/1.7 as requested
+   A /lib/classes/URLHelper.php (von /trunk/lib/classes/URLHelper.php:9597)
+   M /lib/phplib_local.inc.php
+r9826: merge fixes for #104 and #105
+   M /config/config_local.inc.php.dist
+   M /lib/evaluation/classes/EvaluationTreeShowUser.class.php
+   M /public/image_proxy.php
+   M /public/show_evaluation.php
+r9843: merge fix for #108
+   M /lib/plugins/core/AbstractStudIPHomepagePlugin.class.php
+r9844: merge fix for #101
+   M /public/sem_verify.php
+r9848: svnmerge 9847: fixes #63 and #110
+   M /lib/export/export_studipdata_func.inc.php
+r9874: svnmerge 9873: fixes #114
+   M /public/new_user_md5.php
+r9982: svnmerge 9981: bugfix: warteliste bei los als csv
+   M /public/show_admission.php
+r10005: svnmerge 10002-10004: bugfixes lockrules, bugfix: Button für prozentuale Kontingentierung ausblenden, wenn Anmeldeverfahren eingeschaltet, Passwortfelder umbenennen, fixes #154
+   M /lib/include/admin_lock_adjust.inc.php
+   M /lib/include/links_admin.inc.php
+   M /public/admin_admission.php
+   M /public/admin_aux.php
+   M /public/admin_lock.php
+   M /public/admin_lock_adjust.php
+   M /public/admin_seminare1.php
+   M /public/edit_about.php
+   M /public/teilnehmer_aux.php
+r10038: add missing check for $this->validate_url, fixed on trunk as part of [10029]
+   M /lib/classes/auth_plugins/StudipAuthShib.class.php
+r10045: svnmerge 10043-10044: fixed #79, corrected typo, refs #150
+   M /lib/classes/Avatar.class.php
+   M /lib/classes/UserManagement.class.php
+r10053: merge fix for #163
+   M /config/config_local.inc.php.dist
+   M /lib/extern/modules/ExternModuleTemplateDownload.class.php
+r10056: merge fix for #151
+   M /config/config_local.inc.php.dist
+   M /lib/classes/HeaderController.class.php
+   M /lib/include/html_head.inc.php
+   M /lib/include/reiter.inc.php
+   M /lib/visual.inc.php
+   M /public/archiv_assi.php
+   M /public/dispatch.php
+   M /public/index.php
+   M /public/institut_main.php
+   M /public/seminar_main.php
+r10061: svnmerge 10060: don't terminate cli scripts on php warnings
+   M /cli/studip_cli_env.inc.php
+r10063: svnmerge 10062: add new method getPluginURL() to get an absolute URL to the plugin, fixes #120
+   M /lib/include/html_head.inc.php
+   M /lib/plugins/core/AbstractStudIPPlugin.class.php
+   M /lib/plugins/core/AbstractStudIPStandardPlugin.class.php
+   M /public/plugins_packages/core/PluginAdministrationVisualization.class.php
+r10117: svnmerge 10109-10110: convert errors to exceptions, refs #175, refactored image upload, refs #150
+   M /lib/classes/Avatar.class.php
+r10118: svnmerge 10111: checking for existence of constant, refs #175
+   M /lib/classes/Avatar.class.php
+r10120: fixed BIEST162
+   M /lib/extern/modules/ExternModuleTemplateDownload.class.php
+   M /local-branches/goe/1.7/lib/extern/modules/ExternModuleTemplateDownload.class.php
+   M /trunk/lib/extern/modules/ExternModuleTemplateDownload.class.php
+r10124: refs #177, merged r10123 to 1.7
+   M /public/blockveranstaltungs_assistent.php
+r10126: refs #178, merged r10125 to 1.7
+   M /public/admin_seminare_assi.php
+r10130: fixed BIEST162
+   M /lib/extern/modules/ExternModuleTemplateDownload.class.php
+   M /local-branches/goe/1.7/lib/extern/modules/ExternModuleTemplateDownload.class.php
+   M /trunk/lib/extern/modules/ExternModuleTemplateDownload.class.php
+r10133: svnmeerge 10077: using REQUEST_URI instead of PHP_INFO, fixes #168
+   M /public/dispatch.php
+r10156: merged r10153
+   M /lib/visual.inc.php
+   M /public/assets/stylesheets/style.css
+r10245: fixes #224 for 1.7
+   M /lib/raumzeit/CycleData.class.php
+r10272: svnmerge 10270: fixes #245
+   M /lib/extern/modules/ExternModuleTemplatePersondetails.class.php
+   M /lib/extern/modules/views/persondetails.inc.php
+r10273: prevent background on index page from repeating
+   M /public/assets/stylesheets/style.css
+r10405: svnmerge 10404: move form tags, closes #258
+   M /public/admin_seminare1.php
+r10494 svnmerge 10455-10460,10462-10481,10483-10485:fixing regression from #243,fixes #268
+   M /lib/classes/SemBrowse.class.php
+   M /public/request_new_password.php
+   M /templates/loginform.php
+
 18.04.2008 v 1.7.0
 - Stud.IP ist nun Shibboleth-Ready
 - Erweiterung der globalen Einstellungen um Regeln zur Sperrung von Veranstaltungsdaten
