@@ -1,4 +1,17 @@
-__08.04.2008 v 1.7.0__
+__22.09.2008 v 1.8__
+- Verwendung von trac für das Projektmanagement
+- Einführung von Nutzerdomänen
+- Erweiterung der Nutzerdaten- und Statusgruppenverwaltung
+- Admin-Link auf "Meine Seminare"
+- (leicht) verbesserte Forenssuche
+- Generische Datenfelder für Nutzer auf der Homepage verschieben
+- Stundenplan Take 2 (ausblenden von Terminen möglich)
+- Reorganisation des Upload-Verzeichnisses
+- Zip Download Beschränkung
+- Erweiterung Sperregeln / Umgang mit importierten Veranstaltungen
+- Vereinfachte eMail-Änderung (Aktivierungslink)
+
+__08.04.2008 v 1.7__
 - Stud.IP ist nun Shibboleth-Ready
 - Erweiterung der globalen Einstellungen um Regeln zur Sperrung von Veranstaltungsdaten
 - Zukünftig PDO als Standardmethode des Datenbankzugriffs
