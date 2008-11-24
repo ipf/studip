@@ -1325,8 +1325,11 @@ class Seminar {
 
 		/* Zeitfilter anwenden */
 		if ($raumzeitFilter == '') {
+			$raumzeitFilter = 'all';
+			/*
 			$raumzeitFilter = $semester->getCurrentSemesterData();
 			$raumzeitFilter = $raumzeitFilter['beginn'];
+			*/
 		}
 
 		if ($raumzeitFilter != 'all') {
