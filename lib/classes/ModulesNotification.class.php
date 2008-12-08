@@ -152,6 +152,7 @@ class ModulesNotification extends Modules {
 	
 	// only range = 'sem' is implemented
 	function getAllNotifications ($user_id = NULL) {
+		
 		if (is_null($user_id)) {
 			$user_id = $GLOBALS['user']->id;
 		}
@@ -166,14 +167,24 @@ class ModulesNotification extends Modules {
 		
 		$my_sem = array();
 		while ($this->db->next_record()){
-			$my_sem[$this->db->f('Seminar_id')] = array(
+			$seminar_id = $this->db->f('Seminar_id');
+			$modulesInt = $this->db->f('modules');
+			if( $modulesInt === null ){
+				$modulesInt = $this->getDefaultBinValue( $seminar_id , "sem" );
+			}
+			$modules = $this->generateModulesArrayFromModulesInteger( $modulesInt );
+			$my_sem[$seminar_id] = array(
 				//	'visitdate' => $this->db->f('visitdate'),
 					'name' => $this->db->f('Name'),
 					'chdate' => $this->db->f('chdate'),
 					'start_time' => $this->db->f('start_time'),
-					'modules' => $this->db->f('modules'),
+					'modules' => $modules,
+					'modulesInt' => $modulesInt,
 					'visitdate' => $this->db->f('visitdate'),
 					$this->db->f('modules'));
+			unset( $seminar_id );
+			unset( $modules );
+			unset( $modulesInt );
 		}
 		
 		$m_enabled_modules = $this->getGlobalEnabledNotificationModules('sem');
@@ -182,10 +193,12 @@ class ModulesNotification extends Modules {
 		foreach ($this->registered_notification_modules as $m_data) {
 			$m_extended += pow(2, $m_data['id']);
 		}
+
 		get_my_obj_values($my_sem, $user_id);
+		
 		$text = '';
 		foreach ($my_sem as $seminar_id => $s_data) {
-			$m_notification = ($s_data['modules'] + $m_extended)
+			$m_notification = ($s_data['$modulesInt'] + $m_extended)
 					& $m_all_notifications[$seminar_id];
 			$m_text = '';
 			foreach ($m_enabled_modules as $m_name => $m_data) {
@@ -202,7 +215,7 @@ class ModulesNotification extends Modules {
 		}
 		if ($text) {
 			$text = _("Diese Email wurde automatisch vom Stud.IP-System verschickt. Sie können auf diese Nachricht nicht antworten.")
-						. "\n" . _("Sie erhalten hiermit in regelmäßigen Abständen Informationen über Neuigkeiten und Änderungen in Ihren abonierten Veranstaltungen.")
+						. "\n" . _("Sie erhalten hiermit in regelmäßigen Abständen Informationen über Neuigkeiten und Änderungen in Ihren abonnierten Veranstaltungen.")
 						. "\n\n" . _("Über welche Inhalte Sie informiert werden wollen, können Sie hier einstellen:")
 						. "\n{$this->smtp->url}sem_notification.php"
 						. "\n" . $text
@@ -318,6 +331,15 @@ class ModulesNotification extends Modules {
 		} 
 		return $text;
 	}
+	
+	function generateModulesArrayFromModulesInteger( $bitmaskint ){
+		$array = array();
+		$bitmask = str_split( strrev( decbin( $bitmaskint ) ) );
+		foreach( $this->registered_modules as $name => $module ){
+			$array[ $name ] = ( $bitmask[ $module[ "id" ] ] == "1" );
+		}					
+		return $array;
+	}	
 	
 }
 ?>
