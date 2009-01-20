@@ -84,8 +84,8 @@ class PluginAdministrationVisualization extends AbstractStudIPPluginVisualizatio
 		?>
 			<tr>
 				<td width="35%" align="left"><?= $plugin->getPluginname() ?></td>
-				<td width="5%" align="left"><?= PluginEngine::getTypeOfPlugin($plugin) ?></td>
-				<td align="left"><img src="<?= $relativepath?>/img/haken.gif" border="0" /><?= _("Aktiviert") ?></td>
+				<td width="15%" align="left"><?= PluginEngine::getTypeOfPlugin($plugin) ?></td>
+				<td align="left"><?= Assets::img('haken_transparent.gif') ?><?= _("aktiviert") ?></td>
 			</tr>
 		<?php
 		}

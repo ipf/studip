@@ -97,8 +97,7 @@ class PluginAdministrationPlugin extends AbstractStudIPAdministrationPlugin{
 
 		// check if user has the permission to check in / update plugins
 		if (!$permission->hasRootPermission() && $permission->hasAdminPermission()){
-		   // show nothing
-		   // $this->pluginvis->showPluginList($pluginengine->getAllEnabledPlugins());
+		   $this->pluginvis->showPluginList($pluginengine->getAllEnabledPlugins());
 		   return;
 		}
 
