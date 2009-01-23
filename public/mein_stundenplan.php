@@ -128,7 +128,7 @@ if ($cmd == "add_entry") {
 
 // Virtuellen Stundenplaneintrag löschen
 if ($cmd == "delete_entry") {
-	$db->query("DELETE FROM seminar_user_schedule WHERE range_id = '$semid' AND user_id = '".$auth->auth['uid']."'");
+	$db->query("DELETE FROM seminar_user_schedule WHERE range_id = '$sem_id' AND user_id = '".$auth->auth['uid']."'");
 }
 
 // persoenlichen Eintrag wegloeschen
@@ -759,10 +759,18 @@ for ($i = $global_start_time; $i < $global_end_time+1; $i++) {
 						echo "color=\"#FFFFFF\"";
 					echo ">";
 					
+					//seminar id auf 32 zeichen kürzen
+					$id = substr($my_sems[$cc["seminar_id"]]["seminar_id"], 0, 32);
+					
 					if ($view == 'edit') {
 						if ($my_sems[$cc["seminar_id"]]["personal_sem"]) {
 							$link_img = 'trash.gif" ';
 							$link_cmd = 'delete';
+							$link_tp = tooltip(_("Diesen Termin löschen"));
+							
+						} else if($my_sems[$cc['seminar_id']]['virtual']){
+							$link_img = 'trash.gif" ';
+							$link_cmd = 'delete_entry';
 							$link_tp = tooltip(_("Diesen Termin löschen"));
 						} else {
 							if($my_schedule_settings['hidden'][$cc['seminar_id']]) {
@@ -775,8 +783,7 @@ for ($i = $global_start_time; $i < $global_end_time+1; $i++) {
 								$link_tp = tooltip(_("Diesen Termin ausblenden"));
 							}
 						}
-						
-						echo '<a style="float: right;" href="'. URLHelper::getLink('?view=edit&cmd='. $link_cmd .'&sem_id='. $my_sems[$cc["seminar_id"]]["seminar_id"]) . '">';
+						echo '<a style="float: right;" href="'. URLHelper::getLink('?view=edit&cmd='. $link_cmd .'&sem_id='.$id).'">';
 						echo '<img border=0 src="'. $GLOBALS['ASSETS_URL']. 'images/' .$link_img . $link_tp .'></a>';
 					}
 					
@@ -797,10 +804,9 @@ for ($i = $global_start_time; $i < $global_end_time+1; $i++) {
 					echo '</font></td></tr><tr><td class="blank">';
 					if ((!$my_sems[$cc["seminar_id"]]["personal_sem"]) && $view != 'print') {
 						if ($my_sems[$cc['seminar_id']]['virtual']) {
-							echo "<a href=\"". URLHelper::getLink('details.php?sem_id='.substr($my_sems[$cc["seminar_id"]]["seminar_id"], 0, 32)) ."\">";
+							echo "<a href=\"". URLHelper::getLink('details.php?sem_id='.$id)."\">";
 							echo "<FONT size=\"-1\" color=\"green\">";
 						} else {
-							$id = substr($my_sems[$cc["seminar_id"]]["seminar_id"], 0, 32);
 							if ($_REQUEST['inst_id']) {
 								echo '<a href="'. URLHelper::getLink('details.php?sem_id='.$id) .'">';
 							} else {
