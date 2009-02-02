@@ -102,7 +102,7 @@ function get_aux_data() {
 					}
 					$data[$db->f('user_id')]['entry'][$id] = $text;
 				} else {
-					$data[$db->f('user_id')]['entry'][$id] = htmlready($entry->getValue());
+					$data[$db->f('user_id')]['entry'][$id] = $entry->getValue();
 				}
 			}
 		}
@@ -166,7 +166,6 @@ function aux_csv() {
 	foreach ($aux_data['aux'] as $uid => $cur_user) {
 		$data .= '"'.$cur_user['fullname'].'"'.$sepp;
 		foreach ($aux_data['header'] as $showkey => $dontcare) {
-		//foreach ($cur_user['entry'] as $id => $value) {
 			$data .= '"'.$cur_user['entry'][$showkey].'"'.$sepp;
 		}
 
@@ -223,19 +222,18 @@ function aux_html() {
 	echo $zt->closeRow();
 
 	echo $zt->openHeaderRow();
-	echo $zt->cell('<font size="-2">Name</font>', array('align' => 'center', 'valign' => 'top'));
+	echo $zt->cell('<font size="-2">Name</font>', array('align' => 'left', 'valign' => 'top'));
 	foreach ($data['header'] as $id => $name) {
-		echo $zt->cell('<font size="-2">'.$name.'</font>', array('align' => 'left', 'valign' => 'top'));
+		echo $zt->cell('<font size="-2">'.htmlReady($name).'</font>', array('align' => 'left', 'valign' => 'top'));
 	}
 	echo $zt->closeRow();
 
 	// einzelne Nutzerdaten ausgeben
 	foreach ($data['aux'] as $uid => $cur_user) {
 		echo $zt->openRow();
-		echo $zt->cell('<font size="-2">&nbsp;<a href="'.URLHelper::getLink('about.php?username='.$cur_user['username']).'">'.$cur_user['fullname'].'</a></font>');
+		echo $zt->cell('<font size="-2">&nbsp;<a href="'.URLHelper::getLink('about.php?username='.$cur_user['username']).'">'.htmlReady($cur_user['fullname']).'</a></font>');
 		foreach ($data['header'] as $showkey => $dontcare) {
-		//foreach ($cur_user['entry'] as $id => $value) {
-			echo $zt->cell('<font size="-2">'. $cur_user['entry'][$showkey] . '</font>', array('align' => 'left'));
+			echo $zt->cell('<font size="-2">'. htmlReady($cur_user['entry'][$showkey]) . '</font>', array('align' => 'left'));
 		}
 		echo $zt->closeRow();
 	}
@@ -313,7 +311,7 @@ function aux_enter_data() {
 				$entry = $invalidEntries[$id];  // keep wrong entry to show it in corresponding form field
 			}
 			echo $zt->openRow();
-			$data = "<font color='$color'>&nbsp;" . $entry->getName() . "</font></b>";
+			$data = "<font color='$color'>&nbsp;" . htmlReady($entry->getName()) . "</font></b>";
 			echo $zt->cell($data);
 
 			$data = $entry->getHTML("datafields");
