@@ -1532,10 +1532,6 @@ if (($s_id) && (auth_check())) {
 						&& !$lockdata[$lock_status][$entry->structure->getID()])
 					{
 						print '&nbsp;&nbsp;' . $entry->getHTML('datafield_content[]', $entry->structure->getID());
-					?>
-					   <input type="hidden" name="datafield_id[]" value="<?=$entry->structure->getID()?>">
-					   <input type="hidden" name="datafield_type[]" value="<?=$entry->getType() ?>">
-					<?
 					}
 					else {
 							$input_field = $entry->getHTML('datafield_content[]', $entry->structure->getID());
@@ -1547,6 +1543,8 @@ if (($s_id) && (auth_check())) {
 			      <?
 					}
 					?>
+					   <input type="hidden" name="datafield_id[]" value="<?=$entry->structure->getID()?>">
+					   <input type="hidden" name="datafield_type[]" value="<?=$entry->getType() ?>">
 				</td>
 			</tr>
 			<?
