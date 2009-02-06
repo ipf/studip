@@ -1532,10 +1532,14 @@ if (($s_id) && (auth_check())) {
 						&& !$lockdata[$lock_status][$entry->structure->getID()])
 					{
 						print '&nbsp;&nbsp;' . $entry->getHTML('datafield_content[]', $entry->structure->getID());
+					?>
+					   <input type="hidden" name="datafield_id[]" value="<?=$entry->structure->getID()?>">
+					   <input type="hidden" name="datafield_type[]" value="<?=$entry->getType() ?>">
+					<?
 					}
 					else {
 							$input_field = $entry->getHTML('datafield_content[]', $entry->structure->getID());
-							$input_field_locked = preg_replace('/<input /', '<input disabled readonly ', $input_field);
+							$input_field_locked = preg_replace('/<(input|select|textarea) /', '<$1 disabled ', $input_field);
    					?>
 
 	   				<?= $input_field_locked ?><br />
@@ -1543,8 +1547,6 @@ if (($s_id) && (auth_check())) {
 			      <?
 					}
 					?>
-					   <input type="hidden" name="datafield_id[]" value="<?=$entry->structure->getID()?>">
-					   <input type="hidden" name="datafield_type[]" value="<?=$entry->getType() ?>">
 				</td>
 			</tr>
 			<?
