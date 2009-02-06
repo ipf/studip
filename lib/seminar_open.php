@@ -168,7 +168,7 @@ $i_query = explode('&',getenv("QUERY_STRING"));
 if ($SessionStart == 0) {
 	$SessionStart = time();
 	$SessionSeminar = '';
-	$SessSemName = '';
+	$SessSemName = array();
 	$sess->register("SessionStart");
 	$sess->register("SessionSeminar");
 	$sess->register("SessSemName");
@@ -233,6 +233,7 @@ $_language_path = init_i18n($_language);
 URLHelper::bindLinkParam('cid', $SessionSeminar);
 
 if (isset($SessionSeminar) && $SessionSeminar != '') {
-    selectSem($SessionSeminar) || selectInst($SessionSeminar);
+    $course_id = $SessionSeminar;
+    selectSem($course_id) || selectInst($course_id);
 }
 ?>
