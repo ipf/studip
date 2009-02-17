@@ -100,7 +100,6 @@ function scm_seminar_footer($table) {
 }
 
 function scm_change_header($table, $titel, $user_id, $chdate) {
-	$titel;
 	$zusatz = "<font size=-1>";
 	$zusatz .= sprintf(_("Zuletzt ge&auml;ndert von %s am %s"), "</font><a href=\"".URLHelper::getLink("about.php?username=".get_username($user_id))."\"><font size=-1 color=\"#333399\">".get_fullname ($user_id,'full',true)."</font></a><font size=-1>", date("d.m.Y, H:i",$chdate)."<font size=-1>&nbsp;"."</font>");
 	$icon="&nbsp;<img src=\"".$GLOBALS['ASSETS_URL']."images/cont_cont.gif\">";
@@ -140,7 +139,7 @@ function scm_show_content($range_id, $msg, $scm_id) {
 	}
 
 	if (!$scm->is_new) {
-		scm_change_header($content_table, $scm->getValue("tab_name"), $scm->getValue("user_id"), $scm->getValue("chdate"));
+		scm_change_header($content_table, htmlReady($scm->getValue("tab_name")), $scm->getValue("user_id"), $scm->getValue("chdate"));
 		echo $content_table->openRow();
 		echo $content_table->openCell();
 		$printcontent_table=new Table(array("width"=>"100%"));
