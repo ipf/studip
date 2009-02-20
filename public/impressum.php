@@ -87,11 +87,11 @@ $reiter=new reiter;
 //Topkats
 $structure = array();
 $structure["kontakt"]=array ("topKat"=>"", "name"=>_("Kontakt"), "link"=>"impressum.php?view=ansprechpartner", "active"=>FALSE);
-$structure["programm"]=array ("topKat"=>"", "name"=>_("&Uuml;ber Stud.IP"), "link"=>"impressum.php?view=technik", "active"=>FALSE);
+$structure["programm"]=array ("topKat"=>"", "name"=>_("Über Stud.IP"), "link"=>"impressum.php?view=technik", "active"=>FALSE);
 //Bottomkats
 $structure["ansprechpartner"]=array ("topKat"=>"kontakt", "name"=>_("Ansprechpartner"), "link"=>"impressum.php?view=ansprechpartner", "active"=>FALSE);
 if($GLOBALS['SHOW_TERMS_ON_FIRST_LOGIN'])
-	{$structure['terms']=array ('topKat'=>'kontakt', 'name'=>_("Datenschutzerkl&auml;rung"), "link"=>"impressum.php?view=terms", "active"=>FALSE);}
+	{$structure['terms']=array ('topKat'=>'kontakt', 'name'=>_("Datenschutzerklärung"), "link"=>"impressum.php?view=terms", "active"=>FALSE);}
 $structure["main"]=array ("topKat"=>"kontakt", "name"=>_("Entwickler"), "link"=>"impressum.php?view=main", "active"=>FALSE);
 $structure["technik"]=array ("topKat"=>"programm", "name"=>_("Technik"), "link"=>"impressum.php?view=technik", "active"=>FALSE);
 $structure["statistik"]=array ("topKat"=>"programm", "name"=>_("Statistik"), "link"=>"impressum.php?view=statistik", "active"=>FALSE);
@@ -110,7 +110,8 @@ $reiter->create($structure, $view);
 
 
 <?php
-     if ($view=="main") {
+if ($view=="main") {
+	$developer = array();
 	$developer[] = array('Marco Bohnsack', 'bohnsack@data-quest.de', _("(Projektmanagement, Hilfe)"));
 	$developer[] = array('Thomas Hackl', 'thomas.hackl@uni-passau.de', _("(Typo3-Anbindung)"));
 	$developer[] = array('Cornelis Kater', 'info@ckater.de', _("(Ressourcenverwaltung, Terminverwaltung, Adminbereich, Design)"));
