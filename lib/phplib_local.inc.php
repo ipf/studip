@@ -258,15 +258,10 @@ class Seminar_Session extends Session {
 	 * @return string
 	 */
 	function get_ticket(){
-		global $sess, $last_ticket;
 		static $studipticket;
-		if (!$sess->is_registered('last_ticket')){
-			$sess->register('last_ticket');
-		}
 		if (!$studipticket){
-			$studipticket = $last_ticket = md5(uniqid('studipticket',1));
+			$studipticket = $_SESSION['last_ticket'] = md5(uniqid('studipticket',1));
 		}
-
 		return $studipticket;
 	}
 	
@@ -279,13 +274,8 @@ class Seminar_Session extends Session {
 	 * @return bool
 	 */
 	function check_ticket($studipticket){
-		global $sess, $last_ticket;
-		if (!$sess->is_registered('last_ticket')){
-			$sess->register('last_ticket');
-			$last_ticket = null;
-		}
-		$check = ($last_ticket && $last_ticket == $studipticket);
-		$last_ticket = null;
+		$check = (isset($_SESSION['last_ticket']) && $_SESSION['last_ticket'] == $studipticket);
+		$_SESSION['last_ticket'] = null;
 		return $check;
 	}
 
