@@ -26,7 +26,6 @@ class AbstractStudIPStandardPlugin extends AbstractStudIPLegacyPlugin{
 		parent::AbstractStudIPLegacyPlugin();
 		$this->pluginiconname = "";
 		$this->changeindicatoriconname = "";
-		$this->id = UNKNOWN_ID;
 		$this->overview = false;
 		$this->pluginengine = PluginEngine::getPluginPersistence("Standard");
 		// create the standard AdminInfo
@@ -49,11 +48,10 @@ class AbstractStudIPStandardPlugin extends AbstractStudIPLegacyPlugin{
 	}
 
 	function getId() {
-		if ($this->id === UNKNOWN_ID) {
+		if ($this->id === NULL) {
 			$this->id = $_SESSION['SessSemName'][1];
 		} else {
-			$this->id = trim(str_replace($_SESSION["SessSemName"]["class"],
-			                             '', $this->id));
+			$this->id = str_replace($_SESSION["SessSemName"]["class"], '', $this->id);
 	 	}
 		return $this->id;
 	}
