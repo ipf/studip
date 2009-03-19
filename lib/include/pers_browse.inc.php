@@ -139,7 +139,7 @@ print "\n<td class=steel1 align=\"right\" width=\"15%\">" . _("inaktiv:") . " </
 print "\n<td class=steel1 align=\"left\" width=\"10%\">";
 	crit_select("pers_browse_crit",$pers_browse_old['crit']);
 print "</td>";
-print "\n<td class=steel1 align=\"left\" width=\"25%\"><input name=\"pers_browse_changed\" type=\"text\" value=\"$pers_browse_old[changed]\" size=10 maxlength=50> Tage</td></tr>\n";
+print "\n<td class=steel1 align=\"left\" width=\"25%\"><input name=\"pers_browse_changed\" type=\"text\" value=\"$pers_browse_old[changed]\" size=10 maxlength=50> "._('Tage')."</td></tr>\n";
 print "\n<tr><td class=steel1>&nbsp</td><td class=steel1 align=\"left\"><input type=\"IMAGE\" " . makeButton("suchestarten", "src") .  tooltip(_("Suche starten")) . " border=0><input type=\"HIDDEN\" name=\"pers_browse_search\" value=\"TRUE\"></td>\n";
 print "\n<td class=steel1>&nbsp</td><td class=steel1 colspan=2 align=\"left\"><a href=\"$PHP_SELF?pers_browse_clear=TRUE\"" . tooltip(_("Formular zurücksetzen")) . ">" . makeButton("zuruecksetzen", "img") . "</a></td></tr>\n";
 

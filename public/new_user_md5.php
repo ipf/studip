@@ -628,7 +628,7 @@ if (isset($_GET['details'])) {
 				<th align="left"><a href="<?=URLHelper::getLink('?sortby=Vorname')?>"><?=_("Vorname")?></a></th>
 				<th align="left"><a href="<?=URLHelper::getLink('?sortby=Nachname')?>"><?=_("Nachname")?></a></th>
 				<th align="left"><a href="<?=URLHelper::getLink('?sortby=Email')?>"><?=_("E-Mail")?></a></th>
-				<th><a href="<?=URLHelper::getLink('?sortby=changed')?>"><?=_("inaktiv")?></a></th>
+				<th align="right"><a href="<?=URLHelper::getLink('?sortby=changed')?>"><?=_("inaktiv")?></a></th>
 				<th><a href="<?=URLHelper::getLink('?sortby=mkdate')?>"><?=_("registriert seit")?></a></th>
 				<th><a href="<?=URLHelper::getLink('?sortby=auth_plugin')?>"><?=_("Authentifizierung")?></a></th>
 			 </tr>
@@ -637,9 +637,11 @@ if (isset($_GET['details'])) {
 			while ($db->next_record()):
 				if ($db->f("changed_compat") != "") {
 					$stamp = mktime(substr($db->f("changed_compat"),8,2),substr($db->f("changed_compat"),10,2),substr($db->f("changed_compat"),12,2),substr($db->f("changed_compat"),4,2),substr($db->f("changed_compat"),6,2),substr($db->f("changed_compat"),0,4));
-					$inactive = floor((time() - $stamp) / 3600 / 24).'d';
-					if($inactive == 0){
-						$inactive = gmdate('H\hi\ms\s', (time() - $stamp));
+					$inactive = time() - $stamp;
+					if ($inactive < 3600 * 24) {
+						$inactive = gmdate('H:i:s', $inactive);
+					} else {
+						$inactive = floor($inactive / (3600 * 24)).' '._('Tage');
 					}
 				} else {
 					$inactive = _("nie benutzt");
@@ -657,8 +659,8 @@ if (isset($_GET['details'])) {
 					<td class="<? echo $cssSw->getClass() ?>"><?=htmlReady($db->f("Vorname")) ?>&nbsp;</td>
 					<td class="<? echo $cssSw->getClass() ?>"><?=htmlReady($db->f("Nachname")) ?>&nbsp;</td>
 					<td class="<? echo $cssSw->getClass() ?>"><?=htmlReady($db->f("Email"))?></td>
-					<td class="<? echo $cssSw->getClass() ?>" align="center"><?php echo $inactive ?></td>
-					<td class="<? echo $cssSw->getClass() ?>" align="center"><? if ($db->f("mkdate")) echo date("d.m.y, G:i", $db->f("mkdate")); else echo _("unbekannt"); ?></td>
+					<td class="<? echo $cssSw->getClass() ?>" align="right"><?php echo $inactive ?></td>
+					<td class="<? echo $cssSw->getClass() ?>" align="center"><? if ($db->f("mkdate")) echo date("d.m.y, H:i", $db->f("mkdate")); else echo _("unbekannt"); ?></td>
 					<td class="<? echo $cssSw->getClass() ?>" align="center"><?=($db->f("auth_plugin") ? $db->f("auth_plugin") : "Standard")?></td>
 				</tr>
 				<?
