@@ -302,6 +302,7 @@ function quotes_encode ($description,$author) {
 		$postmp = strpos($description,"%%[editiert von");
 		$description = substr_replace($description," ",$postmp);
 		}
+	/* quote reduction deactivated (cf. http://develop.studip.de/trac/ticket/208 ) 
 	while (ereg("\[quote",$description) AND ereg("\[/quote\]",$description)){ // da wurde schon mal zitiert...
 		$pos1 =         strpos($description, "[quote");
 		$pos2 =         strpos($description, "[/quote]");
@@ -309,6 +310,7 @@ function quotes_encode ($description,$author) {
 			$description = substr($description,0,$pos1)."[...]".substr($description,$pos2+8);
 		else break; // hier hat einer von Hand rumgepfuscht...
 		}
+	*/
 	$description = "[quote=".$author."]\n".$description."\n[/quote]";
 	return $description;
 }
@@ -537,6 +539,7 @@ function _real_format($text) {
 					"'(\n|\A)(([-=]+ .+(\n|\Z))+)'e",    // Listen
                                         "'(\n|\A)((\\|.+(\n|\Z))+)'e",    // Tabellen
 					"'%%(.+?)%%'s",               // ML-kursiv
+					"'\[admin_msg\](.+?)\[/admin_msg\]'s",               // ML-kursiv (für Forum-Edits)
 					"'\*\*(.+?)\*\*'s",           // ML-fett
 					"'__(.+?)__'s",                     // ML-unterstrichen
 					"'##(.+?)##'s",                     // ML-diktengleich
@@ -564,6 +567,7 @@ function _real_format($text) {
 					"\n<h1 class=\"content\">\\2</h1>",
 					"preg_call_format_list('\\2')",
 					"preg_call_format_table('\\2')",
+					"<i>\\1</i>",
 					"<i>\\1</i>",
 					"<b>\\1</b>",
 					"<u>\\1</u>",
@@ -953,10 +957,11 @@ function preg_call_link ($params, $mod, $img, $extern = FALSE, $wiki = FALSE) {
 		}
 
 	} elseif ($mod == 'MAIL') {
+		$mailtolink=preg_replace("/&quot;/","",idna_link($params[1],true));
 		if ($params[0] != '')
-			$tbr = '<a href="mailto:'.idna_link($params[1], true). "\">$link_pic{$params[0]}</a>";
+			$tbr = '<a href="mailto:'.$mailtolink. "\">$link_pic{$params[0]}</a>";
 		else
-			$tbr = '<a href="mailto:'.idna_link($params[1], true)."\">$link_pic{$params[1]}</a>";
+			$tbr = '<a href="mailto:'.$mailtolink."\">$link_pic{$params[1]}</a>";
 	}
 	if ($wiki) $tbr = '<nowikilink>'.$tbr.'</nowikilink>';
 	return $tbr;

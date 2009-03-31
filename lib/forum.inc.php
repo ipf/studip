@@ -34,6 +34,7 @@
 // +---------------------------------------------------------------------------+
 
 require_once 'lib/classes/Avatar.class.php';
+require_once 'lib/classes/Modules.class.php';
 
 /**
  * deletes the edit-string from content
@@ -75,7 +76,8 @@ function forum_append_edit ($description) {
 function forum_parse_edit ($description) {
 	if (preg_match('/^.*(<admin_msg.*?)$/s',$description, $match)) { // wurde schon mal editiert
 		$tmp = explode('"',$match[1]);
-		$append = "\n\n%%["._("Zuletzt editiert von"). ' '.$tmp[1]." - ".date ("d.m.y - H:i", $tmp[3])."]%%";
+		// use special markup [admin_msg]. (cf. http://develop.studip.de/trac/ticket/335 ) 
+		$append = "\n\n[admin_msg]["._("Zuletzt editiert von"). ' '.$tmp[1]." - ".date ("d.m.y - H:i", $tmp[3])."][/admin_msg]";
 		$description = forum_kill_edit($description) . $append;
 	}
 	return $description;
@@ -869,29 +871,29 @@ function forum_print_toolbar ($id="") {
 			if ($forum["view"] != "tree" && $forum["view"] != "mixed")
 				$print .= "<form name=\"sortierung\" method=\"post\" action=\"".URLHelper::getLink("#anker")."\">";
 			$print .= "<table class=\"blank\" width=\"100%\" border=0 cellpadding=0 cellspacing=0><tr><td class=\"blank\">&nbsp;</td></tr><tr>";
-			$print .= "<td class=\"steelkante2\" valign=\"middle\"><img src=\"".$GLOBALS['ASSETS_URL']."images/blank.gif\" height=\"22\" width=\"5\"></td>";
-			$print .= "<td class=\"steelkante2\" valign=\"middle\"><font size=\"-1\">"._("Indikator:")."&nbsp;</font>";
+			$print .= "<td class=\"steelkante\" valign=\"middle\"><img src=\"".$GLOBALS['ASSETS_URL']."images/blank.gif\" height=\"22\" width=\"5\"></td>";
+			$print .= "<td class=\"steelkante\" valign=\"middle\"><font size=\"-1\">"._("Indikator:")."&nbsp;</font>";
 
 			if ($forum["indikator"] == "age")
 				$print .=  "</td><td nowrap class=\"steelgraulight_shadow\" valign=\"middle\">&nbsp;<img src=\"".$GLOBALS['ASSETS_URL']."images/forumrot_indikator.gif\" align=\"absmiddle\"><font size=\"-1\">".$indexvars["age"]["name"]." </font>&nbsp;";
 			else
-				$print .=  "</td><td nowrap class=\"steelkante2\" valign=\"middle\">&nbsp;<a href=\"".URLHelper::getLink("?flatviewstartposting=$flatviewstartposting&open=$open&indikator=age")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/forum_indikator_grau.gif\" border=\"0\" align=\"absmiddle\"><font size=\"-1\" color=\"#555555\">".$indexvars["age"]["name"]."</font></a> &nbsp;";
+				$print .=  "</td><td nowrap class=\"steelkante\" valign=\"middle\">&nbsp;<a href=\"".URLHelper::getLink("?flatviewstartposting=$flatviewstartposting&open=$open&indikator=age")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/forum_indikator_grau.gif\" border=\"0\" align=\"absmiddle\"><font size=\"-1\" color=\"#555555\">".$indexvars["age"]["name"]."</font></a> &nbsp;";
 			if ($forum["indikator"] == "viewcount")
 				$print .=  "</td><td nowrap class=\"steelgraulight_shadow\" valign=\"middle\">&nbsp;<img src=\"".$GLOBALS['ASSETS_URL']."images/forum_indikator_gruen.gif\" align=\"absmiddle\"><font size=\"-1\">".$indexvars["viewcount"]["name"]." </font>&nbsp;";
 			else
-				$print .=  "</td><td nowrap class=\"steelkante2\" valign=\"middle\">&nbsp;<a href=\"".URLHelper::getLink("?flatviewstartposting=$flatviewstartposting&open=$open&indikator=viewcount")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/forum_indikator_grau.gif\" border=\"0\" align=\"absmiddle\"><font size=\"-1\" color=\"#555555\">".$indexvars["viewcount"]["name"]."</font></a> &nbsp;";
+				$print .=  "</td><td nowrap class=\"steelkante\" valign=\"middle\">&nbsp;<a href=\"".URLHelper::getLink("?flatviewstartposting=$flatviewstartposting&open=$open&indikator=viewcount")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/forum_indikator_grau.gif\" border=\"0\" align=\"absmiddle\"><font size=\"-1\" color=\"#555555\">".$indexvars["viewcount"]["name"]."</font></a> &nbsp;";
 			if ($forum["indikator"] == "rating")
 				$print .=  "</td><td nowrap class=\"steelgraulight_shadow\" valign=\"middle\">&nbsp;<img src=\"".$GLOBALS['ASSETS_URL']."images/forum_indikator_gelb.gif\" align=\"absmiddle\"><font size=\"-1\">".$indexvars["rating"]["name"]." </font>&nbsp;";
 			else
-				$print .=  "</td><td nowrap class=\"steelkante2\" valign=\"middle\">&nbsp;<a href=\"".URLHelper::getLink("?flatviewstartposting=$flatviewstartposting&open=$open&indikator=rating")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/forum_indikator_grau.gif\" border=\"0\" align=\"absmiddle\"><font size=\"-1\" color=\"#555555\">".$indexvars["rating"]["name"]."</font></a> &nbsp;";
+				$print .=  "</td><td nowrap class=\"steelkante\" valign=\"middle\">&nbsp;<a href=\"".URLHelper::getLink("?flatviewstartposting=$flatviewstartposting&open=$open&indikator=rating")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/forum_indikator_grau.gif\" border=\"0\" align=\"absmiddle\"><font size=\"-1\" color=\"#555555\">".$indexvars["rating"]["name"]."</font></a> &nbsp;";
 			if ($forum["indikator"] == "score")
 				$print .=  "</td><td nowrap class=\"steelgraulight_shadow\" valign=\"middle\">&nbsp;<img src=\"".$GLOBALS['ASSETS_URL']."images/forum_indikator_blau.gif\" align=\"absmiddle\"><font size=\"-1\">".$indexvars["score"]["name"]." </font>&nbsp;";
 			else
-				$print .=  "</td><td nowrap class=\"steelkante2\" valign=\"middle\">&nbsp;<a href=\"".URLHelper::getLink("?flatviewstartposting=$flatviewstartposting&open=$open&indikator=score")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/forum_indikator_grau.gif\" border=\"0\" align=\"absmiddle\"><font size=\"-1\" color=\"#555555\">".$indexvars["score"]["name"]."</font></a> &nbsp;";
+				$print .=  "</td><td nowrap class=\"steelkante\" valign=\"middle\">&nbsp;<a href=\"".URLHelper::getLink("?flatviewstartposting=$flatviewstartposting&open=$open&indikator=score")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/forum_indikator_grau.gif\" border=\"0\" align=\"absmiddle\"><font size=\"-1\" color=\"#555555\">".$indexvars["score"]["name"]."</font></a> &nbsp;";
 
 			if ($forum["view"] != "tree" && $forum["view"] != "mixed") { // Anzeige der Sortierung nicht in der Themenansicht
-				$print .= "</td><td nowrap class=\"steelkante2\" valign=\"middle\">&nbsp;|&nbsp;&nbsp;<font size=\"-1\">Sortierung:&nbsp;&nbsp;</font>";
-				$print .= "</td><td nowrap class=\"steelkante2\" valign=\"middle\"><select name=\"sort\" size=\"1\">";
+				$print .= "</td><td nowrap class=\"steelkante\" valign=\"middle\">&nbsp;|&nbsp;&nbsp;<font size=\"-1\">Sortierung:&nbsp;&nbsp;</font>";
+				$print .= "</td><td nowrap class=\"steelkante\" valign=\"middle\"><select name=\"sort\" size=\"1\">";
 				$tmp["age"] = "Alter";
 				$tmp["viewcount"] = $indexvars["viewcount"]["name"];
 				$tmp["rating"] = $indexvars["rating"]["name"];
@@ -1841,6 +1843,7 @@ function forum_move_navi ($topic_id) {
 	$mutter = suche_kinder($topic_id);
 	$mutter = explode (";",$mutter);
 	$count = sizeof($mutter)-2;
+	$check_modules = new Modules;
 
 	// wohin darf ich schieben? Abfragen je nach Rechten
 
@@ -1886,9 +1889,11 @@ function forum_move_navi ($topic_id) {
 					<input type="image" name="SUBMIT" value="Verschieben" src="<?= $GLOBALS['ASSETS_URL'] ?>images/move.gif" border="0" <?=tooltip(_("dahin verschieben"))?>>&nbsp;
 					<select Name="sem_id" size="1">
 			<?		while ($db->next_record()) {
-						$sem_name=htmlReady(substr($db->f("Name"), 0, 50));
-						printf ("<option %s value=\"%s\">%s\n", $db->f("Seminar_id") == $SessSemName[1] ? "selected" : "", $db->f("Seminar_id"), $sem_name);
-					}
+							if ($check_modules->checkLocal('forum',$db->f("Seminar_id"),'sem')) {
+								$sem_name=htmlReady(substr($db->f("Name"), 0, 50));
+								printf ("<option %s value=\"%s\">%s\n", $db->f("Seminar_id") == $SessSemName[1] ? "selected" : "", $db->f("Seminar_id"), $sem_name);
+							}
+						}
 			?>	</select>
 					<input type="HIDDEN" name="target" value="Seminar">
 					<input type="HIDDEN" name="topic_id" value="<?echo $topic_id;?>">
@@ -1908,9 +1913,11 @@ function forum_move_navi ($topic_id) {
 					<input type=image name="SUBMIT" value="Verschieben" src="<?= $GLOBALS['ASSETS_URL'] ?>images/move.gif" border=0 <?=tooltip(_("dahin verschieben"))?>>&nbsp;
 			  	<select Name="inst_id" size="1">
 			<?		while ($db2->next_record()) {
-						$inst_name=htmlReady(substr($db2->f("Name"), 0, 50));
-						printf ("<option value=\"%s\">%s\n", $db2->f("Institut_id"), $inst_name);
-					}
+							if ($check_modules->checkLocal('forum',$db2->f("Institut_id"),'inst')) {
+								$inst_name=htmlReady(substr($db2->f("Name"), 0, 50));
+								printf ("<option value=\"%s\">%s\n", $db2->f("Institut_id"), $inst_name);
+							}
+						}
 			?>	</select>
 					<input type="HIDDEN" name="target" value="Institut">
 					<input type="HIDDEN" name="topic_id" value="<?echo $topic_id;?>">
