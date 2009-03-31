@@ -7,6 +7,7 @@
       <base href="<?= $GLOBALS['ABSOLUTE_URI_STUDIP'] ?>">
     <? endif ?>
     <? if (basename($_SERVER['SCRIPT_NAME']) !== 'logout.php' &&
+           $auth->auth["uid"] !== "" && $auth->auth["uid"] !== "nobody" && $auth->auth["uid"] !== "form" &&
            $GLOBALS['AUTH_LIFETIME'] > 0) : ?>
       <meta http-equiv="REFRESH" CONTENT="<?= $GLOBALS['AUTH_LIFETIME'] * 60 ?>; URL=<?= $GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'] ?>logout.php">
     <? endif ?>

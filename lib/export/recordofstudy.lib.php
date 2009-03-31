@@ -55,6 +55,7 @@ function printSelectSemester($infobox,$semestersAR){
 		  . "   <table align=\"center\" width=\"99%\" class=\"blank\" border=\"0\" cellpadding=\"0\" cellspacing=0>\n"
 		  . "	 <tr>"
 		  . "	  <td align=\"left\" valign=\"top\"><font size=\"-1\">\n"
+		  . "<table>".parse_msg_to_string("info§".$GLOBALS['FDF_USAGE_HINT'])."</table>\n"
 		  . _("Bitte wählen sie ein Semster aus:")."\n"
 		  . "	   <form action=\"".$_SERVER['PHP_SELF']."\" method=post>\n"
 		  . "       &nbsp;<select name=\"semesterid\" style=\"vertical-align:middle;\">\n";
