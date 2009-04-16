@@ -66,7 +66,7 @@ $structure["online"]=array ("topKat"=>"", "name"=>_("Online"), "link"=>"online.p
 
 $structure["in"] = array ("topKat"=>"post", "name"=>_("empfangene"), "link"=>"sms_box.php?sms_inout=in", "active"=>FALSE);
 $structure["out"] = array ("topKat"=>"post", "name"=>_("gesendete"), "link"=>"sms_box.php?sms_inout=out", "active"=>FALSE);
-$structure["write"] = array ("topKat"=>"post", "name"=>_("Neue Nachricht schreiben"), "link"=>"sms_send.php", "active"=>FALSE);
+$structure["write"] = array ("topKat"=>"post", "name"=>_("Neue Nachricht schreiben"), "link"=>"sms_send.php?cmd=new", "active"=>FALSE);
 $structure["adjust"] = array ("topKat"=>"post", "name"=>_("Messaging anpassen"), "link"=>"".$GLOBALS['PHP_SELF']."?change_view=TRUE", "active"=>FALSE);
 $structure["online2"] = array ("topKat"=>"online", "name"=>_("Wer ist online?"), "link"=>"online.php", "active"=>FALSE);
 $structure["adjust_online"] = array ("topKat"=>"online", "name"=>_("Messaging anpassen"), "link"=>"".$GLOBALS['PHP_SELF']."?change_view=TRUE", "active"=>FALSE);
