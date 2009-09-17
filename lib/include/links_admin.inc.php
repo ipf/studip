@@ -853,7 +853,7 @@ if ($perm->have_perm("autor")) {	// Navigationsleiste ab status "Autor", autors 
 					<td class="steel1" colspan="5">
 						<br>&nbsp;<font size=-1>
 							<label>
-								<input type="checkbox" name="show_rooms_check" <?  if ($_REQUEST['show_rooms_check']) { echo " checked "; } ?> >&nbsp; <?=_("Raumdaten einblenden")?>
+								<input type="checkbox" name="show_rooms_check" value="on" <?  if ($_REQUEST['show_rooms_check'] == 'on') { echo " checked "; } ?> >&nbsp; <?=_("Raumdaten einblenden")?>
 							</label>
 						</font><br>
 					</td>
@@ -991,7 +991,7 @@ if ($perm->have_perm("autor")) {	// Navigationsleiste ab status "Autor", autors 
 					&nbsp; <a href="<?=URLHelper::getLink('?adminarea_sortby=Name'. $show_rooms_check_url)?>"><b><?=_("Name")?></b></a>
 				</td>
 				<? if ($show_rooms_check_url) : ?>
-				<td width="45%" class="steel" valign=bottom>
+				<td width="25%" class="steel" valign=bottom>
 					<img src="<?=$GLOBALS['ASSETS_URL']?>images/blank.gif" width=1 height=20>
 					<b><?=_("Raum")?></b></a>
 				</td>
@@ -1129,7 +1129,7 @@ if ($perm->have_perm("autor")) {	// Navigationsleiste ab status "Autor", autors 
 			}
 
 			// if "show room-data" is enabled
-			if (!$_REQUEST['show_rooms_check']) {
+			if (!show_rooms_check_url) {
 				$_room = "&nbsp;";
 			} else {
 				$_room = getRoomOverviewUnsteady($seminar_id,$semdata["semester_id"],TRUE);
@@ -1157,7 +1157,7 @@ if ($perm->have_perm("autor")) {	// Navigationsleiste ab status "Autor", autors 
 			echo "</font></td>";
 
 			// if "show room-data" is enabled, show cell
-			if ($_REQUEST['show_rooms_check']) {
+			if ($show_rooms_check_url) {
 				echo "<td valign=\"top\" class=\"".$cssSw->getClass()."\"><font size=-1>".$_room."</font></td>";
 			}
 
