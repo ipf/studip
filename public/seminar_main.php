@@ -47,8 +47,6 @@ if ($GLOBALS['VOTE_ENABLE']) {
 	include_once ("lib/vote/vote_show.inc.php");
 }
 
-$studygroup_mode=$SEM_CLASS[$SEM_TYPE[$SessSemName["art_num"]]["class"]]["studygroup_mode"];
-
 if (isset($auswahl) && $auswahl!="") {
 		//just opened a seminar: we have to initialize the seminar for working with it
 		openSem($auswahl);
@@ -106,6 +104,12 @@ checkObject();
 include 'lib/include/links_openobject.inc.php';
 include 'lib/showNews.inc.php';
 include 'lib/show_dates.inc.php';
+
+$studygroup_mode = $SEM_CLASS[$SEM_TYPE[$SessSemName["art_num"]]["class"]]["studygroup_mode"];
+
+// list of used modules
+$Modules = new Modules;
+$modules = $Modules->getLocalModules($SessSemName[1]);
 
 $sem = Seminar::GetInstance($SessSemName[1]);
 

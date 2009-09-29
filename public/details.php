@@ -46,6 +46,10 @@ if ($SessSemName[1] && !isset($sem_id)) $header_object_id = $SessSemName[1];
 else $header_object_id = $sem_id;
 $CURRENT_PAGE = getHeaderLine($header_object_id). " - " . _("Details");
 
+if (($SessSemName[1] != "") && (!isset($sem_id) || $SessSemName[1] == $sem_id) && !$GLOBALS['perm']->have_studip_perm('user', $SessSemName[1])) {
+	Navigation::activateItem('/course/main/details');
+}
+
 ob_start();
 // Start of Output
 include ('lib/include/html_head.inc.php'); // Output of html head
