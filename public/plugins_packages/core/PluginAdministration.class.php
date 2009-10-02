@@ -79,6 +79,14 @@ class PluginAdministration {
 	 */
 	function deinstallPlugin($plugin){
 		$plugin_manager = PluginManager::getInstance();
+
+		// check if there are dependent plugins
+		foreach ($plugin_manager->getPluginInfos() as $dep_plugin) {
+			if ($dep_plugin['depends'] === $plugin['id']) {
+				$plugin_manager->unregisterPlugin($dep_plugin['id']);
+			}
+		}
+
 		$plugin_manager->unregisterPlugin($plugin['id']);
 		$pluginpath = $this->environment->getPackagebasepath().'/'.$plugin['path'];
 		$manifest = PluginEngine::getPluginManifest($pluginpath);
@@ -217,7 +225,7 @@ class PluginAdministration {
 
 		if (is_array($additionalclasses)){
 			foreach ($additionalclasses as $class){
-				$plugin_manager->registerPlugin($class, $class, $pluginrelativepath, $plugin);
+				$plugin_manager->registerPlugin($class, $class, $pluginrelativepath, $pluginid);
 			}
 		}
 
