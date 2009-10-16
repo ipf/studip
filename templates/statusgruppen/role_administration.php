@@ -26,10 +26,9 @@
 	endif; ?>
 
 	<td class="printcontent" colspan="<?= 19 - $indent ?>" width="100%">
-		<center>
 			<? if ($editRole) : // edit the metadata of the role ?>
 				<br>
-				<table cellspacing="0" cellpadding="0" border="0" width="90%">
+				<table cellspacing="0" cellpadding="0" border="0" width="90%" style="margin: auto;">
 					<tr>
 						<td class="steelkante" colspan="6">
 							&nbsp;<b><?= $range_type == 'sem' ? _("Gruppe bearbeiten") : _("Rollendaten bearbeiten") ?></b>
@@ -40,19 +39,20 @@
 			<? else :	?>
 			<!-- Buttonbar -->
 			<br>
-			<a href="<?= URLHelper::getLink('?view=editRole&role_id='. $role_id .'#'. $role_id) ?>">
-				<?= makebutton('bearbeiten') ?>
-			</a>
-			<a href="<?= URLHelper::getLink('?cmd=deleteRole&role_id='. $role_id) ?>">
-				<?= makebutton('loeschen') ?>
-			</a>
-			<br>
+			<div style="text-align: center;">
+				<a href="<?= URLHelper::getLink('?view=editRole&role_id='. $role_id .'#'. $role_id) ?>">
+					<?= makebutton('bearbeiten') ?>
+				</a>
+				<a href="<?= URLHelper::getLink('?cmd=deleteRole&role_id='. $role_id) ?>">
+					<?= makebutton('loeschen') ?>
+				</a>
+			</div>
 			<br>
 
 			<form action="<?= URLHelper::getLink('') ?>" method="post" style="display: inline">
 				<input type="hidden" name="cmd" value="sort_person">
 				<input type="hidden" name="role_id" value="<?= $role_id ?>">
-				<table cellspacing="0" cellpadding="0" border="0" width="95%">
+				<table cellspacing="0" cellpadding="0" border="0" width="95%" style="margin: auto;">
 					<!-- Person assigned to this role - Heading -->
 					<tr>
 						<td class="steelkante" colspan="6">
@@ -123,7 +123,7 @@
 				</table>
 			</form>
 			<br>
-			<table cellspacing="0" cellpadding="0" border="0" width="95%">
+			<table cellspacing="0" cellpadding="0" border="0" width="95%" style="margin: auto;">
 				<tr>
 					<? if ($seminar_persons) : ?>
 					<td class="steelkante">&nbsp;<?= _("VeranstaltungsteilnehmerInnen") ?></td>
@@ -153,6 +153,5 @@
    		</table>
    		<br>
 			<? endif; // display person-administration ?>
-		</center>
 	</td>
 </tr>
