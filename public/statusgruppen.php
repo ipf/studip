@@ -114,7 +114,7 @@ function PrintAktualStatusgruppen ($roles, $level = 0, $pred = '') {
 		);
 
 		$limit = GetStatusgruppeLimit($role_id);
-		if ($limit!=FALSE && $data['role']->getSelfassign()  == '1') {
+		if ($limit!=FALSE && ($data['role']->getSelfassign()  == '1' || $data['role']->getSelfassign()  == '2')) {
 			$voll = CountMembersPerStatusgruppe ($role_id);
 			if ($voll >= $limit)
 				$limitcolor = "#CC0000";
@@ -173,7 +173,7 @@ function PrintAktualStatusgruppen ($roles, $level = 0, $pred = '') {
 
 			echo '</td>';
 			echo "<td width=\"10%\" class=\"$class\" align=\"right\">";
-			if (($data['role']->getSelfAssign() == '1') && $user->id == $db2->f("user_id")) {
+			if ((($data['role']->getSelfAssign() == '1')|| ($data['role']->getSelfassign()  == '2')) && $user->id == $db2->f("user_id")) {
 				echo "<a href=\"".URLHelper::getLink("?delete_id=".$role_id)."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/trash.gif\" " . tooltip(_("Aus dieser Gruppe austragen")) . " border=\"0\"></a>&nbsp; ";
 			}
 
