@@ -96,15 +96,14 @@ ob_end_flush();
 // Start of Output
 $HELP_KEYWORD="Basis.Informationsseite";
 $CURRENT_PAGE = ($level == "s" ? $SessSemName["header_line"]." - " : "").$head_text;
-if (($SessSemName[1]) && ($SessSemName["class"] == "inst")) {
-	Navigation::activateItem('/course/main/courses');
-}
 
 include ('lib/include/html_head.inc.php'); // Output of html head
 include ('lib/include/header.php');   // Output of Stud.IP head
 
+if (($SessSemName[1]) && ($SessSemName["class"] == "inst")) {
+	include ('lib/include/links_openobject.inc.php');
+}
 ?>
-<body>
 <table width="100%" border=0 cellpadding=2 cellspacing=0>
 <tr>
 	<td class="blank" valign="top"><br />&nbsp;<font size="-1"><? echo $intro_text ?></font><br /><br />
