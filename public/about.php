@@ -181,9 +181,7 @@ function open_im() {
 
 <?php
 
-if (!$user_id){
-	throw new Exception(_("Diese Homepage ist nicht verfügbar."));
-}
+if ($user_id){
 
 // count views of Page
 if ($auth->auth["uid"]!=$user_id) {
@@ -666,6 +664,9 @@ if ($perm->get_perm($user_id) == 'dozent'){
 	if ($output){
 		printf($ausgabe_format, _("Veranstaltungen"), '', $output);
 	}
+}
+} else {
+	echo MessageBox::error(_("Diese Homepage ist nicht verfügbar."),array(_("Der Benutzer hat sich unsichtbar geschaltet oder ist im System nicht vorhanden.")));
 }
 
 $layout->set_attribute('content_for_layout', ob_get_clean());
