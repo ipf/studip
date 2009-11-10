@@ -442,22 +442,22 @@ class ExternModuleTemplatePersondetails extends ExternModule {
 
 		// generic data fields
 		if ($generic_datafields = $this->config->getValue('Main', 'genericdatafields')) {
-			$localEntries = DataFieldEntry::getDataFieldEntries($user_id, 'user');
-			$k = 0;
+			$localEntries = DataFieldEntry::getDataFieldEntries($this->user_id, 'user');
+			$k = 1;
 			foreach ($generic_datafields as $datafield) {
 				if (isset($localEntries[$datafield]) && is_object($localEntries[$datafield])) {
-					$localEntry = trim($localEntries[$datafield]->getDisplayValue());
+					$localEntry = $localEntries[$datafield]->getDisplayValue();
 					if ($localEntry) {
-						$content['PERSONDETAILS']["DATAFIELD_$k"] = ExternModule::ExtFormatReady($localEntry, TRUE, TRUE);
+						$content['PERSONDETAILS']["DATAFIELD_$k"] = $localEntry;
 					}
 				}
 				$k++;
 			}
 		}
 
-		$content['PERSONDETAILS']['CV'] = ExternModule::ExtFormatReady($row['lebenslauf'], TRUE, TRUE);
-		$content['PERSONDETAILS']['RESEARCH-INTERESTS'] = ExternModule::ExtFormatReady($row['schwerp'], TRUE, TRUE);
-		$content['PERSONDETAILS']['PUBLICATIONS'] = ExternModule::ExtFormatReady($row['publi'], TRUE, TRUE);
+		$content['PERSONDETAILS']['CV'] = ExternModule::ExtFormatReady($row['lebenslauf']);
+		$content['PERSONDETAILS']['RESEARCH-INTERESTS'] = ExternModule::ExtFormatReady($row['schwerp']);
+		$content['PERSONDETAILS']['PUBLICATIONS'] = ExternModule::ExtFormatReady($row['publi']);
 
 		$content['PERSONDETAILS']['LECTURES'] = $this->elements['TemplateLectures']->toString(array('content' => $this->getContentLectures(), 'subpart' => 'LECTURES'));
 		$content['PERSONDETAILS']['NEWS'] = $this->elements['TemplateNews']->toString(array('content' => $this->getContentNews(), 'subpart' => 'NEWS'));
