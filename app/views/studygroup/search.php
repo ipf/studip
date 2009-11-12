@@ -113,7 +113,6 @@ th {
                 <? endif;?>
             </td>
         </tr>
-
 <? endforeach ; ?>
 
 </table>
