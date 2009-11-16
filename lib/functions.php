@@ -1508,3 +1508,22 @@ function studip_strlen($string){
 	}
     return mb_strlen(studip_utf8encode($string), 'UTF-8');
 }
+
+/**
+ * Return the list of SEM_TYPES that represent study groups in this
+ * Stud.IP installation.
+ *
+ * @return array     list of SEM_TYPES used for study groups
+ */
+function studygroup_sem_types()
+{
+    $result = array();
+
+    foreach ($GLOBALS['SEM_TYPE'] as $id => $sem_type) {
+        if ($GLOBALS['SEM_CLASS'][$sem_type['class']]['studygroup_mode']) {
+            $result[] = $id;
+        }
+    }
+
+    return $result;
+}
