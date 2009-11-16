@@ -191,14 +191,14 @@ INSERT INTO `log_actions` (`action_id`, `name`, `description`, `info_template`, 
 --
 
 INSERT INTO `plugins` (`pluginid`, `pluginclassname`, `pluginpath`, `pluginname`, `plugindesc`, `plugintype`, `enabled`, `navigationpos`, `dependentonid`) VALUES(1, 'PluginAdministrationPlugin', 'core', 'Plugin-Administration', 'Administrationsoberfläche für Plugins', 'AdministrationPlugin', 'yes', 0, NULL);
-INSERT INTO `plugins` (`pluginid`, `pluginclassname`, `pluginpath`, `pluginname`, `plugindesc`, `plugintype`, `enabled`, `navigationpos`, `dependentonid`) VALUES(2, 'RoleManagementPlugin', 'core', 'RollenManagement', 'Administration der Rollen', 'AdministrationPlugin', 'yes', 1, 1);
+INSERT INTO `plugins` (`pluginid`, `pluginclassname`, `pluginpath`, `pluginname`, `plugindesc`, `plugintype`, `enabled`, `navigationpos`, `dependentonid`) VALUES(3, 'RoleManagementPlugin', 'core', 'RollenManagement', 'Administration der Rollen', 'AdministrationPlugin', 'yes', 1, 1);
 
 --
 -- Daten für Tabelle `plugins_activated`
 --
 
 INSERT INTO `plugins_activated` (`pluginid`, `poiid`, `state`) VALUES(1, 'admin', 'on');
-INSERT INTO `plugins_activated` (`pluginid`, `poiid`, `state`) VALUES(2, 'admin', 'on');
+INSERT INTO `plugins_activated` (`pluginid`, `poiid`, `state`) VALUES(3, 'admin', 'on');
 
 --
 -- Daten für Tabelle `roles`
@@ -217,17 +217,17 @@ INSERT INTO `roles` (`roleid`, `rolename`, `system`) VALUES(7, 'Nobody', 'y');
 --
 
 INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(1, 1);
-INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(1, 2);
+INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(1, 3);
 INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(2, 1);
-INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(2, 2);
+INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(2, 3);
 INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(3, 1);
-INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(3, 2);
+INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(3, 3);
 INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(4, 1);
-INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(4, 2);
+INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(4, 3);
 INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(5, 1);
-INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(5, 2);
+INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(5, 3);
 INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(6, 1);
-INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(6, 2);
+INSERT INTO `roles_plugins` (`roleid`, `pluginid`) VALUES(6, 3);
 
 --
 -- Daten für Tabelle `roles_studipperms`
