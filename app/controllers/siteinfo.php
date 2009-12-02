@@ -36,12 +36,14 @@ class SiteinfoController extends Trails_Controller
                         'perm' => 'Seminar_Perm',
                         'user' => 'Seminar_User'));
 
+        //we need the language for Buttons and language-dependent markup-processing
         if (!isset($_language)) {
             $_language = get_accepted_languages();
         }
 
         $_language_path = init_i18n($_language);
-
+        //Siteinfo-Class is defined in models/siteinfo.php
+        //if the user has root-permissions the infobox with edit-links should be displayed
         if ($perm->have_perm('root')) {
             $this->layout = $template_factory->open('layouts/base');
             $this->layout->set_attribute('infobox', $this->infobox_content());
@@ -59,6 +61,9 @@ class SiteinfoController extends Trails_Controller
     {
         global $view,$dynstradd;
 
+        //the first element of the unconsumed trails-path determines the rubric
+        //the second element defines the page(detail)
+        //if they are missing the first detail/rubric is the fallback
         if (isset($args[0]) && is_numeric($args[0])) {
             $this->currentrubric = $args[0];
             if (isset($args[1]) && is_numeric($args[1])) {
@@ -188,7 +193,6 @@ class SiteinfoController extends Trails_Controller
 
     function delete_action ($givenrubric=NULL, $givendetail=NULL, $execute=FALSE)
     {
-        $db = DBManager::get();
         if ($execute) {
             if ($givendetail == "all") {
                 $this->si->delete("rubric", $this->currentrubric);
