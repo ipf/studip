@@ -79,7 +79,7 @@ if ($GLOBALS['STM_ENABLE']){
 	$structure["mod"]=array ("topKat"=>"veranstaltungen_suche", "name"=>_("Studienmodule"), 'link' => URLHelper::getLink('sem_portal.php?view=mod&reset_all=TRUE'), "active"=>FALSE);
 }
 if($GLOBALS['STUDYGROUPS_ENABLE']){
-	$structure['studygroups_search'] = array ('topKat' => 'studygroups', 'name' => _("Studiengruppen"), 'link' => URLHelper::getLink('dispatch.php/course/studygroup/search'), 'active' => FALSE);
+	$structure['studygroups_search'] = array ('topKat' => 'studygroups', 'name' => _("Studiengruppen"), 'link' => URLHelper::getLink('dispatch.php/studygroup/search/1/founded_asc'), 'active' => FALSE);
 }
 
 //View festlegen
