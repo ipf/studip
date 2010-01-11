@@ -15,13 +15,13 @@ class StudygroupModel {
 		$modules = array();
 
 		// get standard-plugins (suitable for seminars)
-		if ($GLOBALS['PLUGINS_ENABLE']){
-			$plugins = PluginEngine::getPlugins('StandardPlugin');     // get all globally enabled plugins
-			foreach ($plugins as $plugin ) {
-				$modules[$plugin->getPluginClassName()] = $plugin->getPluginName();
+		$plugin_manager = PluginManager::getInstance();
+		$plugins = $plugin_manager->getPluginInfos('StandardPlugin');     // get all globally enabled plugins
+		foreach ($plugins as $plugin) {
+			if($plugin['enabled']){
+				$modules[$plugin['class']] = $plugin['name'];
 			}
 		}
-
 		return $modules;
 	}
 
