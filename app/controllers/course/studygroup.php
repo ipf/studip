@@ -308,7 +308,7 @@ class Course_StudygroupController extends AuthenticatedController {
 			$this->available_modules = StudygroupModel::getAvailableModules();
 			if ($GLOBALS['PLUGINS_ENABLE']) {
 				$this->available_plugins = StudygroupModel::getAvailablePlugins();
-				$this->enabled_plugins   = StudygroupModel::getEnabledPlugins();
+				$this->enabled_plugins   = StudygroupModel::getEnabledPlugins($id);
 			}
 			$this->modules  = new Modules();
 			$this->founders = StudygroupModel::getFounders( $id );
