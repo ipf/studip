@@ -245,6 +245,10 @@ foreach (DataFieldEntry::getDataFieldEntries($user_id) as $entry) {
 $show_tabs = ($user_id == $user->id && $perm->have_perm("autor"))
              || $perm->have_perm("root")
              || $admin_darf;
+
+// TODO this can be removed when page output is moved to a template
+URLHelper::addLinkParam('username', $username);
+
 ?>
 
 

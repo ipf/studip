@@ -189,7 +189,7 @@ function get_dozent_data($s_id, $_fullname_sql, $locked = false, $lock_text = ''
   				$out[] = "<td>";
   				if ($i > 0)
         {
-						$href = "?moveup_doz=".$db->f("username"). "&s_id=".$s_id."&".time()."#anker";
+						$href = "?moveup_doz=".$db->f("username"). "&s_id=".$s_id."&foo=".time()."#anker";
             $img_src = "images/move_up.gif";
   						$out[] = "<a href='".URLHelper::getLink($PHP_SELF.$href)."'>";
   						$out[] = "<img src='{$GLOBALS['ASSETS_URL']}{$img_src}' border='0'>";
@@ -200,7 +200,7 @@ function get_dozent_data($s_id, $_fullname_sql, $locked = false, $lock_text = ''
   				$out[] = "<td>";
 				if ($i < $db->nf() - 1)
           {
-						$href = "?movedown_doz=".$db->f("username"). "&s_id=".$s_id."&".time()."#anker";
+						$href = "?movedown_doz=".$db->f("username"). "&s_id=".$s_id."&foo=".time()."#anker";
 						$img_src = "images/move_down.gif";
   						$out[] = "<a href='".URLHelper::getLink($PHP_SELF.$href)."'>";
   						$out[] = "<img src='{$GLOBALS['ASSETS_URL']}{$img_src}' border='0'>";
@@ -299,7 +299,7 @@ function get_tutor_data($s_id, $_fullname_sql, $locked = false, $lock_text = '')
   				$out[] = "<td>";
   				if ($i > 0)
         {
-						$href = "?moveup_tut=".$db->f("username"). "&s_id=".$s_id."&".time()."#anker";
+						$href = "?moveup_tut=".$db->f("username"). "&s_id=".$s_id."&foo=".time()."#anker";
 						$img_src = "images/move_up.gif";
 
   						$out[] = "<a href='".URLHelper::getLink(PHP_SELF.$href)."'>";
@@ -311,7 +311,7 @@ function get_tutor_data($s_id, $_fullname_sql, $locked = false, $lock_text = '')
   				$out[] = "<td>";
 				if ($i < $db->nf() - 1)
           {
-					$href = "?movedown_tut=".$db->f("username"). "&s_id=".$s_id."&".time()."#anker";
+					$href = "?movedown_tut=".$db->f("username"). "&s_id=".$s_id."&foo=".time()."#anker";
 					$img_src = "images/move_down.gif";
 
   					$out[] = "<a href='".URLHelper::getLink($PHP_SELF.$href)."'>";
