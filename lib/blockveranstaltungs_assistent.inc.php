@@ -134,7 +134,7 @@ function create_block_schedule_dates($seminar_id, $form_data)
 			if ($start_time==$end_time)	{
 				$errors[] = "Start- und Endzeitpunkt sind gleich!";
 			} else if ($start_time>$end_time)	{
-				$errors[] = "Startzeitpunkt liegt vor Endzeitpunkt!";
+				$errors[] = "Startzeitpunkt liegt nach Endzeitpunkt!";
 			}
 		}
 
@@ -147,7 +147,7 @@ function create_block_schedule_dates($seminar_id, $form_data)
 
 		if ($start_time > $absolute_end_time)
 		{
-			$errors[] = "Startdatum liegt vor Enddatum!";
+			$errors[] = "Startdatum liegt nach Enddatum!";
 		}
 
 
@@ -189,12 +189,13 @@ function create_block_schedule_dates($seminar_id, $form_data)
 				$tmp_start_time = strtotime("+1 day "." ".$form_data["start_hour"].":".$form_data["start_minute"], $tmp_start_time);
 				$tmp_end_time = strtotime("+1 day ".$form_data["end_hour"].":".$form_data["end_minute"], $tmp_end_time);
 			}
+			if (!isset($schedule_dates)) {
+					$errors[] = $messages['no_days_in_timeslot'];
+			}
 		}
 	}
 
-	if (!isset($schedule_dates)) {
-		$errors[] = $messages['no_days_in_timeslot'];
-	}
+
 
 	//echo "<pre>".print_r($GLOBALS,true)."<pre>";;
 	if (!isset($form_data["block_submit_x"]) || $errors != null)

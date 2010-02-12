@@ -87,7 +87,7 @@ function checkdata(command){
 
  if (checked) {
    document.details.method = "post";
-   document.details.action = "<?php echo URLHelper::getLink($PHP_SELF) ?>";
+   document.details.action = "<?php echo URLHelper::getURL() ?>";
    document.details.submit();
  }
  return checked;
@@ -100,7 +100,7 @@ function checkdata_without_bereich(command){
  	checked = false;
  if (checked) {
    document.details.method = "post";
-   document.details.action = "<?php echo URLHelper::getLink($PHP_SELF) ?>";
+   document.details.action = "<?php echo URLHelper::getURL() ?>";
    document.details.submit();
  }
  return checked;
@@ -178,7 +178,7 @@ function get_dozent_data($s_id, $_fullname_sql, $locked = false, $lock_text = ''
 			  $out[]= "<td>";
 			$href = "?delete_doz=".$db->f("username"). "&s_id=".$s_id."#anker";
 			$img_src = "images/trash.gif";
-  			$out[] = "<a href='".URLHelper::getLink($PHP_SELF.$href)."'>";
+  			$out[] = "<a href='".URLHelper::getLink($href)."'>";
   			$out[] = "<img src='{$GLOBALS['ASSETS_URL']}{$img_src}' border='0'>";
   			$out[] = "</a>";
   			$out[]= "</td>";
@@ -191,7 +191,7 @@ function get_dozent_data($s_id, $_fullname_sql, $locked = false, $lock_text = ''
         {
 						$href = "?moveup_doz=".$db->f("username"). "&s_id=".$s_id."&foo=".time()."#anker";
             $img_src = "images/move_up.gif";
-  						$out[] = "<a href='".URLHelper::getLink($PHP_SELF.$href)."'>";
+  						$out[] = "<a href='".URLHelper::getLink($href)."'>";
   						$out[] = "<img src='{$GLOBALS['ASSETS_URL']}{$img_src}' border='0'>";
   						$out[] = "</a>";
         }
@@ -202,7 +202,7 @@ function get_dozent_data($s_id, $_fullname_sql, $locked = false, $lock_text = ''
           {
 						$href = "?movedown_doz=".$db->f("username"). "&s_id=".$s_id."&foo=".time()."#anker";
 						$img_src = "images/move_down.gif";
-  						$out[] = "<a href='".URLHelper::getLink($PHP_SELF.$href)."'>";
+  						$out[] = "<a href='".URLHelper::getLink($href)."'>";
   						$out[] = "<img src='{$GLOBALS['ASSETS_URL']}{$img_src}' border='0'>";
   						$out[] = "</a>";
 				}
@@ -287,7 +287,7 @@ function get_tutor_data($s_id, $_fullname_sql, $locked = false, $lock_text = '')
 			$href =   "?delete_tut=".$db->f("username"). "&s_id=".$s_id."#anker";
 			$img_src = "images/trash.gif";
 
-  			$out[] = "<a href='".URLHelper::getLink($PHP_SELF.$href)."'>";
+  			$out[] = "<a href='".URLHelper::getLink($href)."'>";
   			$out[] = "<img src='{$GLOBALS['ASSETS_URL']}{$img_src}' border='0'>";
   			$out[] = "</a>";
 
@@ -302,7 +302,7 @@ function get_tutor_data($s_id, $_fullname_sql, $locked = false, $lock_text = '')
 						$href = "?moveup_tut=".$db->f("username"). "&s_id=".$s_id."&foo=".time()."#anker";
 						$img_src = "images/move_up.gif";
 
-  						$out[] = "<a href='".URLHelper::getLink(PHP_SELF.$href)."'>";
+  						$out[] = "<a href='".URLHelper::getLink($href)."'>";
   						$out[] = "<img src='{$GLOBALS['ASSETS_URL']}{$img_src}' border='0'>";
   						$out[] = "</a>";
         }
@@ -314,7 +314,7 @@ function get_tutor_data($s_id, $_fullname_sql, $locked = false, $lock_text = '')
 					$href = "?movedown_tut=".$db->f("username"). "&s_id=".$s_id."&foo=".time()."#anker";
 					$img_src = "images/move_down.gif";
 
-  					$out[] = "<a href='".URLHelper::getLink($PHP_SELF.$href)."'>";
+  					$out[] = "<a href='".URLHelper::getLink($href)."'>";
   					$out[] = "<img src='{$GLOBALS['ASSETS_URL']}{$img_src}' border='0'>";
   					$out[] = "</a>";
 				}
@@ -902,7 +902,7 @@ if (($s_id) && (auth_check())) {
 	<?
 
 	// ab hier Anzeigeroutinen ///////////////////////////////////////////////
-	echo "<form name=\"details\" method=\"post\" action=\"".URLHelper::getLink($PHP_SELF."#anker")."\">";
+	echo "<form name=\"details\" method=\"post\" action=\"".URLHelper::getLink("#anker")."\">";
 	?>
 	<table border=0 align="center" cellspacing=0 cellpadding=2 width="99%">
 		<input type="hidden" name="s_id"   value="<?php $db->p("Seminar_id") ?>">
