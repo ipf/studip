@@ -31,8 +31,6 @@ class Course_StudygroupController extends AuthenticatedController {
 
     		include 'lib/seminar_open.php';
 
-    		$this->tabs = 'links_openobject';
-
     		// args at position zero is always the studygroup-id
     		if ($args[0]) {
     			if (SeminarCategories::GetBySeminarId($args[0])->studygroup_mode == false) {
@@ -65,7 +63,6 @@ class Course_StudygroupController extends AuthenticatedController {
 			$this->participant = true;
 		} else {
 			$this->participant = false;
-			unset($this->tabs);
 		}
 
 		$this->studygroup = new Seminar( $id );
@@ -300,6 +297,7 @@ class Course_StudygroupController extends AuthenticatedController {
 		global $perm;
 		if ($perm->have_studip_perm('dozent',$id)) {
 
+			$this->tabs = 'links_openobject';
 			$this->reiter_view = '_studygroup_admin';
 			$GLOBALS['CURRENT_PAGE'] = getHeaderLine($id).' - '._('Studiengruppe bearbeiten');
 			$sem                      = new Seminar($id);
@@ -468,6 +466,7 @@ class Course_StudygroupController extends AuthenticatedController {
 	function members_action($id)
 	{
 		$GLOBALS['CURRENT_PAGE'] = getHeaderLine($id) . ' - ' . _("TeilnehmerInnen");
+		$this->tabs = 'links_openobject';
 		$this->reiter_view = '_studygroup_teilnehmer';
 
 		$sem=new Seminar($id);
