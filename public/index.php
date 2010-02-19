@@ -307,6 +307,12 @@ if ($auth->is_authenticated() && $user->id != 'nobody') {
 		<br>
 <?
 
+	// display votes
+	if ($GLOBALS['VOTE_ENABLE']) {
+		include 'lib/vote/vote_show.inc.php';
+		show_votes ('studip', $auth->auth['uid'], $perm);
+	}
+
 	// display news
 	if (show_news('studip', $perm->have_perm('root'), 0, $index_data['nopen'], "70%", $LastLogin, $index_data))
 		echo "<br>\n";
@@ -321,12 +327,6 @@ if ($auth->is_authenticated() && $user->id != 'nobody') {
 		} else {
 			show_dates($start, $end, $index_data['dopen']);
 		}
-	}
-
-	// display votes
-	if ($GLOBALS['VOTE_ENABLE']) {
-		include 'lib/vote/vote_show.inc.php';
-		show_votes ('studip', $auth->auth['uid'], $perm);
 	}
 
 	if ($GLOBALS["PLUGINS_ENABLE"]){
