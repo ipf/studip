@@ -67,7 +67,7 @@ class StudipSemTree extends TreeAbstract {
 		} else {
 			foreach ($GLOBALS['SEM_CLASS'] as $key => $value){
 				if ($value['bereiche']){
-					foreach($GLOBALS['SEM_TYPE'] as $type_key => $type_value){
+					foreach ($GLOBALS['SEM_TYPE'] as $type_key => $type_value) {
 						if($type_value['class'] == $key)
 							$this->sem_status[] = $type_key;
 					}
@@ -246,7 +246,17 @@ class StudipSemTree extends TreeAbstract {
 	
 	function DeleteSemEntries($item_ids = null, $sem_entries = null){
 		$view = new DbView();
-		if ($item_ids && $sem_entries){
+		//Get the sem path for every seminar
+		foreach ($sem_entries as $sem_id) {
+			$sem_paths[] = (array)get_sem_tree_path($sem_id);
+		}
+		if ($item_ids && $sem_entries) {
+			// check for one path only seminars (cannot be deleted)
+			foreach ($sem_paths as $key=>$val) {
+				if(count($val) == 1) {
+					unset($sem_entries[$key]);
+				}
+			}
 			$sem_tree_ids = $view->params[0] = (is_array($item_ids)) ? $item_ids : array($item_ids);
 			$seminar_ids = $view->params[1] = (is_array($sem_entries)) ? $sem_entries : array($sem_entries);
 			$rs = $view->get_query("view:SEMINAR_SEM_TREE_DEL_SEM_RANGE");
@@ -258,14 +268,14 @@ class StudipSemTree extends TreeAbstract {
 				}
 			}
 			if($ret && $studienmodulmanagement = PluginEngine::getPlugin('StudienmodulManagement')){
-				foreach($sem_tree_ids as $sem_tree_id){
-					if(StudipStudyArea::find($sem_tree_id)->isModule()){
-						foreach($seminar_ids as $seminar_id){
+				foreach ($sem_tree_ids as $sem_tree_id){
+					if(StudipStudyArea::find($sem_tree_id)->isModule()) {
+						foreach ($seminar_ids as $seminar_id) {
 							$studienmodulmanagement->triggerCourseRemovedFromModule($sem_tree_id, $seminar_id);
 						}
 					}
 				}
-			}
+			}		
 		} elseif ($item_ids){
 			$view->params[0] = (is_array($item_ids)) ? $item_ids : array($item_ids);
 			// Logging
@@ -285,7 +295,7 @@ class StudipSemTree extends TreeAbstract {
 		} else {
 			$ret = false;
 		}
-
+		
 		return $ret;
 	}
 
