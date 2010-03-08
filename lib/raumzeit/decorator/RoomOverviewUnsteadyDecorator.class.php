@@ -71,7 +71,7 @@ class RoomOverviewUnsteadyDecorator extends Decorator {
 					}
 
 					if (sizeof($raum_list) > 3) {
-						$info = getWeekDay($val['day']).'.&nbsp;'.$zeit.',&nbsp;'.$repeat.', Räume:\n';
+						$info = getWeekDay($val['day']).'. '.$zeit.', '.$repeat.', Räume:\n';
 						$xml_raum = '';
 						foreach ($raum_list as $raum_info) {
 							$info .= $raum_info.'\n';
@@ -101,22 +101,27 @@ class RoomOverviewUnsteadyDecorator extends Decorator {
 				}
 
 				if ($this->link) {
-					$ret .= '<tr><td width="20%" nowrap><font size="-1">'.getWeekDay($val['day']).'.&nbsp;'.$repeat.'&nbsp;</font></td>';
+					$ret .= '<tr><td width="20%" nowrap><font size="-1">'.getWeekDay($val['day']).'. '.$repeat.' </font></td>';
 					$ret .= '<td width="20%" nowrap><font size="-1">'.$zeit.'</font></td>';
 					if (!$this->hideRooms) {
-						$ret .= '<td width="60%"><font size="-1">&nbsp;'.$raum.'&nbsp;&nbsp;<i>'. $val['desc'] .'</i></font></td>';
+						$ret .= '<td width="60%"><font size="-1"> '.$raum.'  <i>'. $val['desc'] .'</i></font></td>';
 					} else {
-						$ret .= '<td><font size="-1">&nbsp;&nbsp;<i>'. $val['desc'] .'</font></td>';
+						$ret .= '<td><font size="-1">  <i>'. $val['desc'] .'</font></td>';
 					}
 					$ret .= '</tr>';
 				} else {
-					if ($commas > 0) $ret .= ',<br>';
-					$ret .= getWeekDay($val['day']).'.&nbsp;'.$repeat.'&nbsp;';
+					if ($commas > 0) $ret .= ','. (($this->link) ? '<br>' : '') . "\n";
+					$ret .= getWeekDay($val['day']).'. '.$repeat.' ';
 					$ret .= $zeit;
 					if (!$this->hideRooms) {
-						$ret .= '&nbsp;Ort: '.$raum;
+						$ret .= ' Ort: '.$raum;
 					}
-					$ret .=  '&nbsp;&nbsp;<i>'. $val['desc'] .'</i>';
+					$ret .=  '  ';
+					if ($this->link) {
+						$ret .= '<i>'. $val['desc'] .'</i>';
+					} else {
+						$ret .= $val['desc'];
+					}
 					$commas++;
 				}
 
@@ -133,7 +138,11 @@ class RoomOverviewUnsteadyDecorator extends Decorator {
 
 		if (!$this->onlyRegular) {
 			if ($data['regular']['turnus_data'] && sizeof($data['regular']['turnus_data']) > 0 && $data['irregular'] && sizeof($data['irregular']) > 0 && $this->hideRooms){
-				$ret .= ',<br>';
+				if ($this->link) {
+					$ret .= ",<br>\n";
+				} else {
+					$ret .= ",\n";
+				}
 			}
 
 			// get irregular dates
@@ -148,7 +157,11 @@ class RoomOverviewUnsteadyDecorator extends Decorator {
 				}
 
 				if ($this->shrinkDates && $this->hideRooms && !$this->xml_export) {
-					$ret .= join('<br>', shrink_dates($c_dates));
+					if ($this->link) {
+						$ret .= join('<br>', shrink_dates($c_dates));
+					} else {
+						$ret .= join("\n", shrink_dates($c_dates));
+					}
 				} else {
 
 					foreach ($sd as $termine) {
@@ -207,7 +220,7 @@ class RoomOverviewUnsteadyDecorator extends Decorator {
 						}
 
 						if (sizeof($termine) > 3) {
-							$info = getWeekDay(date('w', $termine[0]['start_time'])).'.&nbsp;'.date('d.m.Y', $termine[0]['end_time']).',&nbsp;'.$zeit.', Räume:\n';
+							$info = getWeekDay(date('w', $termine[0]['start_time'])).'. '.date('d.m.Y', $termine[0]['end_time']).', '.$zeit.', Räume:\n';
 							foreach ($zraum as $raum_info) {
 								$info .= $raum_info.'\n';
 							}
@@ -229,19 +242,23 @@ class RoomOverviewUnsteadyDecorator extends Decorator {
 						}
 
 						if ($this->link) {
-							$ret .= '<tr><td width="20%" nowrap><font size="-1">'.getWeekDay(date('w', $termine[0]['start_time'])).'. '.date('d.m.Y', $termine[0]['end_time']).'</font>&nbsp;&nbsp;</td>';
+							$ret .= '<tr><td width="20%" nowrap><font size="-1">'.getWeekDay(date('w', $termine[0]['start_time'])).'. '.date('d.m.Y', $termine[0]['end_time']).'</font>  </td>';
 							$ret .= '<td width="20%" nowrap><font size="-1">'.$zeit.'</font></td>';
 							if (!$this->hideRooms) {
-								$ret .= '<td width="60%"><font size="-1">&nbsp;&nbsp;'.$raum.(($typ) ? ", <I>$typ</I>":'').'</font></td></tr>';
+								$ret .= '<td width="60%"><font size="-1">  '.$raum.(($typ) ? ", <I>$typ</I>":'').'</font></td></tr>';
 							} else {
-								$ret .= '<td width="60%"><font size="-1">&nbsp;&nbsp;'.(($typ) ? ", <I>$typ</I>":'').'</font></td></tr>';
+								$ret .= '<td width="60%"><font size="-1">  '.(($typ) ? ", <I>$typ</I>":'').'</font></td></tr>';
 							}
 						} else {
-							if ($commas > 0) $ret .= ',<br>';
-							$ret .= getWeekDay(date('w', $termine[0]['start_time'])).'. '.date('d.m.Y', $termine[0]['end_time']).'&nbsp;';
-							$ret .= $zeit.'&nbsp;';
+							if ($commas > 0) $ret .= ','. (($this->link) ? '<br>' : '') . "\n";
+							$ret .= getWeekDay(date('w', $termine[0]['start_time'])).'. '.date('d.m.Y', $termine[0]['end_time']).' ';
+							$ret .= $zeit.' ';
 							if (!$this->hideRooms) {
-								$ret .= $raum.(($typ) ? ", <I>$typ</I>":'');
+								if ($this->link) {
+									$ret .= $raum . (($typ) ? ", <i>$typ</i>\n" : '');
+								} else {
+									$ret .= $raum . (($typ) ? ", $typ\n" : '');
+								}
 							}
 							$commas++;
 						}
