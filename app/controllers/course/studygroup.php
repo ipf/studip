@@ -84,6 +84,7 @@ class Course_StudygroupController extends AuthenticatedController {
 			$this->available_plugins = StudygroupModel::getAvailablePlugins();
 		}
 		$this->modules = new Modules();
+        $this->groupaccess       = $this->flash['request']['groupaccess'];
 	}
 
 	function create_action()
