@@ -42,7 +42,7 @@ class DbView {
 	* @access	private
 	* @var		array	$query_list	
 	*/
-    private $query_list = array();
+	var $query_list = array();
 	/**
 	* list of parameters
 	*
@@ -50,7 +50,7 @@ class DbView {
 	* @access	public
 	* @var		array	$params	
 	*/
-    public $params = array();
+	var $params = array();
 	
 	/**
 	* Database Object 
@@ -59,7 +59,7 @@ class DbView {
 	* @access	private
 	* @var		object	$db	
 	*/
-    private $db;
+	var $db;
 	/**
 	* Database Object Type
 	*
@@ -68,7 +68,7 @@ class DbView {
 	* @var		string	$db_class_name
 	* @see		DbView()
 	*/
-    private $db_class_name = "DB_Seminar";
+	var $db_class_name = "DB_Seminar";
 	/**
 	* Temp Table Type 
 	*
@@ -76,7 +76,7 @@ class DbView {
 	* @access	private
 	* @var		string $temp_table_type	
 	*/
-    private $temp_table_type = "MyISAM";
+	var $temp_table_type = "MyISAM";
 	/**
 	* Primary Key used in Temp Table 
 	*
@@ -85,7 +85,7 @@ class DbView {
 	* @var		string $pk
 	* @see		get_temp_table()
 	*/
-    private $pk = "";
+	var $pk = "";
 	/**
 	* delete the params array after each query execution
 	*
@@ -93,7 +93,7 @@ class DbView {
 	* @access	public
 	* @var		boolean	$auto_free_params
 	*/
-    public $auto_free_params = true;
+	var $auto_free_params = true;
 	/**
 	* turn on/off debugging
 	*
@@ -101,19 +101,8 @@ class DbView {
 	* @access	public
 	* @var		boolean	$debug
 	*/
-    public $debug = false;
+	var $debug = false;
 	
-    
-    static protected $dbviewfiles = array();
-    
-    static protected $dbviews = array();
-    
-    static public function addView($view){
-        self::$dbviewfiles[strtolower($view)] = 0;
-    }
-    
-    
-    
 	/**
 	* Constructor
 	*
@@ -130,28 +119,9 @@ class DbView {
 		} else {
 			$this->db = new $this->db_class_name;
 		}
-        $this->init_views();
-    }
 		
-    function init_views(){
-        foreach(self::$dbviewfiles as $view => $status){
-            if($status === 0){
-                include 'lib/dbviews/'.$view.'.view.php';
-                self::$dbviews += $_views;
-                unset($_views);
-                self::$dbviewfiles[$view] = 1;
 	}
-        }
-    }
 	
-    function __get($view){
-        if(isset(self::$dbviews[$view])){
-            return self::$dbviews[$view];
-        } else {
-            return null;
-        }
-    }
-    
 	/**
 	* print error message and exit script
 	*
@@ -262,11 +232,11 @@ class DbView {
 	}
 	
 	function get_view($name){
-        if (self::$dbviews[$name]["pk"]) 
-            $this->pk = self::$dbviews[$name]["pk"];
-        if (self::$dbviews[$name]["temp_table_type"])
-            $this->temp_table_type = self::$dbviews[$name]["temp_table_type"];
-        if (!$query_list = self::$dbviews[$name]["query"])
+		if ($GLOBALS["_views"][$name]["pk"]) 
+			$this->pk = $GLOBALS["_views"][$name]["pk"];
+		if ($GLOBALS["_views"][$name]["temp_table_type"])
+			$this->temp_table_type = $GLOBALS["_views"][$name]["temp_table_type"];
+		if (!$query_list = $GLOBALS["_views"][$name]["query"])
 			$this->halt("View not found: $name");
 		(is_array($query_list)) ? $query = $query_list[0] : $query = $query_list;
 		$tokens = split("[\?§\&]", $query);

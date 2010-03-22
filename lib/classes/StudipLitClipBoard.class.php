@@ -24,9 +24,8 @@
 // +---------------------------------------------------------------------------+
 
 require_once("lib/classes/StudipForm.class.php");
+require_once("lib/dbviews/literatur.view.php");
 require_once("lib/classes/DbView.class.php");
-
-DbView::addView('literatur');
 
 /**
 *

@@ -245,7 +245,6 @@ class ExternModuleTemplatePersondetails extends ExternModule {
 		
 		$row = false;
 		$global_view = false;
-        $dbv = new DbView();
 		if (in_array(get_object_type($this->config->range_id), array('fak', 'global'))) {
 			$global_view = true;
 			$selected_item_ids = $this->config->getValue('SelectInstitutes', 'institutesselected');
@@ -269,13 +268,13 @@ class ExternModuleTemplatePersondetails extends ExternModule {
 					. "AND ui.Institut_id IN ('%s') "
 					. "AND ui.inst_perms = 'dozent' "
 					. "AND ui.externdefault = 1 ",
-                    $dbv->sem_number_sql,
+					$GLOBALS['_views']['sem_number_sql'],
 					$current_semester,
-                    $dbv->sem_number_sql,
+					$GLOBALS['_views']['sem_number_sql'],
 					$current_semester,
-                    $dbv->sem_number_end_sql,
+					$GLOBALS['_views']['sem_number_end_sql'],
 					$current_semester,
-                    $dbv->sem_number_end_sql,
+					$GLOBALS['_views']['sem_number_end_sql'],
 					implode("','", $selected_item_ids)));
 				$stm->execute(array($username));
 				// user is not a lecturer
