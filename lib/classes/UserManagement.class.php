@@ -148,6 +148,7 @@ class UserManagement
 				// remove all 'user' entries to institutes if global status becomes 'dozent'
 				// (cf. http://develop.studip.de/trac/ticket/484 )
 				if ($field=='perms' && $this->user_data['auth_user_md5.perms']=='dozent' && in_array($this->original_user_data['auth_user_md5.perms'],array('user','autor','tutor'))) {
+                    $this->logInstUserDel($this->user_data['auth_user_md5.user_id'], "inst_perms = 'user'");
 					$sql="DELETE FROM user_inst WHERE user_id='".$this->user_data['auth_user_md5.user_id']."' AND inst_perms='user'";
 					$this->db2->query($sql);
 				}
@@ -531,6 +532,8 @@ class UserManagement
 		}
 
 		if ($newuser['auth_user_md5.perms'] == "admin") {
+
+            $this->logInstUserDel($this->user_data['auth_user_md5.user_id'], "inst_perms != 'admin'");
 			$query = "DELETE FROM user_inst WHERE user_id='" . $this->user_data['auth_user_md5.user_id'] . "' AND inst_perms != 'admin'";
 			$this->db->query($query);
 			if (($db_ar = $this->db->affected_rows()) > 0) {
@@ -538,6 +541,8 @@ class UserManagement
 			}
 		}
 		if ($newuser['auth_user_md5.perms'] == "root") {
+            $this->logInstUserDel($this->user_data['auth_user_md5.user_id']);
+ 
 			$query = "DELETE FROM user_inst WHERE user_id='" . $this->user_data['auth_user_md5.user_id'] . "'";
 			$this->db->query($query);
 			if (($db_ar = $this->db->affected_rows()) > 0) {
@@ -549,6 +554,18 @@ class UserManagement
 	}
 
 
+    private function logInstUserDel($user_id, $condition = NULL)  {
+        $db = DBManager::get();
+        $sql = "SELECT * FROM user_inst WHERE user_id = '$user_id'";
+
+        if (isset($condition)) {
+            $sql .= ' AND ' . $condition;
+        }
+
+        foreach ($db->query($sql) as $data) {
+            log_event('INST_USER_DEL', $data['Institut_id'], $user_id);
+    }
+    }
 	/**
 	* Create a new password and mail it to the user
 	*
@@ -720,6 +737,8 @@ class UserManagement
 		}
 
 		// delete user from instituts
+        $this->logInstUserDel($this->user_data['auth_user_md5.user_id']);
+
 		$query = "DELETE FROM user_inst WHERE user_id='" . $this->user_data['auth_user_md5.user_id'] . "'";
 		$this->db->query($query);
 		if (($db_ar = $this->db->affected_rows()) > 0) {
