@@ -242,7 +242,7 @@ class form {
     // harm in $this->elements
     # Original match
     # if (preg_match("/(\w+)\[(d+)\]/i", $el[name], $regs)) { 
-    if (ereg("([a-zA-Z_]+)\[([0-9]+)\]", $el["name"], $regs)) {
+    if (preg_match("/([a-zA-Z_]+)\[([0-9]+)\]/", $el["name"], $regs)) {
        $el["name"] = sprintf("%s{%s}", $regs[1], $regs[2]);
        $el["multiple"] = true;
     }
@@ -263,7 +263,7 @@ class form {
     // see add_element: translate $foo[int] to $foo{int}
 #   Original pattern
 #   if (preg_match("/(w+)\[(\d+)\]/i", $name, $regs) {
-    if (ereg("([a-zA-Z_]+)\[([0-9]+)\]", $name, $regs)) {
+    if (preg_match("/([a-zA-Z_]+)\[([0-9]+)\]/", $name, $regs)) {
        $org_name = $name;
        $name = sprintf("%s{%s}", $regs[1], $regs[2]);
        $flag_nametranslation = true;

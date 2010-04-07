@@ -240,7 +240,7 @@ class DbView {
 		if (!$query_list = $GLOBALS["_views"][$name]["query"])
 			$this->halt("View not found: $name");
 		(is_array($query_list)) ? $query = $query_list[0] : $query = $query_list;
-		$tokens = split("[\?§\&]", $query);
+        $tokens = preg_split("/[\?§\&]/", $query);
 		if (count($tokens) > 1){
 			$types = array();
 			$token = 0;

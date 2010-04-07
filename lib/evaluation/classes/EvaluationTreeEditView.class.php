@@ -1094,7 +1094,7 @@ function getItemHead($itemID){
 function getItemMessage ( $itemID, $colspan = 1 ){
 
    if ($this->msg[$itemID]){
-		$msg = split("§",$this->msg[$itemID]);
+        $msg = explode("§",$this->msg[$itemID]);
 		$pics = array(
 			'error' => EVAL_PIC_ERROR,
 			'info' => EVAL_PIC_INFO,
