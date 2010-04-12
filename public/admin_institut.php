@@ -194,6 +194,11 @@ while ( is_array($_POST)
 		}
 
 		// delete users in user_inst
+        $result = DBManager::get()->query("SELECT user_id FROM user_inst WHERE institut_id = '$i_id'");
+        while ($data = $result->fetch()) {
+            log_event('INST_USER_DEL', $i_id, $data['user_id']);
+        }
+
 		$query = "DELETE FROM user_inst WHERE Institut_id='$i_id'";
 		$db->query($query);
 		if (($db_ar = $db->affected_rows()) > 0) {

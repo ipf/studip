@@ -1,7 +1,5 @@
 <?php
 # Lifter007: TODO
-
-// vim: noexpandtab
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -40,7 +38,7 @@ class AbstractStudIPStandardPlugin extends AbstractStudIPLegacyPlugin
 		$navigation_copy = clone $navigation;
 		$navigation_copy->clearSubmenu();
         $navigation_copy->freezeActivation();
-		$navigation->insertSubNavigation('self', $item_names[0], $navigation_copy);
+        $navigation->insertSubNavigation('self', $navigation_copy, $item_names[0]);
 		$navigation->setTitle($this->getDisplayTitle());
 
 		if (Navigation::hasItem('/course')) {
@@ -103,6 +101,15 @@ class AbstractStudIPStandardPlugin extends AbstractStudIPLegacyPlugin
 	}
 
 	/**
+     * Return a template (an instance of the Flexi_Template class)
+     * to be rendered on the course summary page. Return NULL to
+     * render nothing for this plugin.
+     */
+    function getInfoTemplate($course_id) {
+        return NULL;
+    }
+
+    /**
 	 * Gehen beim Deaktivieren des Plugins Daten verloren?
 	 *
 	 * @deprecated

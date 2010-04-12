@@ -412,16 +412,15 @@ class Course_StudygroupController extends AuthenticatedController {
 
 				StudygroupModel::addFounder($name, $id );
 
-				$this->flash['success'] = sprintf(_("Der Nutzer %s wurde als Gruppengründer hinzugefügt!"), htmlReady( $name ));
+                $this->flash['success'] = sprintf(_("Der Nutzer %s wurde als Gruppengründer hinzugefügt!"), $name);
 			}
 
 			// remove a founder
 			else if ( $admin && (Request::get('remove_founder') || Request::get('remove_founder_x'))) {
 				if (sizeof($founders) == 1) {
-					$this->flash['messages'] = array( 
-						'error' => array (
-							'title' => _("Jede Studiengruppe muss mindestens einen Gruppengründer haben!")
-						)
+                    $this->flash['edit'] = true;
+                    $this->flash['errors'] = array(
+                        _("Jede Studiengruppe muss mindestens einen Gruppengründer haben!")
 					);
 				} else {
 					if (Request::get('remove_founder')) {
@@ -432,7 +431,7 @@ class Course_StudygroupController extends AuthenticatedController {
 
 					StudygroupModel::removeFounder( $name, $id );
 
-					$this->flash['success'] = sprintf(_("Der Nutzer %s wurde als Gruppengründer entfernt!"), htmlReady( $name ));
+                    $this->flash['success'] = sprintf(_("Der Nutzer %s wurde als Gruppengründer entfernt!"), $name);
 				}
 			}
 
@@ -506,8 +505,12 @@ class Course_StudygroupController extends AuthenticatedController {
 				}
 			}
 		}
-		// Everything seems fine, let's go to studygroup
+       
+        if (!$this->flash['errors']) {
+             // Everything seems fine
 		$this->flash['success'] = _("Die Änderungen wurden erfolgreich übernommen.");
+        }
+        // let's go to the studygroup
 		$this->redirect('course/studygroup/edit/' . $id);
 	}
 
@@ -556,8 +559,8 @@ class Course_StudygroupController extends AuthenticatedController {
 	 * 
 	 * @return void
 	 */
-	function edit_members_action($id, $user, $action, $status = '')
-	{
+    function edit_members_action($id, $user, $action, $status = '', $studipticket = false)
+    {	
 		global $perm;
 		if ($perm->have_studip_perm('tutor', $id)) {
 
@@ -602,7 +605,7 @@ class Course_StudygroupController extends AuthenticatedController {
 						}
 						$this->flash['success'] = $msg;
 					} else {
-						$this->flash['info'] = sprintf(_("Der Suchbegriff <em>%s</em> ergab keine Treffer."), Request::get('search_for_member'));
+                        $this->flash['info'] = sprintf(_("Der Suchbegriff %s ergab keine Treffer."), Request::get('search_for_member'));
 					}
 					$this->flash['results_choose_members'] = $results_members;
 					$this->flash['request'] = Request::getInstance();
@@ -621,16 +624,27 @@ class Course_StudygroupController extends AuthenticatedController {
 					$this->flash['success'] = sprintf(_("Der Nutzer %s wurde in die Studiengruppe eingeladen."), get_fullname_from_uname($receiver));
 				}
 			}
-			if ($perm->have_studip_perm('dozent', $id)) {
-				if ($action == 'promote' && $perm !='') {
+            elseif ($perm->have_studip_perm('dozent', $id)) {
+                if(!$perm->have_studip_perm('dozent',$id,get_userid($user))) {
+                    if ($action == 'promote') {
 					StudygroupModel::promote_user($user,$id,$status);
 					$this->flash['success'] = sprintf(_("Der Status des Nutzer %s wurde geändert."), get_fullname_from_uname($user));
 				} elseif ($action == 'remove') {
+	                    $this->flash['question'] = sprintf(_("Möchten Sie wirklich den Nutzer %s aus der Studiengruppe entfernen?"), get_fullname_from_uname($user));
+	                    $this->flash['candidate'] = $user;
+	                   
+	                } elseif ($action == 'remove_approved' && check_ticket($studipticket)) {
 					StudygroupModel::remove_user($user,$id);
 					$this->flash['success'] = sprintf(_("Der Nutzer %s wurde aus der Studiengruppe entfernt."), get_fullname_from_uname($user));
 				}
+                } else {
+                	 	$this->flash['messages'] = array(
+                        	'error' => array (
+                            'title' => _("Jede Studiengruppe muss mindestens einen Gruppengründer haben!")
+                        )
+                    );
 			}
-
+            } 
 			$this->redirect('course/studygroup/members/' . $id);
 		}   else {
 			$this->redirect(URLHelper::getURL('seminar_main.php?auswahl=' . $id));

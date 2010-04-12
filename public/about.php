@@ -4,7 +4,6 @@
 # Lifter005: TODO - studipim
 # Lifter007: TODO
 # Lifter003: TODO
-// vim: noexpandtab
 /*
 about.php - Anzeige der persoenlichen Userseiten von Stud.IP
 Copyright (C) 2000 Ralf Stockmann <rstockm@gwdg.de>, Stefan Suchi <suchi@gmx.de>, Niclas Nohlen <nnohlen@gwdg.de>
@@ -631,10 +630,9 @@ foreach ($homepageplugins as $homepageplugin){
 
 	if ($template) {
 		echo $template->render(NULL, $layout);
+        $layout->clear_attributes();
 	}
 }
-
-$layout->clear_attributes();
 
 //add the own categories - this ones are self created by the user
 $db2->query("SELECT * FROM kategorien WHERE range_id = '$user_id' ORDER BY priority");

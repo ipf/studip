@@ -3,7 +3,6 @@
 # Lifter005: TODO - form validation
 # Lifter007: TODO
 # Lifter003: TODO
-// vim: noexpandtab
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
 // edit_about.php
@@ -136,9 +135,11 @@ if (check_ticket($studipticket)) {
 		if (InsertPersonStatusgruppe($my_about->auth_user['user_id'], $role_id)) {
 			$globalperms = get_global_perm($my_about->auth_user['user_id']);
 			if ($perm->get_studip_perm($subview_id, $my_about->auth_user['user_id']) == FALSE) {
+                log_event('INST_USER_ADD', $subview_id , $my_about->auth_user['user_id'], $globalperms);
 				$db_group->query("INSERT IGNORE INTO user_inst SET Institut_id = '$subview_id', user_id = '{$my_about->auth_user['user_id']}', inst_perms = '$globalperms'");
 			}
 			if ($perm->get_studip_perm($subview_id, $my_about->auth_user['user_id']) == 'user') {
+                log_event('INST_USER_STATUS', $subview_id , $my_about->auth_user['user_id'], $globalperms);
 				$db_group->query("UPDATE user_inst SET inst_perms = '$globalperms' WHERE user_id = '{$my_about->auth_user['user_id']}' AND Institut_id = '$subview_id'");
 			}
 			$my_about->msg .= 'msg§'. _("Die Person wurde in die ausgewählte Gruppe eingetragen!"). '§';

@@ -2,7 +2,6 @@
 # Lifter002: TODO
 # Lifter007: TODO
 # Lifter003: TODO
-// vim: noexpandtab
 /*
 index.php - Startseite von Stud.IP (anhaengig vom Status)
 Copyright (C) 2000 Stefan Suchi <suchi@gmx.de>, Ralf Stockmann <rstockm@gwdg.de>
@@ -224,10 +223,9 @@ foreach ($portalplugins as $portalplugin) {
 
 	if ($template) {
 		echo $template->render(NULL, $layout);
+        $layout->clear_attributes();
 	}
 }
-
-$layout->clear_attributes();
 
 page_close();
 
