@@ -21,7 +21,13 @@
     <?= _('Verwaltung von Plugins')?>
 </h3>
 
-<form action="<?= $controller->url_for('plugin_admin/save') ?>" method="post">
+<? if (count($plugins) == 0): ?>
+    <?= MessageBox::info(_('Es sind noch keine Plugins in diesem Stud.IP vorhanden.'), array(
+            _('Sie können Plugins aus dem Marktplatz installieren oder manuell hochladen.'),
+            sprintf(_('Benutzen Sie dafür die Funktion "%sweitere Plugins installieren%s" in der Info-Box.'),
+                '<a href="'.$controller->url_for('plugin_admin/search').'">', '</a>'))) ?>
+<? else: ?>
+    <form action="<?= $controller->url_for('plugin_admin/save') ?>" method="post">
     <input type="hidden" name="ticket" value="<?= get_ticket() ?>">
     <input type="hidden" name="plugin_filter" value="<?= $plugin_filter ?>">
     <table class="default">
@@ -84,7 +90,8 @@
     <div style="padding-top: 1em; text-align: center;">
         <?= makeButton('speichern', 'input', _('Einstellungen speichern'), 'save') ?>
     </div>
-</form>
+    </form>
+<? endif ?>
 
 <?
 $infobox_content = array(
