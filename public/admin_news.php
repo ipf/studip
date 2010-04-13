@@ -60,10 +60,13 @@ if ($list || $view || ($news_range_id != $user->id && $news_range_id != 'studip'
 } else {
 	Navigation::activateItem('/homepage/tools/news');
 }
-	$news_range_id = $SessSemName[1];
-	$news_range_name = '';
+	if ($SessSemName[1]) {
+		$news_range_id = $SessSemName[1];
+		$news_range_name = '';
+	}
 } else {
-    Navigation::activateItem('/homepage/tools/news');
+	Navigation::activateItem('/homepage/tools/news');
+	closeObject();
 } 
 
 $news = new AdminNewsController();
