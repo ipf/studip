@@ -160,8 +160,5 @@ class HomepageNavigation extends Navigation
 
             $this->addSubNavigation('settings', $navigation);
         }
-
-        // activated plugins
-        PluginEngine::getPlugins('HomepagePlugin');
     }
 }
