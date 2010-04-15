@@ -67,8 +67,8 @@ echo "\n" . $cssSw->GetHoverJSFunction() . "\n";
 if (!$perm->have_perm('root'))
 	include ('lib/include/links_seminare.inc.php');	   //hier wird die Navigation nachgeladen
 
-if (!isset($sortby))
-	$sortby="name";
+$sortby = Request::option('sortby', 'name');
+
 if ($sortby == "count")
 	$sortby = "count DESC";
 

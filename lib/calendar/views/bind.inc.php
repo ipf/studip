@@ -49,8 +49,7 @@ include('lib/include/links_sms.inc.php');
 
 // alle vom user abonnierten Seminare
 $db =& new DB_Seminar;
-if(!isset($sortby))
-	$sortby = "seminar_user.gruppe, seminare.Name";
+$sortby = Request::option('sortby', 'seminar_user.gruppe, seminare.Name');
 
 if($order == 'ASC')
 	$order = 'DESC';

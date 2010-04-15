@@ -170,7 +170,7 @@ if ($perm->have_perm("autor")) {	// Navigationsleiste ab status "Autor", autors 
 
 	// start tic #650, sortierung in der userconfig merken
 	if ($_REQUEST['adminarea_sortby']) {
-		$links_admin_data["sortby"]=$_REQUEST['adminarea_sortby'];
+		$links_admin_data["sortby"] = Request::option('adminarea_sortby');
 		$list=TRUE;
 	}
 	if (!isset($links_admin_data["sortby"]) || $links_admin_data["sortby"]==null) {
