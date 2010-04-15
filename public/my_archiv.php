@@ -67,8 +67,8 @@ include ('lib/include/header.php');   // Output of Stud.IP head
 
 echo "\n" . $cssSw->GetHoverJSFunction() . "\n";
 
-if (!isset($sortby))
-	$sortby="name";
+$sortby = Request::option('sortby', 'name');
+
 if ($sortby == "count")
 	$sortby = "count DESC";
 

@@ -10,6 +10,8 @@
  * the License, or (at your option) any later version.
  */
 
+require_once 'lib/edit_about.inc.php';
+
 class HomepageNavigation extends Navigation
 {
     /**
@@ -69,7 +71,7 @@ class HomepageNavigation extends Navigation
     public function initSubNavigation()
     {
         global $auth, $perm;
-        global $my_about, $username;
+        global $username;
 
         parent::initSubNavigation();
 
@@ -83,6 +85,9 @@ class HomepageNavigation extends Navigation
 
         // this really should not be here
         $username = preg_replace('/[^\w@.-]/', '', $username);
+
+        $my_about = new about($username, NULL);
+        $my_about->get_user_details();
 
         // homepage
         $navigation = new Navigation(_('Alle'));
