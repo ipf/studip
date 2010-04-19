@@ -119,9 +119,8 @@ class Course_StudygroupController extends AuthenticatedController {
 			$founders = Request::getArray('founders');
 			$this->flash['founders'] = Request::getArray('founders');
 		}
-
 		// search for founder
-		if ($admin && (Request::get('search_founder') || Request::get('search_founder_x'))) {
+        if ($admin && Request::submitted('search_founder')) {
 			$search_for_founder = Request::get('search_for_founder');
 
 			// do not allow to search with the empty string
@@ -154,7 +153,7 @@ class Course_StudygroupController extends AuthenticatedController {
 		} 
 		
 		// add a new founder
-		else if ($admin && (Request::get('add_founder') || Request::get('add_founder_x'))) {
+        else if ($admin && Request::submitted('add_founder')) {
 
 			$founders[Request::get('choose_founder')] = array(
 				'username' => Request::get('choose_founder'),
@@ -169,16 +168,12 @@ class Course_StudygroupController extends AuthenticatedController {
 		}
 
 		// remove a founder
-		else if ($admin && (Request::get('remove_founder') || Request::get('remove_founder_x'))) {
-
-			if (Request::get('remove_founder')) {
-				$name = Request::get('remove_founder');
-			} else {
-				$name = Request::get('remove_founder_x');
+        else if ($admin && Request::submitted('remove_founder')) {
+            $candidate = Request::getArray('founders');
+            if(in_array(current($candidate),$founders)) {
+                unset($founders[current($candidate)]);
 			}
-
-			unset($founders[$name]);
-
+            
 			$this->flash['founders']  = $founders;
 			$this->flash['create']    = true;
 			$this->flash['request']   = Request::getInstance();
@@ -187,7 +182,7 @@ class Course_StudygroupController extends AuthenticatedController {
 		}
 		
 		// reset search
-		else if ($admin && (Request::get('new_search') || Request::get('new_search_x'))) {
+        else if ($admin && Request::submitted('new_search')) {
 
 			$this->flash['create']  = true;
 			$this->flash['request'] = Request::getInstance();
@@ -372,7 +367,7 @@ class Course_StudygroupController extends AuthenticatedController {
 			$admin    = $perm->have_studip_perm('admin', $id); 
 			$founders = StudygroupModel::getFounders($id);
 
-			if ($admin && Request::get('search_founder') || Request::get('search_founder_x')) {
+            if ($admin && Request::submitted('search_founder'))  {
 				$search_for_founder = Request::get('search_for_founder');
 
 				// do not allow to search with the empty string
@@ -403,32 +398,23 @@ class Course_StudygroupController extends AuthenticatedController {
 			} 
 
 			// add a founder
-			else if ($admin && (Request::get('add_founder') || Request::get('add_founder_x'))) {
-				if (Request::get('choose_founder')) {
-					$name = Request::get('choose_founder');
-				} else {
-					$name = Request::get('choose_founder_x');
-				}
+            else if ($admin && Request::submitted('add_founder')) {
 
+                $name = Request::get('choose_founder');
 				StudygroupModel::addFounder($name, $id );
 
                 $this->flash['success'] = sprintf(_("Der Nutzer %s wurde als Gruppengründer hinzugefügt!"), $name);
 			}
 
 			// remove a founder
-			else if ( $admin && (Request::get('remove_founder') || Request::get('remove_founder_x'))) {
+            else if ( $admin && Request::submitted('remove_founder')) {
 				if (sizeof($founders) == 1) {
                     $this->flash['edit'] = true;
                     $this->flash['errors'] = array(
                         _("Jede Studiengruppe muss mindestens einen Gruppengründer haben!")
 					);
 				} else {
-					if (Request::get('remove_founder')) {
-						$name = Request::get('remove_founder');
-					} else {
-						$name = Request::get('remove_founder_x');
-					}
-
+                    $name = key(Request::getArray('founders'));
 					StudygroupModel::removeFounder( $name, $id );
 
                     $this->flash['success'] = sprintf(_("Der Nutzer %s wurde als Gruppengründer entfernt!"), $name);

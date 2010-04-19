@@ -71,7 +71,6 @@ class HomepageNavigation extends Navigation
     public function initSubNavigation()
     {
         global $auth, $perm;
-        global $username;
 
         parent::initSubNavigation();
 

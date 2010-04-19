@@ -84,8 +84,8 @@ class Trails_Dispatcher {
    */
   function dispatch($uri) {
 
-    $old_handler =
-      set_error_handler(array($this, 'error_handler'), E_ALL);
+    # E_USER_ERROR|E_USER_WARNING|E_USER_NOTICE|E_RECOVERABLE_ERROR = 5888
+    $old_handler = set_error_handler(array($this, 'error_handler'), 5888);
 
     ob_start();
     $level = ob_get_level();
@@ -146,7 +146,7 @@ class Trails_Dispatcher {
     ob_clean();
 
     # show details for local requests
-    $detailed = $_SERVER['REMOTE_ADDR'] === '127.0.0.1';
+    $detailed = @$_SERVER['REMOTE_ADDR'] === '127.0.0.1';
 
     $body = sprintf('<html><head><title>Trails Error</title></head>'.
                     '<body><h1>%s</h1><pre>%s</pre></body></html>',
@@ -194,7 +194,6 @@ class Trails_Dispatcher {
    * @return type       <description>
    */
   function parse($unconsumed, $controller = NULL) {
-
     list($head, $tail) = $this->split_on_first_slash($unconsumed);
 
     if (!preg_match('/^\w+$/', $head)) {
@@ -214,12 +213,9 @@ class Trails_Dispatcher {
   }
 
   function split_on_first_slash($str) {
-    $pos = strpos($str, '/');
-    if ($pos !== FALSE) {
-      return array(substr($str, 0, $pos), substr($str, $pos + 1));
+    preg_match(":([^/]*)(/+)?(.*):", $str, $matches);
+    return array($matches[1], $matches[3]);
     }
-    return array($str, '');
-  }
 
   function file_exists($path) {
     return file_exists("{$this->trails_root}/controllers/$path");
@@ -245,27 +241,22 @@ class Trails_Dispatcher {
 
 
   /**
-   * <MethodDescription>
-   * # TODO (mlunzena) add description
+   * This method transforms E_USER_* and E_RECOVERABLE_ERROR to
+   * Trails_Exceptions.
    *
-   * @param  type       <description>
+   * @param  integer    the level of the error raised
+   * @param  string     the error message
+   * @param  string     the filename that the error was raised in
+   * @param  integer    the line number the error was raised at
+   * @param  array      an array of every variable that existed in the scope the
+   *                    error was triggered in
    *
-   * @return type       <description>
+   * @throws Trails_Exception
+   *
+   * @return void
    */
   function error_handler($errno, $string, $file, $line, $context) {
-
-    if (!($errno & error_reporting())) {
-      return;
-    }
-
-    if ($errno == E_NOTICE || $errno == E_WARNING || $errno == E_STRICT) {
-      return FALSE;
-    }
-
-    $e = new Trails_Exception(500, $string);
-    $e->line = $line;
-    $e->file = $file;
-    throw $e;
+    throw new Trails_Exception(500, $string);
   }
 }
 

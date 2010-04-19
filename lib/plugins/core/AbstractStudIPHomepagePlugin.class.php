@@ -90,10 +90,11 @@ class AbstractStudIPHomepagePlugin extends AbstractStudIPLegacyPlugin
 	 */
 	function getRequestedUser(){
 		$username = Request::quoted('username', $GLOBALS['auth']->auth['uname']);
+        $username = Request::quoted('usr_name', $username);
 		$user_id = get_userid($username);
 
 		if ($user_id == '') {
-			throw new Exception(_('Es wurde kein Nutzer unter dem angegebenen Nutzernamen gefunden!'));
+            return NULL;
 		}
 
 		return new StudIPUser($user_id);
