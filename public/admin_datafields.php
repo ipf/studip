@@ -333,7 +333,7 @@ if ($kill_datafield) { // contains a datafield_id
 						printf (" <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/edit_transparent.gif\" border=\"0\" %s></a>", 
 								URLHelper::getLink($PHP_SELF."?change_datafield=".$val->getID()."#a"), tooltip(_("Datenfeld ändern")));
 					printf (" <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/trash.gif\" border=\"0\" %s></a>", 
-							URLHelper::getLink($PHP_SELF."?kill_datafield=".$val->getID()), tooltip(_("Datenfeld löschen (wird von keiner Veranstaltung verwendet)")));
+							URLHelper::getLink($PHP_SELF."?kill_datafield=".$val->getID()), tooltip(_("Datenfeld löschen")));
 					?>
 				</td>
 			</tr>
@@ -569,7 +569,7 @@ if ($kill_datafield) { // contains a datafield_id
 						printf (" <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/edit_transparent.gif\" border=\"0\" %s></a>", 
 								URLHelper::getLink($PHP_SELF."?change_datafield=".$val->getID()."#a"), tooltip(_("Datenfeld ändern")));
 					printf (" <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/trash.gif\" border=\"0\" %s></a>", 
-							URLHelper::getLink($PHP_SELF."?kill_datafield=".$val->getID()), tooltip(_("Datenfeld löschen (wird von keiner Veranstaltung verwendet)")));
+							URLHelper::getLink($PHP_SELF."?kill_datafield=".$val->getID()), tooltip(_("Datenfeld löschen")));
 					?>
 				</td>
 			</tr>
@@ -807,7 +807,7 @@ if ($kill_datafield) { // contains a datafield_id
 						printf (" <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/edit_transparent.gif\" border=\"0\" %s></a>", 
 								URLHelper::getLink($PHP_SELF."?change_datafield=".$val->getID()."#a"), tooltip(_("Datenfeld ändern")));
 					printf (" <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/trash.gif\" border=\"0\" %s></a>", 
-							URLHelper::getLink($PHP_SELF."?kill_datafield=".$val->getID()), tooltip(_("Datenfeld löschen (wird von keiner Veranstaltung verwendet)")));
+							URLHelper::getLink($PHP_SELF."?kill_datafield=".$val->getID()), tooltip(_("Datenfeld löschen")));
 					?>
 				</td>
 			</tr>
@@ -1044,7 +1044,7 @@ if ($kill_datafield) { // contains a datafield_id
 						printf (" <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/edit_transparent.gif\" border=\"0\" %s></a>", 
 								URLHelper::getLink($PHP_SELF."?change_datafield=".$val->getID()."#a"), tooltip(_("Datenfeld ändern")));
 					printf (" <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/trash.gif\" border=\"0\" %s></a>", 
-							URLHelper::getLink($PHP_SELF."?kill_datafield=".$val->getID()), tooltip(_("Datenfeld löschen (wird von keiner Veranstaltung verwendet)")));
+							URLHelper::getLink($PHP_SELF."?kill_datafield=".$val->getID()), tooltip(_("Datenfeld löschen")));
 					?>
 				</td>
 			</tr>
@@ -1288,7 +1288,7 @@ if ($kill_datafield) { // contains a datafield_id
 						printf (" <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/edit_transparent.gif\" border=\"0\" %s></a>", 
 								URLHelper::getLink($PHP_SELF."?change_datafield=".$val->getID()."#a"), tooltip(_("Datenfeld ändern")));
 					printf (" <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/trash.gif\" border=\"0\" %s></a>", 
-							URLHelper::getLink($PHP_SELF."?kill_datafield=".$val->getID()), tooltip(_("Datenfeld löschen (wird von keiner Veranstaltung verwendet)")));
+							URLHelper::getLink($PHP_SELF."?kill_datafield=".$val->getID()), tooltip(_("Datenfeld löschen")));
 					?>
 				</td>
 			</tr>
@@ -1530,7 +1530,7 @@ if ($kill_datafield) { // contains a datafield_id
 						printf (" <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/edit_transparent.gif\" border=\"0\" %s></a>", 
 								URLHelper::getLink($PHP_SELF."?change_datafield=".$val->getID()."#a"), tooltip(_("Datenfeld ändern")));
 					printf (" <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/trash.gif\" border=\"0\" %s></a>", 
-							URLHelper::getLink($PHP_SELF."?kill_datafield=".$val->getID()), tooltip(_("Datenfeld löschen (wird von keiner Veranstaltung verwendet)")));
+							URLHelper::getLink($PHP_SELF."?kill_datafield=".$val->getID()), tooltip(_("Datenfeld löschen")));
 					?>
 				</td>
 			</tr>
