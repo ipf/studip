@@ -106,6 +106,7 @@ if ($perm->have_perm("tutor")) {	// Navigationsleiste ab status "Tutor"
 	$sess->register("links_admin_data");
 	$sess->register("sem_create_data");
 	$sess->register("admin_dates_data");
+	$userConfig=new UserConfig(); // tic #650
 	/**
 	* We use this helper-function, to reset all the data in the adminarea
 	*
@@ -164,11 +165,21 @@ if ($perm->have_perm("tutor")) {	// Navigationsleiste ab status "Tutor"
 		$list=TRUE;
 
 
-	if ($adminarea_sortby) {
-		$links_admin_data["sortby"]=$adminarea_sortby;
+		// start tic #650, sortierung in der userconfig merken
+	if ($_REQUEST['adminarea_sortby']) {
+		$links_admin_data["sortby"] = Request::option('adminarea_sortby');
 		$list=TRUE;
-	} else
-		$links_admin_data["sortby"]="Name";
+	}
+	if (!isset($links_admin_data["sortby"]) || $links_admin_data["sortby"]==null) {
+		$links_admin_data["sortby"]=$userConfig->getValue($user->id,'LINKS_ADMIN');
+
+	    if ($links_admin_data["sortby"]=="" || $links_admin_data["sortby"]==false) {
+			$links_admin_data["sortby"]="VeranstaltungsNummer";
+	    }
+	    $list=TRUE;
+	} else {
+	    $userConfig->setValue($links_admin_data["sortby"],$user->id,'LINKS_ADMIN');
+	}
 
 	if ($view)
 		$links_admin_data["view"]=$view;
