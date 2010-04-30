@@ -8,7 +8,7 @@
 LOCALE_RELATIVE_PATH="."
 TRANSLATIONFILES_RELAVITVE_PATHS="../public ../lib ../config ../cli ../templates"
 
-for language in en de
+for language in en
 do
 	test -f "$LOCALE_RELATIVE_PATH/$language/LC_MESSAGES/studip.po" && mv "$LOCALE_RELATIVE_PATH/$language/LC_MESSAGES/studip.po" "$LOCALE_RELATIVE_PATH/$language/LC_MESSAGES/studip.po.old"
 	> "$LOCALE_RELATIVE_PATH/$language/LC_MESSAGES/studip.UTF-8.pot"
