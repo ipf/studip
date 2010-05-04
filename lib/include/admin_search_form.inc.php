@@ -318,7 +318,7 @@ if ($perm->have_perm("autor")) {	// Navigationsleiste ab status "Autor", autors 
 					LEFT JOIN auth_user_md5 ON (seminar_user.user_id = auth_user_md5.user_id)
 					LEFT JOIN semester_data sd1 ON ( start_time BETWEEN sd1.beginn AND sd1.ende)
 					LEFT JOIN semester_data sd2 ON ((start_time + duration_time) BETWEEN sd2.beginn AND sd2.ende)
-					WHERE seminar_user.status = 'dozent' ";
+                    WHERE seminar_user.status = 'dozent' AND seminare.status NOT IN('". implode("','", studygroup_sem_types())."') ";
 			$conditions=0;
 
 			if ($links_admin_data["srch_sem"]) {
@@ -366,7 +366,7 @@ if ($perm->have_perm("autor")) {	// Navigationsleiste ab status "Autor", autors 
 						LEFT JOIN semester_data sd2 ON ((start_time + duration_time) BETWEEN sd2.beginn AND sd2.ende)
 						WHERE seminar_user.status IN ('dozent'"
 						.(($i_page != 'archiv_assi.php' && $i_page != 'admin_visibility.php') ? ",'tutor'" : "")
-						. ") AND seminar_user.user_id='$user->id' ";
+                        . ") AND seminar_user.user_id='$user->id' AND seminare.status NOT IN('". implode("','", studygroup_sem_types())."')";
 
 			// should never be reached
 			} else {
@@ -523,7 +523,6 @@ if ($perm->have_perm("autor")) {	// Navigationsleiste ab status "Autor", autors 
 		while ($db->next_record()) {
 			$seminar_id = $db->f("Seminar_id");
 			$sem=new SemesterData;
-			$studygroup_mode = $GLOBALS['SEM_CLASS'][$GLOBALS['SEM_TYPE'][$db->f('status')]["class"]]["studygroup_mode"];
 
 			if (!$semdata=$sem->getSemesterData($links_admin_data['srch_sem'])) {
 				$semdata = $sem->getSemesterDataByDate($db->f('start_time'));
@@ -580,13 +579,7 @@ if ($perm->have_perm("autor")) {	// Navigationsleiste ab status "Autor", autors 
 			echo "</font></td>";
 			echo "<td class=\"".$cssSw->getClass()."\" align=\"center\"><font size=-1>".$SEM_TYPE[$db->f("status")]["name"]."<br>" . _("Kategorie:") . " <b>".$SEM_CLASS[$SEM_TYPE[$db->f("status")]["class"]]["name"]."</b><font></td>";
 			echo "<td class=\"".$cssSw->getClass()."\" nowrap align=\"center\">";
-
-			if ($studygroup_mode) {
-				if($i_page != "admin_visibility.php") {
-					echo _("Studiengruppe") . sprintf("<br><a href=\"%s\">%s</a></font>", URLHelper::getLink('dispatch.php/course/studygroup/edit/' . $seminar_id . "?cid=" . $seminar_id), makeButton("bearbeiten"));
-				}
-				else echo '<input type="CHECKBOX" DISABLED/>';
-			} else {
+            
 				//Kommandos fuer die jeweilgen Seiten
 				switch ($i_page) {
 					case "adminarea_start.php":
@@ -708,7 +701,6 @@ if ($perm->have_perm("autor")) {	// Navigationsleiste ab status "Autor", autors 
 						}
 						break;
 				}
-			}
 			echo "</tr>";
 		}
         ?>
