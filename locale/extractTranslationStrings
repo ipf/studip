@@ -6,7 +6,7 @@
 #
 
 LOCALE_RELATIVE_PATH="."
-TRANSLATIONFILES_RELAVITVE_PATHS="../public ../lib ../config ../cli ../templates"
+TRANSLATIONFILES_RELAVITVE_PATHS="../public ../lib ../config ../cli ../templates ../app"
 
 for language in en
 do
