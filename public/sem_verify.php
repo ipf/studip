@@ -191,12 +191,14 @@ $db6=new DB_Seminar;
 	$same_domain = true;
 	$user_domains = UserDomain::getUserDomainsForUser($user->id);
 
-	if (count($user_domains) > 0) {
+    if (count($user_domains) > 0) {
 		$seminar_domains = UserDomain::getUserDomainsForSeminar($id);
 		$same_domain = count(array_intersect($seminar_domains, $user_domains)) > 0;
 	}
 
-	if (!$same_domain)
+    $current_seminar = Seminar::getInstance($id);
+
+    if (!$same_domain && !SeminarCategories::GetByTypeId($current_seminar->status)->studygroup_mode)
 	{
 		parse_msg ("info§"._("Sie sind nicht in einer zugelassenenen Nutzerdomäne, Sie k&ouml;nnen sich nicht eintragen!"));
 		echo"<tr><td class=\"blank\" colspan=2><a href=\"index.php\">&nbsp;&nbsp; "._("Zur&uuml;ck zur Startseite")."</a>";
@@ -207,8 +209,6 @@ $db6=new DB_Seminar;
 		page_close();
 		die;
 	}
-
-	$current_seminar = Seminar::getInstance($id);
 
 	if ($current_seminar->admission_type == 3)
 	{
