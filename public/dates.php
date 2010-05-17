@@ -61,6 +61,10 @@ if ($RESOURCES_ENABLE) {
 
 $sem = new Seminar($id);
 
+checkObject();
+checkObjectModule("schedule");
+object_set_visit_module("schedule");
+
 mark_public_course($sem);
 
 $CURRENT_PAGE = $SessSemName["header_line"].' - '._("Ablaufplan");
@@ -77,10 +81,6 @@ ob_start();
 // Start of Output
 include ('lib/include/html_head.inc.php'); // Output of html head
 include ('lib/include/header.php');   // Output of Stud.IP head
-
-checkObject();
-checkObjectModule("schedule");
-object_set_visit_module("schedule");
 
 $semester = new SemesterData();
 $data = $semester->getCurrentSemesterData();

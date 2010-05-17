@@ -77,6 +77,7 @@ if ($_REQUEST['orderby']) {
 //Frage den Dateienkörper ab
 if ($_REQUEST["getfilebody"]) {
 	//URLHelper::bindLinkParam('data', $folder_system_data);
+    ob_start();
 	$folder_tree =& TreeAbstract::GetInstance('StudipDocumentTree', array('range_id' => $SessionSeminar));
 	try {
 	  $result = $db->query("SELECT range_id FROM dokumente WHERE dokument_id = ".$db->quote($_REQUEST["getfilebody"]))->fetch();
@@ -89,6 +90,8 @@ if ($_REQUEST["getfilebody"]) {
     header("HTTP/1.0 500 Internal Server Error");
     print _("Fehler tauchte auf:")."\n\n".$e->getMessage();
   }
+    $output = ob_get_clean();
+    print studip_utf8encode($output);
   die();
 }
 
@@ -106,7 +109,7 @@ if ($_REQUEST["getfolderbody"]) {
     print _("Fehler tauchte auf:")."\n\n".$e->getMessage();
 	}
 	$output = ob_get_clean();
-  print utf8_encode($output);
+    print studip_utf8encode($output);
 	die();
 }
 
@@ -117,7 +120,7 @@ if ($_REQUEST["folder_sort"]) {
 	$folder_tree =& TreeAbstract::GetInstance('StudipDocumentTree', array('range_id' => $SessionSeminar));
 	try {
     if (($rechte) && ($_REQUEST["folder_sort"] == "root")) {
-		  
+
 	  } else {
 	  	if (($rechte) || ($folder_tree->isWriteable($_REQUEST["folder_sort"] , $user->id))) {
 	  		$file_order = explode(",", $file_order);
@@ -151,7 +154,7 @@ if ($_REQUEST["folder_sort"]) {
 	  print _("Fehler tauchte auf:")."\n\n".$e->getMessage();
 	}
   $output = ob_get_clean();
-	print utf8_encode($output);
+    print studip_utf8encode($output);
 	die();
 }
 
@@ -253,6 +256,10 @@ if($zip_file_id === false){
 	. '§';
 }
 
+checkObject();
+checkObjectModule('documents');
+object_set_visit_module('documents');
+
 //mark_public_course();
 
 // Start of Output
@@ -268,10 +275,6 @@ if ($folder_system_data['cmd'] == 'all') {
 
 include ('lib/include/html_head.inc.php'); // Output of html head
 include ('lib/include/header.php');   // Output of Stud.IP head
-
-checkObject();
-checkObjectModule('documents');
-object_set_visit_module('documents');
 
 
 $folder_tree =& TreeAbstract::GetInstance('StudipDocumentTree', array('range_id' => $SessionSeminar));

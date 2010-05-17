@@ -31,6 +31,9 @@ require_once('lib/classes/ZebraTable.class.php');
 require_once('lib/classes/AuxLockRules.class.php');
 require_once('lib/dates.inc.php');
 
+checkObject();
+checkObjectModule("participants");
+
 mark_public_course();
 
 $GLOBALS['CURRENT_PAGE'] = $SessSemName["header_line"]. " - " . _("Zusatzangaben");
@@ -40,9 +43,6 @@ if (!$_REQUEST['display_type']) {
 	// Start  of Output
 	include ("lib/include/html_head.inc.php"); // Output of html head
 	include ("lib/include/header.php");   //hier wird der "Kopf" nachgeladen
-
-	checkObject();
-	checkObjectModule("participants");
 }
 
 $sem_id = $SessSemName[1];
