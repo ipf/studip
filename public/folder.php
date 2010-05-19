@@ -972,6 +972,9 @@ div.droppable.hover {
 		}
 	}	else {
 		//Flatview ohne Ordnerstruktur
+        if (!$folder_system_data['orderby']) {
+            $folder_system_data['orderby'] = "date_rev";
+        }
 		print '<table border=0 cellpadding=0 cellspacing=0 width="100%">';
 		print "<tr>" .
 				"<td class=\"blank\"></td><td class=\"blank\"><div align=\"right\">" .
@@ -986,17 +989,17 @@ div.droppable.hover {
 				
 		print "<a href=\"".URLHelper::getLink((($folder_system_data['orderby'] != "type") ? "?orderby=type" : "?orderby=type_rev"))."\">";
 		print "<b>"._("Typ")."</b>".
-			($folder_system_data['orderby'] == "type_rev" 
+            ($folder_system_data['orderby'] == "type" 
 				? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_hoch\">" 
-				: ($folder_system_data['orderby'] == "type" ? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_runter\">" : "")).
+                : ($folder_system_data['orderby'] == "type_rev" ? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_runter\">" : "")).
 			"</a>&nbsp;&nbsp; ";
 		
 		
 		print "<a href=\"".URLHelper::getLink((($folder_system_data['orderby'] != "filename") ? "?orderby=filename" : "?orderby=filename_rev"))."\">";
 		print "<b>"._("Name")."</b>".
-			($folder_system_data['orderby'] == "filename_rev" 
+            ($folder_system_data['orderby'] == "filename" 
 				? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_hoch\">" 
-				: ($folder_system_data['orderby'] == "filename" ? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_runter\">" : "")).
+                : ($folder_system_data['orderby'] == "filename_rev" ? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_runter\">" : "")).
 			"</a>&nbsp;&nbsp; ";
 		
 		print "<a href=\"".URLHelper::getLink((($folder_system_data['orderby'] != "size_rev") ? "?orderby=size_rev" : "?orderby=size"))."\">";
@@ -1006,25 +1009,25 @@ div.droppable.hover {
 				: ($folder_system_data['orderby'] == "size_rev" ? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_runter\">" : "")).
 			"</a>&nbsp;&nbsp; ";
 		
-		print "<a href=\"".URLHelper::getLink((($folder_system_data['orderby'] != "downloads") ? "?orderby=downloads" : "?orderby=downloads_rev"))."\">";
+        print "<a href=\"".URLHelper::getLink((($folder_system_data['orderby'] != "downloads_rev") ? "?orderby=downloads_rev" : "?orderby=downloads"))."\">";
 		print "<b>"._("Downloads")."</b>".
-			($folder_system_data['orderby'] == "downloads_rev" 
+            ($folder_system_data['orderby'] == "downloads" 
 				? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_hoch\">" 
-				: ($folder_system_data['orderby'] == "downloads" ? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_runter\">" : "")).
+                : ($folder_system_data['orderby'] == "downloads_rev" ? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_runter\">" : "")).
 			"</a>&nbsp;&nbsp; ";
 		
 		print "</td><td class=\"steelgraudunkel\" align=right>";
 		
 		print "<a href=\"".URLHelper::getLink((($folder_system_data['orderby'] != "autor") ? "?orderby=autor" : "?orderby=autor_rev"))."\">";
 		print "<b>"._("Autor")."</b>".
-			($folder_system_data['orderby'] == "autor_rev" 
+            ($folder_system_data['orderby'] == "autor" 
 				? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_hoch\">" 
-				: ($folder_system_data['orderby'] == "autor" ? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_runter\">" : "")).
+                : ($folder_system_data['orderby'] == "autor_rev" ? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_runter\">" : "")).
 			"</a>&nbsp;&nbsp; ";
 		
 		print "<a href=\"".URLHelper::getLink((($folder_system_data['orderby'] != "date_rev") ? "?orderby=date_rev" : "?orderby=date"))."\">";
 		print "<b>"._("Datum")."</b>".
-			(($folder_system_data['orderby'] == "date"  || (!$folder_system_data['orderby']))
+            (($folder_system_data['orderby'] == "date")
 				? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_hoch\">" 
 				: (($folder_system_data['orderby'] == "date_rev") ? "<img style=\"vertical-align:middle\" border=0 src=\"".$GLOBALS['ASSETS_URL']."images/$dreieck_runter\">" : "")).
 			"</a>&nbsp;&nbsp; ";
@@ -1045,21 +1048,21 @@ div.droppable.hover {
 		if ($folder_system_data['orderby'] == "filename_rev")
 			$query .= " ORDER BY t_name DESC, a.chdate ASC";
 		if ($folder_system_data['orderby'] == "size") 
+            $query .= " ORDER BY a.filesize ASC";
+        if ($folder_system_data['orderby'] == "size_rev") 
 			$query .= " ORDER BY a.filesize DESC";
-		if ($folder_system_data['orderby'] == "size_rev") 
-			$query .= " ORDER BY a.filesize ASC";
 		if ($folder_system_data['orderby'] == "downloads") 
+            $query .= " ORDER BY a.downloads ASC, t_name DESC, a.chdate ASC";
+        if ($folder_system_data['orderby'] == "downloads_rev") 
 			$query .= " ORDER BY a.downloads DESC, t_name ASC, a.chdate DESC";
-		if ($folder_system_data['orderby'] == "downloads_rev") 
-			$query .= " ORDER BY a.downloads ASC, t_name DESC, a.chdate ASC";
 		if ($folder_system_data['orderby'] == "autor")
 			$query .= " ORDER BY ". $_fullname_sql['no_title_rev'] ." ASC";
 		if ($folder_system_data['orderby'] == "autor_rev")
 			$query .= " ORDER BY ". $_fullname_sql['no_title_rev'] ." DESC";
-		if (($folder_system_data['orderby'] == "date") || (!$folder_system_data['orderby'])) //default-wert
+        if ($folder_system_data['orderby'] == "date") 
+            $query .= " ORDER BY a.chdate ASC";
+        if ($folder_system_data['orderby'] == "date_rev")
 			$query .= " ORDER BY a.chdate DESC";
-		if ($folder_system_data['orderby'] == "date_rev")
-			$query .= " ORDER BY a.chdate ASC";
 		$result2 = $db->query($query)->fetchAll();
 		foreach ($result2 as $datei) {
 			if ($folder_tree->isReadable($datei['range_id'], $user->id)) {
