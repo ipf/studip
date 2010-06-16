@@ -281,7 +281,7 @@ class Seminar {
 
 		if ($termine['ex_termin']) {
 			$ex_termin = new SingleDate($termine['ex_termin']);
-			$missing_date  = '<div style="{border:1px solid black;background:#FFFFDD}">';
+			$missing_date  = '<div style="border:1px solid black;background:#FFFFDD;">';
 			$missing_date .= sprintf(_("Der Termin am %s findet nicht statt."), $this->formatDate($return_mode, $ex_termin));
 			$missing_date .= '<br>Kommentar: '.$ex_termin->getComment();
 			$missing_date .= '</div>';
