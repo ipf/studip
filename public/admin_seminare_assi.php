@@ -396,7 +396,7 @@ if ($form == 1)
 		$sem_create_data["resRequest"]->setDefaultSeats($sem_turnout);
 
 	//Anmeldeverfahren festlegen
-	if($sem_create_data["sem_admission"] = $sem_admission){
+    if (($sem_create_data["sem_admission"] = $sem_admission) && $sem_create_data["sem_admission"] != 3) {
 		if(!is_array($sem_create_data["sem_studg"]) || !count($sem_create_data["sem_studg"])) $sem_create_data["sem_studg"]['all'] = array('name' => _("Alle Studiengänge"), 'ratio' => 100);
 	} else {
 		$sem_create_data["sem_studg"] = array();
@@ -1524,7 +1524,7 @@ if (($form == 6) && ($jump_next_x))
 		$serialized_metadata = mysql_escape_string(serialize($sem_create_data['metadata_termin']));
 
 		//for admission it have to always 3
-		if ($sem_create_data["sem_admission"] && $sem_create_data["sem_admission"] != 3) {
+        if ($sem_create_data["sem_admission"]) {
 			$sem_create_data["sem_sec_lese"]=3;
 			$sem_create_data["sem_sec_schreib"]=3;
 		}
@@ -3561,7 +3561,6 @@ if ($level == 4) {
 					</tr>
 				</table>
 			</form>
-					<? if($sem_create_data["sem_admission"] != 3) { ?>
 			</td>
 		</tr>
 	</table>
@@ -3611,6 +3610,7 @@ if ($level == 5)
 							&nbsp; <input type="IMAGE" <?=makeButton("zurueck", "src"); ?> border=0 value="<?=_("<< zur&uuml;ck");?>" name="jump_back">&nbsp;<input type="IMAGE" <?=makeButton("weiter", "src"); ?> border=0 value="<?=_("weiter >>");?>" name="jump_next">
 						</td>
 					</tr>
+                    <? if ($sem_create_data["sem_admission"] != 3) { ?>
 					<tr <? $cssSw->switchClass() ?>>
 						<td class="<? echo $cssSw->getClass() ?>" width="10%" align="right">
 							<?= _("Anmeldezeitraum:"); ?>
@@ -3684,7 +3684,7 @@ if ($level == 5)
 						</tr>
 						<?
 					}
-					if ($sem_create_data["sem_admission"] && $sem_create_data["sem_admission" != 3]) {
+                    if ($sem_create_data["sem_admission"]) {
 						$num_all = $sem_create_data["sem_turnout"];
 						if (is_array($sem_create_data["sem_studg"]) && $sem_create_data["sem_turnout"]){
 							foreach ($sem_create_data["sem_studg"] as $key => $val){
@@ -3861,7 +3861,6 @@ if ($level == 5)
 							>
 						</td>
 					</tr>
-
 					<?
 					    }
                     }
