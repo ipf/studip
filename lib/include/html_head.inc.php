@@ -80,7 +80,7 @@ else if (isset($CURRENT_PAGE))
 	$title = $HTML_HEAD_TITLE.' - '.$CURRENT_PAGE;
 else
 	$title = $HTML_HEAD_TITLE;
-echo "\t\t".'<title>'.$title.'</title>'."\n";
+echo "\t\t".'<title>'.htmlReady($title).'</title>'."\n";
 
 if (!isset($_include_stylesheet))  // if not set, use default stylesheet
 	$_include_stylesheet = 'style.css';
