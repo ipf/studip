@@ -198,7 +198,7 @@ class SemBrowse {
 	}
 
 	function get_sem_range_tree($item_id, $with_kids){
-		$range_object =& RangeTreeObject::GetInstance($item_id);
+		$range_object = RangeTreeObject::GetInstance($item_id);
 		if ($with_kids){
 			$inst_ids = $range_object->getAllObjectKids();
 		}
@@ -439,15 +439,15 @@ class SemBrowse {
 				echo "</b></font></td></tr><tr>";
 				ob_end_flush();
 				ob_start();
-				
+
 				if (is_array($sem_ids['Seminar_id'])){
 				   while(list($seminar_id,) = each($sem_ids['Seminar_id'])){
-				   		
+
 						// create instance of seminar-object
 						$seminar_obj = new Seminar($seminar_id);
 						// is this sem a studygroup?
 					    $studygroup_mode = SeminarCategories::GetByTypeId($seminar_obj->getStatus())->studygroup_mode;
-						
+
 						$sem_name = key($sem_data[$seminar_id]["Name"]);
 						$seminar_number = key($sem_data[$seminar_id]['VeranstaltungsNummer']);
 
@@ -456,7 +456,7 @@ class SemBrowse {
 							if ($seminar_obj->admission_prelim) $sem_name .= ', '. _("Zutritt auf Anfrage");
 							$sem_name .= ')';
 							echo '<td width="1%" class="steel1">';
-							echo StudygroupAvatar::getAvatar($seminar_id)->getImageTag(Avatar::SMALL);
+							echo StudygroupAvatar::getAvatar($seminar_id)->getImageTag(Avatar::SMALL, array('title' => $seminar_obj->getName()));
 							echo '</td>';
 						} else {
 							$sem_number_start = key($sem_data[$seminar_id]["sem_number"]);
@@ -468,7 +468,7 @@ class SemBrowse {
 								$sem_name .= " (" . $this->search_obj->sem_dates[$sem_number_start]['name'] . ")";
 							}
 							echo '<td width="1%" class="steel1">';
-							echo CourseAvatar::getAvatar($seminar_id)->getImageTag(Avatar::SMALL);
+							echo CourseAvatar::getAvatar($seminar_id)->getImageTag(Avatar::SMALL, array('title' => $seminar_obj->getName()));
 							echo '</td>';
 
 						}
@@ -486,6 +486,8 @@ class SemBrowse {
 							if (strlen($temp_turnus_string) > 70) {
 								$temp_turnus_string = htmlReady(substr($temp_turnus_string, 0, strpos(substr($temp_turnus_string, 70, strlen($temp_turnus_string)), ",") + 71));
 								$temp_turnus_string .= " ... <a href=\"".$this->target_url."?".$this->target_id."=".$seminar_id."&send_from_search=1&send_from_search_page={$PHP_SELF}?keep_result_set=1\">("._("mehr").")</a>";
+							} else {
+							    $temp_turnus_string = htmlReady($temp_turnus_string);
 							}
 							echo "<div style=\"margin-left:5px;font-size:smaller\">" . htmlReady($seminar_number) . "</div>";
 							echo "<div style=\"margin-left:5px;font-size:smaller\">" . $temp_turnus_string . "</div>";
@@ -558,21 +560,21 @@ class SemBrowse {
 
 		if (is_array($this->sem_browse_data['search_result']) && count($this->sem_browse_data['search_result'])) {
 			if (!is_object($this->sem_tree)){
-				$the_tree =& TreeAbstract::GetInstance("StudipSemTree");
+				$the_tree = TreeAbstract::GetInstance("StudipSemTree", false);
 			} else {
-				$the_tree =& $this->sem_tree->tree;
+				$the_tree = $this->sem_tree->tree;
 			}
 			list($group_by_data, $sem_data) = $this->get_result();
 			$tmpfile = $TMP_PATH . '/' . md5(uniqid('write_excel',1));
 			// Creating a workbook
 			$workbook = new Workbook($tmpfile);
-			$head_format =& $workbook->addformat();
+			$head_format = $workbook->addformat();
 			$head_format->set_size(12);
 			$head_format->set_bold();
 			$head_format->set_align("left");
 			$head_format->set_align("vcenter");
 
-			$head_format_merged =& $workbook->addformat();
+			$head_format_merged = $workbook->addformat();
 			$head_format_merged->set_size(12);
 			$head_format_merged->set_bold();
 			$head_format_merged->set_align("left");
@@ -580,19 +582,19 @@ class SemBrowse {
 			$head_format_merged->set_merge();
 			$head_format_merged->set_text_wrap();
 
-			$caption_format =& $workbook->addformat();
+			$caption_format = $workbook->addformat();
 			$caption_format->set_size(10);
 			$caption_format->set_align("left");
 			$caption_format->set_align("vcenter");
 			$caption_format->set_bold();
 			//$caption_format->set_text_wrap();
 
-			$data_format =& $workbook->addformat();
+			$data_format = $workbook->addformat();
 			$data_format->set_size(10);
 			$data_format->set_align("left");
 			$data_format->set_align("vcenter");
 
-			$caption_format_merged =& $workbook->addformat();
+			$caption_format_merged = $workbook->addformat();
 			$caption_format_merged->set_size(10);
 			$caption_format_merged->set_merge();
 			$caption_format_merged->set_align("left");
@@ -601,7 +603,7 @@ class SemBrowse {
 
 
 			// Creating the first worksheet
-			$worksheet1 =& $workbook->addworksheet(_("Veranstaltungen"));
+			$worksheet1 = $workbook->addworksheet(_("Veranstaltungen"));
 			$worksheet1->set_row(0, 20);
 			$worksheet1->write_string(0, 0, _("Stud.IP Veranstaltungen") . ' - ' . $GLOBALS['UNI_NAME_CLEAN'] ,$head_format);
 			$worksheet1->set_row(1, 20);
@@ -719,9 +721,9 @@ class SemBrowse {
 		global $_fullname_sql,$_views,$PHP_SELF,$SEM_TYPE,$SEM_CLASS;;
 		if ($this->sem_browse_data['group_by'] == 1){
 			if (!is_object($this->sem_tree)){
-				$the_tree =& TreeAbstract::GetInstance("StudipSemTree");
+				$the_tree = TreeAbstract::GetInstance("StudipSemTree");
 			} else {
-				$the_tree =& $this->sem_tree->tree;
+				$the_tree = $this->sem_tree->tree;
 			}
 			if ($this->sem_browse_data['level'] == "vv" || $this->sem_browse_data['level'] == "sbb"){
 				$allowed_ranges = $the_tree->getKidsKids($this->sem_browse_data['start_item_id']);
@@ -739,7 +741,7 @@ class SemBrowse {
 			$add_query = "";
 		}
 
-		$query = ("SELECT seminare.Seminar_id,VeranstaltungsNummer, seminare.status, IF(seminare.visible=0,CONCAT(seminare.Name, ' ". _("(versteckt)") ."'), seminare.Name) AS Name, seminare.metadata_dates,
+		$query = ("SELECT seminare.Seminar_id,VeranstaltungsNummer, seminare.status, IF(seminare.visible=0,CONCAT(seminare.Name, ' ". _("(versteckt)") ."'), seminare.Name) AS Name,
 				$add_fields" . $_fullname_sql['full'] ." AS fullname, auth_user_md5.username,
 				" . $_views['sem_number_sql'] . " AS sem_number, " . $_views['sem_number_end_sql'] . " AS sem_number_end, seminar_user.position AS position FROM seminare
 				LEFT JOIN seminar_user ON (seminare.Seminar_id=seminar_user.Seminar_id AND seminar_user.status='dozent')
@@ -812,7 +814,7 @@ class SemBrowse {
 
 			case 1:
 			uksort($group_by_data, create_function('$a,$b',
-			'$the_tree =& TreeAbstract::GetInstance("StudipSemTree");
+			'$the_tree = TreeAbstract::GetInstance("StudipSemTree", false);
 			$the_tree->buildIndex();
 			return (int)($the_tree->tree_data[$a]["index"] - $the_tree->tree_data[$b]["index"]);
 			'));
