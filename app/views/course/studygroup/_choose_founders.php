@@ -7,7 +7,7 @@
 				<input type="image" name="remove_founder" value="<?= $founder['username'] ?>" src="<?= Assets::image_path('trash') ?>" <?= tooltip("NutzerIn entfernen") ?>>
 				<?= htmlReady($founder['fullname']) ?> (<?= $founder['username'] ?>)
 				<input type="hidden" name="founders[<?= $founder['username'] ?>][username]" value="<?= $founder['username'] ?>">
-				<input type="hidden" name="founders[<?= $founder['username'] ?>][fullname]" value="<?= $founder['fullname'] ?>">
+				<input type="hidden" name="founders[<?= $founder['username'] ?>][fullname]" value="<?= htmlReady($founder['fullname']) ?>">
 				<br>
 			<? endforeach; ?>
 			<br>
