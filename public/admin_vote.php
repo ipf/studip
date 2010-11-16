@@ -44,7 +44,7 @@ require_once 'lib/functions.php';
 include_once 'lib/seminar_open.php';
 
 $HELP_KEYWORD="Basis.Votings";
-$CURRENT_PAGE= _("Verwaltung von Umfragen und Tests"); 
+$CURRENT_PAGE= _("Verwaltung von Umfragen und Tests");
 
 require_once 'lib/admin_search.inc.php';
 
@@ -53,10 +53,12 @@ if ($list || $view) {
 	if ($view_mode == "fak"){
 		$view_mode = "inst";
 	}
-	if ($links_admin_data['topkat'] == 'sem') {
+	if ($links_admin_data['topkat'] == 'sem' && !SeminarCategories::getByTypeId($SessSemName['art_num'])->studygroup_mode) {
 		Navigation::activateItem('/admin/course/vote');
-	} else {
+	} elseif ($links_admin_data['topkat'] == 'inst') {
 		Navigation::activateItem('/admin/institute/vote');
+	} else {
+		Navigation::activateItem('/homepage/tools/vote');
 	}
 } else {
 	Navigation::activateItem('/homepage/tools/vote');
