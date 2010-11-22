@@ -120,9 +120,11 @@ function show_votes ($rangeID, $userID, $perm, $isHomepage = NO) {
 			    VOTE_ICON_BIG,
 			    _("Umfragen und mehr..."),
 			    VOTE_FILE_ADMIN."?page=overview&rangeID=".$rangeID.
-			    ($GLOBALS['SessSemName']["class"]=="sem"
+			    ($GLOBALS['SessSemName']["class"]=="sem" && !(get_username($userID) == $rangeID)
 			     ? "&new_sem=TRUE&view=vote_sem"
-			     : "&new_inst=TRUE&view=vote_inst"),
+			     : ($GLOBALS['SessSemName']["class"]=="inst" && !(get_username($userID) == $rangeID)
+			     ? "&new_inst=TRUE&view=vote_inst"
+			     : '')),
 			    VOTE_ICON_ARROW, _("Umfragen bearbeiten"));
    else
       echo createBoxHeader (_("Umfragen"), $width, "",
