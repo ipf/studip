@@ -544,7 +544,8 @@ STUDIP.Filesystem.hovered_folder = '';    //letzter Ordner, über den eine gezoge
 STUDIP.Filesystem.movelock = false;       //wenn auf true gesetzt, findet gerade eine Animation statt.
 STUDIP.Filesystem.sendstop = false;       //wenn auf true gesetzt, wurde eine Datei in einen Ordner gedropped und die Seite lädt sich gerade neu.
 
-STUDIP.Filesystem.getURL = function () {
+STUDIP.Filesystem.getURL = function (url) {
+	if (url) return url.split("#", 1)[0];
   return document.URL.split("#", 1)[0];
 };
 
@@ -755,7 +756,7 @@ STUDIP.Filesystem.changefolderbody = function (md5_id) {
       $("folder_" + md5_id + "_arrow_td").removeClassName('printhead3');
     } else {
       if ($("folder_" + md5_id + "_body").innerHTML === "") {
-        var adress = STUDIP.Filesystem.getURL();
+        var adress = STUDIP.Filesystem.getURL($("folder_" + md5_id + "_arrow_img").up().href);
         var request = new Ajax.Request(adress, {
           method: 'get',
           parameters: {
@@ -809,7 +810,8 @@ STUDIP.Filesystem.changefilebody = function (md5_id) {
       window.setTimeout("$('file_" + md5_id + "_body_row').style.visibility = 'collapse'", 310);
     } else {
       if ($("file_" + md5_id + "_body").innerHTML === "") {
-        var adress = STUDIP.Filesystem.getURL();
+        var adress = STUDIP.Filesystem.getURL($("file_" + md5_id + "_arrow_img").up().href);
+ 
         var request = new Ajax.Request(adress, {
           method: 'get',
           parameters: {
