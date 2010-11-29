@@ -966,7 +966,7 @@ class Seminar {
 							'details' => array()
 						);
 					break;
-					
+
 					case 'success':
 						$ret['success'] = array(
 							'title'   => _("Ihre Änderungen wurden gespeichert!"),
@@ -1884,7 +1884,7 @@ class Seminar {
 	function isPublic() {
 		return $this->read_level == 0 && $this->visible == 1;
 	}
-	
+
 	/**
 	 * @return boolean	returns TRUE if this course is a studygroup,
 	 * 					FALSE otherwise
@@ -1893,10 +1893,10 @@ class Seminar {
 		global $SEM_CLASS, $SEM_TYPE;
 		return $SEM_CLASS[$SEM_TYPE[$this->status]["class"]]["studygroup_mode"];
 	}
-	
+
 	/**
 	 * @return int		returns default colour group for new members (shown in meine_seminare.php)
-	 * 
+	 *
 	 **/
 	function getDefaultGroup() {
 		if ($this->isStudygroup()) {
@@ -1905,15 +1905,15 @@ class Seminar {
 			return select_group ($this->semester_start_time);
 		}
 	}
-	
-	
+
+
 	/**
 	 *  Deletes the current seminar
-	 * 
+	 *
 	 * @return void       returns success-message if seminar could be deleted
 	 *                    otherwise an  error-message
 	 */
-	
+
 	function delete() {
 	   $s_id = $this->id;
 
@@ -2018,6 +2018,7 @@ class Seminar {
 		$db->query($query);
 
 		if($GLOBALS['ELEARNING_INTERFACE_ENABLE']){
+			global $connected_cms;
 			$cms_types = ObjectConnections::GetConnectedSystems($s_id);
 			if(count($cms_types)){
 				foreach($cms_types as $system){
@@ -2027,7 +2028,7 @@ class Seminar {
 				$this->createMessage(sprintf(_("%s Verknüpfungen zu externen Systemen gel&ouml;scht."), $del_cms ));
 			}
 		}
-	
+
 		//kill the object_user_vists for this seminar
 		object_kill_visits(null, $s_id);
 
@@ -2049,6 +2050,6 @@ class Seminar {
 			throw new Exception(_("Fehler beim Löschen der Veranstaltung"));
 		}
 		return true;
-        
+
 	}
 }
