@@ -5,8 +5,8 @@
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
 // StudipSemSearchHelper.class.php
-// 
-// 
+//
+//
 // Copyright (c) 2003 André Noack <noack@data-quest.de>
 // +---------------------------------------------------------------------------+
 // This program is free software; you can redistribute it and/or
@@ -28,22 +28,22 @@ require_once('lib/classes/RangeTreeObject.class.php');
 require_once('lib/classes/SemesterData.class.php');
 
 class StudipSemSearchHelper {
-	
+
 	public static function GetQuickSearchFields(){
 		return array(	'all' =>_("alles"),
-						'title_lecturer_number' => _("Titel") . ',' . _("DozentIn") . ',' . _("Nummer"), 
+						'title_lecturer_number' => _("Titel") . ',' . _("DozentIn") . ',' . _("Nummer"),
 						'title' => _("Titel"),
 						'lecturer' => _("DozentIn"),
 						'number' => _("Nummer"),
 						'comment' => _("Kommentar"),
 						'scope' => _("Bereich"));
 	}
-	
+
 	private $search_result;
 	private $found_rows = false;
 	private $params = array();
 	private $visible_only;
-	
+
 	function __construct($form = null, $visible_only = null){
 		$params = array();
 		if($form instanceof StudipForm){
@@ -53,7 +53,7 @@ class StudipSemSearchHelper {
 		}
 		$this->setParams($params, $visible_only);
 	}
-	
+
 	public function setParams($params, $visible_only = null){
 		if(isset($params['quick_search']) && isset($params['qs_choose'])){
 			if($params['qs_choose'] == 'all'){
@@ -74,7 +74,7 @@ class StudipSemSearchHelper {
 		$this->params = $params;
 		$this->visible_only = $visible_only;
 	}
-	
+
 	public function doSearch(){
 		if(!count($this->params)) return false;
 		$this->params = array_map('mysql_escape_string', $this->params);
@@ -83,9 +83,9 @@ class StudipSemSearchHelper {
 		$this->search_result = new DbSnapshot();
 		$combination = $this->params['combination'];
 		$view = new DBView();
-		
+
 		if (isset($this->params['sem']) && $this->params['sem'] != 'all'){
-			$sem_number = $this->params['sem'];
+			$sem_number = (int)$this->params['sem'];
 			$clause = " HAVING (sem_number <= $sem_number AND (sem_number_end >= $sem_number OR sem_number_end = -1)) ";
 		}
 		if (isset($this->params['category']) && $this->params['category'] != 'all'){
@@ -94,7 +94,7 @@ class StudipSemSearchHelper {
 					$sem_types[] = $type_key;
 			}
 		}
-		
+
 		if (isset($this->params['type']) && $this->params['type'] != 'all'){
 			unset($sem_types);
 			$sem_types[0] = $this->params['type'];
@@ -102,7 +102,7 @@ class StudipSemSearchHelper {
 		if (is_array($sem_types)){
 			$clause = " AND c.status IN('" . join("','",$sem_types) . "') " . $clause;
 		}
-		
+
 		if ($this->params['scope_choose'] && $this->params['scope_choose'] != 'root'){
 			$sem_tree = TreeAbstract::GetInstance("StudipSemTree", false);
 			$view->params[0] = (is_array($sem_types) ? $sem_types : $sem_tree->sem_status);
@@ -119,7 +119,7 @@ class StudipSemSearchHelper {
 			}
 			unset($snap);
 		}
-		
+
 		if ($this->params['range_choose'] && $this->params['range_choose'] != 'root'){
 			$range_object = RangeTreeObject::GetInstance($this->params['range_choose']);
 			$view->params[0] = $range_object->getAllObjectKids();
@@ -134,8 +134,8 @@ class StudipSemSearchHelper {
 			}
 			unset($snap);
 		}
-		
-		
+
+
 		if (isset($this->params['lecturer']) && strlen($this->params['lecturer']) > 2){
 			$view->params[0] = "%".trim($this->params['lecturer'])."%";
 			$view->params[1] = "%".trim($this->params['lecturer'])."%";
@@ -157,11 +157,11 @@ class StudipSemSearchHelper {
 			}
 		}
 
-		
+
 		if ($combination == "AND" && $this->search_result->numRows){
 			$and_clause = " AND c.seminar_id IN('" . join("','",$this->search_result->getRows("seminar_id")) ."')";
 		}
-		
+
 		if ((isset($this->params['title']) && strlen($this->params['title']) > 2) ||
 			(isset($this->params['sub_title']) && strlen($this->params['sub_title']) > 2) ||
 			(isset($this->params['number']) && strlen($this->params['number']) > 2) ||
@@ -183,11 +183,11 @@ class StudipSemSearchHelper {
 			}
 			$this->found_rows = $this->search_result->numRows;
 		}
-		
+
 		if ($combination == "AND" && $this->search_result->numRows){
 			$and_clause = " AND c.seminar_id IN('" . join("','",$this->search_result->getRows("seminar_id")) ."')";
 		}
-		
+
 		if (isset($this->params['scope']) && strlen($this->params['scope']) > 2){
 			$view->params[0] = $this->visible_only ? "c.visible=1" : "1";
 			$view->params[1] = "%".trim($this->params['scope'])."%";
@@ -202,11 +202,11 @@ class StudipSemSearchHelper {
 		}
 		return $this->found_rows;
 	}
-	
+
 	public function getSearchResultAsSnapshot(){
 		return $this->search_result;
 	}
-	
+
 	public function getSearchResultAsArray(){
 		if($this->search_result instanceof DBSnapshot && $this->search_result->numRows){
 			return array_unique($this->search_result->getRows('seminar_id'));

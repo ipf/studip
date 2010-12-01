@@ -246,10 +246,12 @@ if ($indikator) {
 	URLHelper::addLinkParam('indikator', $indikator);
 }
 
-if ($sort) {
-	$forum["sort"] = $sort;
+// use whitelist to prevent sql-injections
+if (Request::option('sort')) {
+    $forum['sort'] = Request::option('sort');
 	URLHelper::addLinkParam('sort', $sort);
 }
+
 if (!$forum["sort"])
 	$forum["sort"] = "age";
 

@@ -115,10 +115,15 @@ class StudipLitSearch {
 			if($this->outer_form->isClicked("reset")) $this->inner_form->doFormReset();
 			$this->outer_form->form_values["search_plugin"] = $plugin_name;
 		}
-		if ( ($init_plugin_name = $this->outer_form->getFormFieldValue("search_plugin")) ){
+        if ( ($init_plugin_name = $this->outer_form->getFormFieldValue("search_plugin")) &&
+            in_array($init_plugin_name, array_keys($search_plugins)) ){
 			$init_plugin_name = "StudipLitSearchPlugin" . $init_plugin_name;
 			include_once "lib/classes/lit_search_plugins/" . $init_plugin_name .".class.php";
 			$this->search_plugin =& new $init_plugin_name();
+        } else {
+            $plugin_name = false;
+            $this->outer_form->doFormReset();
+            throw new Exception("Invalid SearchPlugin requested.");
 		}
 		if ($plugin_name !== false){
 			$this->search_plugin->doResetSearch();
