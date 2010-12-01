@@ -905,7 +905,7 @@ function forum_print_toolbar ($id="") {
 				$tmp["fav"] = _("Favoriten");
 				$tmp["nachname"] = _("Autor");
 				$tmp["root_name"] = _("Thema");
-				$tmp["x.name"] = _("Titel");
+                $tmp["name"] = _("Titel");
 				while(list($key,$value) = each($tmp)) {
 					$print .= "<option value=\"$key\"";
 					if ($key == $forum["sort"]) $print.= " selected";
@@ -1341,9 +1341,9 @@ function flatview ($open=0, $mehr=1, $show=0, $update="", $name="", $description
 $forum["openlist"] = $open;
 $forum["zitat"] = $zitat;
 $forum["update"] = $update;
-if (!$forum["postingsperside"])
+if (!(int)$forum["postingsperside"])
 	$forum["postingsperside"] = 15;
-$postingsperside = $forum["postingsperside"];
+$postingsperside = (int)$forum["postingsperside"];
 if (!(int)$flatviewstartposting) {
 	$forum["flatviewstartposting"] = 0;
 	$flatviewstartposting = 0;
@@ -1361,7 +1361,7 @@ if ($forum["view"]=="flatfolder") {
 }
 $order = "DESC";
 
-if (($forum["sort"] == "rating" || $forum["sort"]== "nachname" || $forum["sort"]== "root_name" || $forum["sort"]== "x.name") && ($forum["view"] != "tree" && $forum["view"] != "mixed"))
+if (($forum["sort"] == "rating" || $forum["sort"]== "nachname" || $forum["sort"]== "root_name" || $forum["sort"]== "name") && ($forum["view"] != "tree" && $forum["view"] != "mixed"))
 	$order = "ASC";
 
 if ($forum["view"]=="search") {

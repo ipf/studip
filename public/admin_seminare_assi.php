@@ -322,6 +322,13 @@ if (($sem_create_data["sem_entry"]) && (!$form))
 
 //empfangene Variablen aus diversen Formularen auswerten
 if ($start_level) { //create defaults
+    $class = Request::int('class');
+    if (SeminarCategories::Get($class) === false || SeminarCategories::Get($class)->course_creation_forbidden) {
+        unset($start_level);
+        unset($form);
+        $sem_create_data = '';
+        $errormsg = "error§" . sprintf(_("Veranstaltungen dieser Kategorie dürfen in dieser Installation nicht angelegt werden!"));
+    } else {
 	if (!array_key_exists('sem_class', $sem_create_data))
 		$sem_create_data['sem_class'] = $class;
 
@@ -334,6 +341,7 @@ if ($start_level) { //create defaults
 		}
 	}
 
+
 	if ($SEM_CLASS[$class]['turnus_default'] && !array_key_exists('term_art', $sem_create_data))
 		$sem_create_data['term_art'] = $SEM_CLASS[$class]['turnus_default'];
 
@@ -345,6 +353,7 @@ if ($start_level) { //create defaults
 
 	if ($auth->auth['perm'] == 'dozent')
 		$sem_create_data['sem_doz'][$user->id] = 1;
+}
 }
 
 if ($form == 1)
