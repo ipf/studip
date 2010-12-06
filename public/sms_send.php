@@ -154,6 +154,8 @@ if (($cmd == "write_chatinv") && (!is_array($admin_chats))) $cmd='';
 // send message
 if ($cmd_insert_x) {
 
+	$count = 0;
+
 	if (!empty($sms_data["p_rec"])) {
 		$time = date("U");
 		$tmp_message_id = md5(uniqid("321losgehtes"));
@@ -286,12 +288,12 @@ if (isset($_REQUEST['rec_uname'])  || isset($_REQUEST['filter']))
 	$messagesubject = Request::quoted('subject');
 	$course_id = Request::option('course_id');
 
-	if ((in_array($_REQUEST['filter'], words('all prelim waiting')) && $course_id) || ($_REQUEST['filter'] == 'send_sms_to_all' && isset($_REQUEST['who'])) && $perm->have_studip_perm('tutor', $course_id)) 
+	if ((in_array($_REQUEST['filter'], words('all prelim waiting')) && $course_id) || ($_REQUEST['filter'] == 'send_sms_to_all' && isset($_REQUEST['who'])) && $perm->have_studip_perm('tutor', $course_id))
 	{
 		//Datenbank abfragen für die verschiedenen Filter
 		switch($filter)
 		{
-			case 'send_sms_to_all': 
+			case 'send_sms_to_all':
 				$who = Request::quoted('who');
 				$db->query("SELECT b.username FROM seminar_user a, auth_user_md5 b WHERE a.Seminar_id = '".$course_id."' AND a.user_id = b.user_id AND a.status = '$who' ORDER BY Nachname, Vorname");
 				break;
@@ -305,13 +307,13 @@ if (isset($_REQUEST['rec_uname'])  || isset($_REQUEST['filter']))
 				$db->query("SELECT username FROM admission_seminar_user LEFT JOIN auth_user_md5 USING(user_id) WHERE seminar_id = '".$course_id."' AND (status='awaiting' OR status='claiming') ORDER BY Nachname, Vorname");
 				break;
 		}
-		
+
 		//Ergebnis der Query als Empfänger setzen
-		while ($db->next_record()) 
+		while ($db->next_record())
 		{
 			$sms_data["p_rec"][] = $db->f("username");
 		}
-		
+
 		if($_REQUEST['emailrequest'] == 1) $sms_data['tmpemailsnd'] = 1;
 	}
 	//Nachricht wurde nur an bestimmte User versendet
@@ -419,7 +421,7 @@ include ('lib/include/header.php');   // Output of Stud.IP head
 
 check_messaging_default();
 
-
+$txt = array();
 $txt['001'] = _("aktuelle Empf&auml;ngerInnen");
 $txt['002'] = _("m&ouml;gliche Empf&auml;ngerInnen");
 $txt['attachment'] = _("Dateianhang");
@@ -445,17 +447,18 @@ $txt['008'] = _("Lesebestätigung");
 	if($_REQUEST['answer_to']) {
 		 echo '<input type="hidden" name="answer_to" value="'. htmlReady($_REQUEST['answer_to']). '">';
 	}
-	echo '<input type="hidden" name="sms_source_page" value="'.$sms_source_page.'">';
-	echo '<input type="hidden" name="cmd" value="'.$cmd.'">';
+	echo '<input type="hidden" name="sms_source_page" value="'.htmlReady($sms_source_page).'">';
+	echo '<input type="hidden" name="cmd" value="'.htmlReady($cmd).'">';
 
 	// we like to quote something
 	if ($quote) {
 		$db->query ("SELECT subject, message FROM message WHERE message_id = '$quote' ");
 		$db->next_record();
-		if(substr($db->f("subject"), 0, 3) != "RE:") {
-			$messagesubject = "RE: ".$db->f("subject");
+		$tmp_subject = addslashes($db->f("subject"));
+		if(substr($tmp_subject, 0, 3) != "RE:") {
+			$messagesubject = "RE: ".$tmp_subject;
 		} else {
-			$messagesubject = $db->f("subject");
+			$messagesubject = $tmp_subject;
 		}
 		if (strpos($db->f("message"),$msging->sig_string)) {
 			$tmp_sms_content = substr($db->f("message"), 0, strpos($db->f("message"),$msging->sig_string));
@@ -467,10 +470,11 @@ $txt['008'] = _("Lesebestätigung");
 	else if (!isset($_REQUEST['messagesubject']) && $_REQUEST['answer_to']) {
 		$db->query ("SELECT subject, message FROM message WHERE message_id = '". $_REQUEST['answer_to']. "' ");
 		$db->next_record();
-		if(substr($db->f("subject"), 0, 3) != "RE:") {
-			$messagesubject = "RE: ".$db->f("subject");
+		$tmp_subject = addslashes($db->f("subject"));
+		if(substr($tmp_subject, 0, 3) != "RE:") {
+			$messagesubject = "RE: ".$tmp_subject;
 		} else {
-			$messagesubject = $db->f("subject");
+			$messagesubject = $tmp_subject;
 		}
 	}
 
@@ -590,8 +594,9 @@ $txt['008'] = _("Lesebestätigung");
 				</td>
 			</tr>
 		</table>
-        <?
+		<?
 
+	$emailforwardinfo = '';
 
 	if($GLOBALS["MESSAGING_FORWARD_AS_EMAIL"] == TRUE) {
 		if($sms_data["tmpemailsnd"] == 1) {
