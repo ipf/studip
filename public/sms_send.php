@@ -156,6 +156,8 @@ if (($cmd == "write_chatinv") && (!is_array($admin_chats))) $cmd='';
 // send message
 if ($cmd_insert_x) {
 
+	$count = 0;
+
 	if (!empty($sms_data["p_rec"])) {
 		$time = date("U");
 		$tmp_message_id = md5(uniqid("321losgehtes"));
@@ -428,7 +430,7 @@ if (($change_view) || ($delete_user) || ($view=="Messaging")) {
 
 }
 
-
+$txt = array();
 $txt['001'] = _("aktuelle Empf&auml;ngerInnen");
 $txt['002'] = _("m&ouml;gliche Empf&auml;ngerInnen");
 $txt['attachment'] = _("Dateianhang");
@@ -454,17 +456,18 @@ $txt['008'] = _("Lesebestätigung");
 	if($_REQUEST['answer_to']) {
 		 echo '<input type="hidden" name="answer_to" value="'. htmlReady($_REQUEST['answer_to']). '">';
 	}
-	echo '<input type="hidden" name="sms_source_page" value="'.$sms_source_page.'">';
-	echo '<input type="hidden" name="cmd" value="'.$cmd.'">';
+	echo '<input type="hidden" name="sms_source_page" value="'.htmlReady($sms_source_page).'">';
+	echo '<input type="hidden" name="cmd" value="'.htmlReady($cmd).'">';
 
 	// we like to quote something
 	if ($quote) {
 		$db->query ("SELECT subject, message FROM message WHERE message_id = '$quote' ");
 		$db->next_record();
-		if(substr($db->f("subject"), 0, 3) != "RE:") {
-			$messagesubject = "RE: ".$db->f("subject");
+		$tmp_subject = addslashes($db->f("subject"));
+		if(substr($tmp_subject, 0, 3) != "RE:") {
+			$messagesubject = "RE: ".$tmp_subject;
 		} else {
-			$messagesubject = $db->f("subject");
+			$messagesubject = $tmp_subject;
 		}
 		if (strpos($db->f("message"),$msging->sig_string)) {
 			$tmp_sms_content = substr($db->f("message"), 0, strpos($db->f("message"),$msging->sig_string));
@@ -476,10 +479,11 @@ $txt['008'] = _("Lesebestätigung");
 	else if (!isset($_REQUEST['messagesubject']) && $_REQUEST['answer_to']) {
 		$db->query ("SELECT subject, message FROM message WHERE message_id = '". $_REQUEST['answer_to']. "' ");
 		$db->next_record();
-		if(substr($db->f("subject"), 0, 3) != "RE:") {
-			$messagesubject = "RE: ".$db->f("subject");
+		$tmp_subject = addslashes($db->f("subject"));
+		if(substr($tmp_subject, 0, 3) != "RE:") {
+			$messagesubject = "RE: ".$tmp_subject;
 		} else {
-			$messagesubject = $db->f("subject");
+			$messagesubject = $tmp_subject;
 		}
 	}
 
@@ -601,6 +605,7 @@ $txt['008'] = _("Lesebestätigung");
 		</table>
         <?
 
+	$emailforwardinfo = '';
 
 	if($GLOBALS["MESSAGING_FORWARD_AS_EMAIL"] == TRUE) {
 		if($sms_data["tmpemailsnd"] == 1) {

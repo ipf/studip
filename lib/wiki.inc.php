@@ -5,6 +5,9 @@
 # Lifter007: TODO
 # Lifter003: TODO
 
+// protect $wiki_directives from register_globals
+$GLOBALS['wiki_directives'] = array();
+
 /**
 * Retrieve a WikiPage version from current seminar's WikiWikiWeb.
 *
