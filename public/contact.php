@@ -145,7 +145,7 @@ if ($search_exp) {
 			printf ("<input type=\"IMAGE\" name=\"addsearch\" src=\"".$GLOBALS['ASSETS_URL']."images/move_down.gif\" border=\"0\" value=\"" . _("In Adressbuch eintragen") . "\" %s>&nbsp;  ", tooltip(_("In Adressbuch eintragen")));
 			echo SearchResults($search_exp);
 		} else {
-			echo "&nbsp; <font size=\"2\">"._("keine Treffer zum Suchbegriff:")."</font><b>&nbsp; $search_exp&nbsp; </b>";
+			echo "&nbsp; <font size=\"2\">"._("keine Treffer zum Suchbegriff:")."</font><b>&nbsp; " . htmlReady($search_exp) . "&nbsp; </b>";
 		}
 		printf ("<a href=\"".URLHelper::getLink()."\"><img src= \"".$GLOBALS['ASSETS_URL']."images/rewind.gif\" border=\"0\" value=\"" . _("neue Suche") . "\" %s>", tooltip(_("neue Suche")));
 	}
