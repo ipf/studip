@@ -212,13 +212,19 @@ $themen =& $sem->getIssues(true);	// read again, so we have the actual sort orde
 			</TABLE>
 		</TD>
   </TR>
-	<? while ($msg = $sem->getNextMessage()) { ?>
-	<TR>
-		<TD class="blank" colspan=2><br>
-			<?parse_msg($msg);?>
+    <tr>
+        <td class="blank" colspan="2">
+        <?php 
+            // show messages
+            if ($messages = $sem->getStackedMessages()) :
+                foreach ($messages as $type => $message_data) :
+                    echo MessageBox::$type( $message_data['title'], $message_data['details'] );
+                endforeach;
+            endif;
+        ?>  
 		</TD>
 	</TR>
-	<? } ?>
+
 	<TR>
 		<TD class="blank" width="50%" height="15"></TD>
 		<TD class="blank" width="50%" height="15"></TD>
