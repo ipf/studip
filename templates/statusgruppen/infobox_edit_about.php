@@ -19,7 +19,7 @@
           </td>
           <td class="infobox" width="99%" align="left">
             <font size="-1">
-							<?= _("Hier können sie ihre Kontaktdaten für die Einrichtungen angeben, an denen Sie tätig sind."); ?>
+							<?= _("Hier können Sie ihre Kontaktdaten für die Einrichtungen angeben, an denen Sie tätig sind."); ?>
 						</font>
           </td>
       </tr>                             

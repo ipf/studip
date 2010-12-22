@@ -93,12 +93,12 @@ if (($showrangeID) && ($voteaction != "search")){
 		(get_username($userID) == $showrangeID)){
 	}
 	else{
-		$safeguard = printSafeguard("ausruf",_("Sie haben kein Berechtigung für diesen Bereich oder der Bereich existiert nicht. Es werden Votings und Tests ihrer persönlichen Homepage angezeigt."));
+		$safeguard = printSafeguard("ausruf",_("Sie haben kein Berechtigung für diesen Bereich oder der Bereich existiert nicht. Es werden Votings und Tests Ihrer persönlichen Homepage angezeigt."));
 		$showrangeID = get_username ($userID);
 	}
 }
 elseif ($voteaction != "search"){
-	$safeguard = printSafeguard("ausruf",_("Kein Bereich ausgewählt. Es werden Votings und Tests ihrer persönlichen Homepage angezeigt."));
+	$safeguard = printSafeguard("ausruf",_("Kein Bereich ausgewählt. Es werden Votings und Tests Ihrer persönlichen Homepage angezeigt."));
 	$showrangeID = get_username ($userID);
 	}
 
