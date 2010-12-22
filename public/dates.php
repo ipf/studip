@@ -104,8 +104,11 @@ $termine = getAllSortedSingleDates($sem);
 if (Request::get('export') && $rechte) {
 	ob_end_clean();
 
-	header("Content-Type: application/vnd.ms-word");
-	header("Content-Disposition: attachment; filename=ablaufplan.doc")
+	header("Content-type: application/vnd.ms-word");
+	header("Content-Disposition: attachment; filename=ablaufplan.doc");
+	header("Expires: 0");
+	header("Cache-Control: private");
+	header("Pragma: cache");
 ?>
 <html>
 	<head>
@@ -213,7 +216,7 @@ if ($cmd == 'openAll') $openAll = true;
     					//calendar jump
     					$tpl['calendar'] = "&nbsp;<a href=\"".URLHelper::getLink("calendar.php?cmd=showweek&atime=" . $singledate->getStartTime());
     					$tpl['calendar'] .= "\"><img style=\"vertical-align:bottom\" src=\"".$GLOBALS['ASSETS_URL']."images/popupkalender.gif\" ";
-    					$tpl['calendar'] .= tooltip(sprintf(_("Zum %s in den persönlichen Terminkalender springen"), date("m.d", $singledate->getStartTime())));
+                        $tpl['calendar'] .= tooltip(sprintf(_("Zum %s in den persönlichen Terminkalender springen"), date("d.m", $singledate->getStartTime())));
     					$tpl['calendar'] .= ' border="0"></a>';
 
     					if ($showDatesFilter) {
