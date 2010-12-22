@@ -1421,6 +1421,11 @@ function studip_utf8decode($string){
 
 function mark_public_course($course = NULL) {
 
+    // only mark course if user is logged in
+    if ($GLOBALS['auth']->auth['uid'] == 'nobody') {
+        return;
+    }
+
 	// need to handle institutes separately (always visible)
 	if ($GLOBALS['SessSemName']['class'] == 'inst') {
 		$GLOBALS["body_class"] = isset($GLOBALS["body_class"])

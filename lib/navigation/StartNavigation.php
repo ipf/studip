@@ -71,6 +71,8 @@ class StartNavigation extends Navigation
 
         parent::initSubNavigation();
 
+        $sem_create_perm = in_array(get_config('SEM_CREATE_PERM'), array('root','admin','dozent')) ? get_config('SEM_CREATE_PERM') : 'dozent';
+
         // my courses
 	if ($perm->have_perm('root')) {
             $navigation = new Navigation(_('Veranstaltungsübersicht'), 'sem_portal.php');
@@ -94,7 +96,7 @@ class StartNavigation extends Navigation
         if ($perm->have_perm('dozent')) {
             $navigation = new Navigation(_('Verwaltung von Veranstaltungen'), 'adminarea_start.php?list=TRUE');
 
-            if ($perm->have_perm(get_config('SEM_CREATE_PERM'))) {
+            if ($perm->have_perm($sem_create_perm)) {
                 $navigation->addSubNavigation('new_course', new Navigation(_('neue Veranstaltung anlegen'), 'admin_seminare_assi.php?new_session=TRUE'));
             }
 
@@ -131,6 +133,7 @@ class StartNavigation extends Navigation
         if (!$perm->have_perm('admin')) {
             $navigation = new Navigation(_('Mein Planer'));
             $navigation->addSubNavigation('calendar', new Navigation(_('Terminkalender'), 'calendar.php'));
+
             $navigation->addSubNavigation('address_book', new Navigation(_('Adressbuch'), 'contact.php'));
             $navigation->addSubNavigation('schedule', new Navigation(_('Stundenplan'), 'mein_stundenplan.php'));
             $this->addSubNavigation('messaging', $navigation);
