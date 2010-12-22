@@ -89,9 +89,9 @@ class ExternModuleTemplateSemBrowse extends ExternModule {
 				_("Zeiten"),
 				_("DozentIn")
 		);
-		
+
 		$this->approved_params = array('start_item_id', 'sem', 'do_search', 'quick_search', 'show_result', 'title', 'sub_title', 'number', 'comment', 'lecturer', 'scope', 'combination', 'type', 'qs_choose', 'withkids', 'xls_export', 'group_by');
-		
+
 		parent::ExternModule($range_id, $module_name, $config_id, $set_config, $global_id);
 	}
 
@@ -782,10 +782,8 @@ class ExternModuleTemplateSemBrowse extends ExternModule {
 							$content['RESULT']['GROUP'][$j]['COURSE'][$k]['COUSE-NO'] = $k + 1;
 							$content['RESULT']['GROUP'][$j]['COURSE'][$k]['COURSEDETAILS-HREF'] = $this->elements['LinkInternLecturedetails']->createUrl(array('link_args' => 'seminar_id=' . $seminar_id));
 							$content['RESULT']['GROUP'][$j]['COURSE'][$k]['COURSE_NUMBER'] = ExternModule::ExtHtmlReady(key($sem_data[$seminar_id]['VeranstaltungsNummer']));
-							
-							// !!!!!!!!!!!!!! FORMATREADY !!!!!!!!!!!!!!!!!!!!!!!!!
-							/*********************************************************/
-							$content['RESULT']['GROUP'][$j]['COURSE'][$k]['DESCRIPTION'] = ExternModule::ExtFormatReady(key($sem_data[$seminar_id]['Beschreibung']));
+
+                            $content['RESULT']['GROUP'][$j]['COURSE'][$k]['DESCRIPTION'] = ExternModule::ExtHtmlReady(key($sem_data[$seminar_id]['Beschreibung']), true);
 
 							$sem_number_start = key($sem_data[$seminar_id]["sem_number"]);
 							$sem_number_end = key($sem_data[$seminar_id]["sem_number_end"]);
