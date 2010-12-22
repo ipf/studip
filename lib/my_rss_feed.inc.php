@@ -62,7 +62,7 @@ function print_rss($username) {
 			if ($count)
 				echo "<br>";
 			echo "<input type=\"hidden\" name=\"rss_id[]\" value=\"".$db->f("feed_id")."\">\n";
-			echo "<blockquote>Name:<BR><input type='text' name='rss_name[]' style=\"width: 50%\" value='".htmlReady($db->f("name"))."' size=40>";
+			echo "<blockquote>"._("Name:")."<BR><input type='text' name='rss_name[]' style=\"width: 50%\" value='".htmlReady($db->f("name"))."' size=40>";
 			echo "&nbsp; &nbsp; &nbsp; <input type=checkbox name='rss_fetch_title[$count]' value='1'";
             IF ($db->f("fetch_title")=='1') echo " checked";
             echo ">" . _("Name des Feeds holen") . "&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;";
@@ -77,7 +77,7 @@ function print_rss($username) {
 				. tooltip(_("RSS-Feed nach unten verschieben")) ."></a>";
 			}
 			echo "<br>&nbsp;</td></tr>";
-			echo "<tr><td class=\"".$cssSw->getClass()."\"><blockquote>URL:<BR><input type='text' name='rss_url[]' style=\"width: 50%\" value='".htmlReady($db->f("url"))."' size=40>";
+			echo "<tr><td class=\"".$cssSw->getClass()."\"><blockquote>"._("URL:")."<BR><input type='text' name='rss_url[]' style=\"width: 50%\" value='".htmlReady($db->f("url"))."' size=40>";
 			echo "&nbsp; &nbsp; &nbsp; <input type=checkbox name='rss_secret[$count]' value='1'";
             IF ($db->f("hidden")=='1') echo " checked";
             echo ">" . _("unsichtbar") . "&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;";
