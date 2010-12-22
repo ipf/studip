@@ -93,7 +93,9 @@ if (check_ticket($_REQUEST['studipticket'])){
 						$uc->setValue($timestamp,$UserManagement->user_data['auth_user_md5.user_id'],"EXPIRATION_DATE");
 				}
 
-				if ($_REQUEST['select_inst_id'] && $perm->have_studip_perm('admin', $_REQUEST['select_inst_id'])){
+                if ($_REQUEST['select_inst_id']
+                    && $perm->have_studip_perm('admin', $_REQUEST['select_inst_id'])
+                    && $UserManagement->user_data['auth_user_md5.perms'] != 'root') {
 					$db = new DB_Seminar();
 					$db->query(sprintf("SELECT Name, Institut_id FROM Institute WHERE Institut_id='%s'", $_REQUEST['select_inst_id']));
 					if($db->next_record()){
@@ -118,7 +120,7 @@ if (check_ticket($_REQUEST['studipticket'])){
 								$instname = htmlReady($inst_name);
 								$vorname = $UserManagement->user_data['auth_user_md5.Vorname'];
 								$nachname = $UserManagement->user_data['auth_user_md5.Nachname'];
-								
+
 								$db->query(sprintf("SELECT a.user_id,b.Vorname,b.Nachname,b.Email FROM user_inst a INNER JOIN auth_user_md5 b ON a.user_id = b.user_id WHERE a.Institut_id = '%s' AND a.inst_perms IN (%s) AND a.user_id != '%s' ",$_REQUEST['select_inst_id'],$in,$UserManagement->user_data['auth_user_md5.user_id']));
 								while($db->next_record()){
 									$user_language = getUserLanguagePath($db->f('user_id'));
@@ -504,8 +506,8 @@ if (isset($_GET['details']) || $showform ) {
 						if( $perm->have_perm('root') ){
 							?>
 								<option value=""><?= _("-- bitte Nutzerdomäne auswählen (optional) --") ?></option>
-							<?php 
-						} 
+                            <?php
+                        }
 						foreach( $domains as $domain ){
 							?>
 								<option value="<?= $domain->getID() ?>"><?= $domain->getName() ?></option>
