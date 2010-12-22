@@ -146,15 +146,16 @@ class RolePersistence
 	 */
 	public function getAssignedRoles($userid, $implicit = false)
 	{
-		if ($implicit)
+        if ($implicit && is_object($GLOBALS['perm']))
 		{
+            $global_perm = $GLOBALS['perm']->get_perm($userid);
+
 			$stmt = DBManager::get()->prepare(
 			  "SELECT r.roleid FROM roles_user r ".
 			  "WHERE r.userid=? ".
 			  "UNION ".
-			  "SELECT rp.roleid FROM roles_studipperms rp, auth_user_md5 a ".
-			  "WHERE rp.permname = a.perms and a.user_id=?");
-			$stmt->execute(array($userid, $userid));
+              "SELECT rp.roleid FROM roles_studipperms rp WHERE rp.permname = ?");
+            $stmt->execute(array($userid, $global_perm));
 		}
 		else
 		{
@@ -295,25 +296,5 @@ class RolePersistence
 			$cache->write($key, serialize($result));
 		}
 		return $result;
-	}
-
-	/**
-	 * Enter description here...
-	 *
-	 * @return array
-	 */
-	public function getAllGroupRoleAssignments()
-	{
-		$roles = self::getAllRoles();
-		$studipperms = $GLOBALS["perm"]->permissions;
-
-		$assignedrolesperms = array();
-		foreach (DBManager::get()->query("SELECT * FROM roles_studipperms") as $row)
-		{
-			$assignedrolesperm["role"] = $roles[$row["roleid"]];
-			$assignedrolesperm[$row["permname"]] = $studipperms[$row["permname"]];
-			$assignedrolesperms[] = $assignedrolesperm;
-		}
-		return $assignedrolesperms;
 	}
 }
