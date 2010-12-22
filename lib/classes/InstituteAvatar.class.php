@@ -77,7 +77,7 @@ class InstituteAvatar extends CourseAvatar
     function getDefaultTitle()
     {
         $db = DBManager::get();
-    	$name = $db->query("SELECT Name FROM Institute WHERE Institut_id=" . $db->quote($this->user_id));
+    	$name = $db->query("SELECT Name FROM Institute WHERE Institut_id=" . $db->quote($this->user_id))->fetchColumn();
     	return $name
                ? $name
                : Avatar::NOBODY;
