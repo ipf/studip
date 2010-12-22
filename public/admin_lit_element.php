@@ -214,12 +214,17 @@ if ($_catalog_id != "new_entry" && !$_the_clipboard->isInClipboard($_catalog_id)
 		. makeButton('merkliste','src') . tooltip(_("Eintrag in Merkliste aufnehmen")) ."></a>";
 }
 echo "</td></tr>";
-
+echo '<p style="font-size:-1">';
+printf(_('Alle mit einem Sternchen %s markierten Felder müssen ausgefüllt werden.'),'<span style="font-size:1.5em;color:red;font-weigth:bold;">*</span>');
+echo '</p>';
 foreach ($_the_element->fields as $field_name => $field_detail){
 	if ($field_detail['caption']){
 		echo "<tr><td " . $class_changer->getFullClass() . ">";
 		echo $_the_form->getFormFieldCaption($field_name,array('style'=>'font-weight:bold;font-size:10pt;'));
 		echo $_the_form->getFormFieldInfo($field_name);
+        if ($field_detail['mandatory']) {
+            echo '<span style="font-size:1.5em;color:red;font-weight:bold;">*</span>';
+        }
 		echo "</td><td " . $class_changer->getFullClass() . ">";
 		$attributes = $_attributes[$_the_form->form_fields[$field_name]['type']];
 		if (!$_the_element->isChangeable()){

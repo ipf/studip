@@ -319,8 +319,13 @@ function raumzeit_doAddSingleDate() {
 		if ($start < $sem->filterStart || $ende > $sem->filterEnd) {
 			$sem->setFilter('all');
 		}
+        if (Request::get('room') == 'nothing') {
+            $termin->setFreeRoomText(Request::get('freeRoomText'));
 		$sem->addSingleDate($termin);
-		$sem->bookRoomForSingleDate($termin->getSingleDateID(), $_REQUEST['room']);
+        } else {
+            $sem->addSingleDate($termin);
+            $sem->bookRoomForSingleDate($termin->getSingleDateID(), Request::get('room'));
+        }
 		$sem->createMessage(sprintf(_("Der Termin %s wurde hinzugefügt!"), '<b>'.$termin->toString().'</b>'));
 		$sem->store();
 	}
