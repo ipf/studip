@@ -80,7 +80,11 @@ class ScheduleView {
 
 	function addEvent($column, $name, $start_time, $end_time, $link='', $add_info='', $category=0) {
 
-		if (date ("G", $end_time) >= $this->start_hour) {
+        // if the date ends before the starting hour of the schedule, do not add it or the schedule will break
+        if (date('G', $end_time) < $this->start_hour
+            || (date('G', $end_time) == $this->start_hour &&  date('i', $end_time) == 0)) return;
+
+
 			if (date ("G", $end_time) > $this->end_hour) {
 				$rows = ((($this->end_hour - date("G", $start_time))+1) *4);
 				$rows = $rows - (int)(date("i", $start_time) / 15);
@@ -115,7 +119,6 @@ class ScheduleView {
 							);
 			}
 		}
-	}
 
 	function checkCollision($index,$category){
 		$first_id = false;

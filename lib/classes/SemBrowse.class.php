@@ -439,10 +439,11 @@ class SemBrowse {
 				echo "</b></font></td></tr><tr>";
 				ob_end_flush();
 				ob_start();
-
 				if (is_array($sem_ids['Seminar_id'])){
+	                if ($this->sem_browse_data["default_sem"] != 'all') {
+	                    $current_semester_id = SemesterData::GetSemesterIdByIndex($this->sem_browse_data["default_sem"]);
+	                }
 				   while(list($seminar_id,) = each($sem_ids['Seminar_id'])){
-
 						// create instance of seminar-object
 						$seminar_obj = new Seminar($seminar_id);
 						// is this sem a studygroup?
@@ -481,7 +482,7 @@ class SemBrowse {
 						if ($studygroup_mode) {
 							echo "<div style=\"font-size:smaller\">" . htmlReady(substr($seminar_obj->description,0,100)) . "</div>";
 						} else {
-							$temp_turnus_string = $seminar_obj->getFormattedTurnus(true);
+                            $temp_turnus_string = $seminar_obj->getDatesExport(array('short' => $short, 'shrink' => true, 'semester_id' => $current_semester_id));
 							//Shorten, if string too long (add link for details.php)
 							if (strlen($temp_turnus_string) > 70) {
 								$temp_turnus_string = htmlReady(substr($temp_turnus_string, 0, strpos(substr($temp_turnus_string, 70, strlen($temp_turnus_string)), ",") + 71));
@@ -721,7 +722,7 @@ class SemBrowse {
 		global $_fullname_sql,$_views,$PHP_SELF,$SEM_TYPE,$SEM_CLASS;;
 		if ($this->sem_browse_data['group_by'] == 1){
 			if (!is_object($this->sem_tree)){
-				$the_tree = TreeAbstract::GetInstance("StudipSemTree");
+                $the_tree = TreeAbstract::GetInstance("StudipSemTree", false);
 			} else {
 				$the_tree = $this->sem_tree->tree;
 			}
