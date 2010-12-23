@@ -139,7 +139,7 @@ class UserConfig extends Config
             if($user_id === null) {
                 $ret = parent::getValue($key);
             }
-            trigger_error('deprecated use of ' . __METHOD__, E_USER_NOTICE);
+            //trigger_error('deprecated use of ' . __METHOD__, E_USER_NOTICE);
             return $ret;
         }
         return parent::getValue($field);
@@ -161,7 +161,7 @@ class UserConfig extends Config
             if($user_id === null && $key !== null) {
                 $ret = $this->store($key, $value);
             }
-            trigger_error('deprecated use of ' . __METHOD__, E_USER_NOTICE);
+            //trigger_error('deprecated use of ' . __METHOD__, E_USER_NOTICE);
             return $ret;
         }
         return parent::setValue($field, $value);
@@ -184,7 +184,7 @@ class UserConfig extends Config
             if($user_id === null) {
                 $ret = $this->delete($key);
             }
-            trigger_error('deprecated use of ' . __METHOD__, E_USER_NOTICE);
+            //trigger_error('deprecated use of ' . __METHOD__, E_USER_NOTICE);
             return $ret;
         }
         return $this->delete($field);
