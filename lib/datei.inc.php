@@ -1248,7 +1248,7 @@ function link_form ($range_id, $updating=FALSE) {
 
     $print.="</font></td></tr>";
     $print.= "\n<form enctype=\"multipart/form-data\" name=\"link_form\" action=\"" . URLHelper::getLink('#anker') . "\" method=\"post\">";
-    $print.= "<tr><td class=\"steelgraudunkel\" colspan=2><font size=-1>" . _("1. Geben Sie hier den <b>vollständigen Pfad</b> zu der Datei an die Sie verlinken wollen.") . " </font></td></tr>";
+    $print.= "<tr><td class=\"steelgraudunkel\" colspan=2><font size=-1>" . _("1. Geben Sie hier den <b>vollständigen Pfad</b> zu der Datei an, die Sie verlinken wollen.") . " </font></td></tr>";
     $print.= "\n<tr>";
     $print.= "\n<td class=\"steel1\" colspan=2 align=\"left\" valign=\"center\"><font size=-1>&nbsp;" . _("Dateipfad:") . "&nbsp;</font><br>";
     if ($hiddenurl)
@@ -1306,26 +1306,27 @@ function display_file_body($datei, $folder_id, $open, $change, $move, $upload, $
         if ($datei["protected"]==1)
             $protect = "checked";
         $content.= "\n&nbsp;<input type=\"CHECKBOX\" name=\"change_protected\" $protect>&nbsp;"._("geschützter Inhalt")."</br>";
-        $content.= "<br><textarea name=\"change_description\" rows=3 cols=40>".$datei["description"]."</textarea><br>";
+        $content.= "<br><textarea name=\"change_description\" rows=3 cols=40>".htmlReady($datei["description"])."</textarea><br>";
         $content.= "<input type=\"image\" " . makeButton("uebernehmen", "src") . " border=0 value=\""._("&Auml;nderungen speichern")."\">";
         $content.= "&nbsp;<input type=\"image\" " . makeButton("abbrechen", "src") . " border=0 name=\"cancel\" value=\""._("Abbrechen")."\">";
-        $content.= "<input type=\"hidden\" name=\"open\" value=\"".$datei["dokument_id"]."_sc_\">";
+        $content.= "<input type=\"hidden\" name=\"open\" value=\"".htmlReady($datei["dokument_id"])."_sc_\">";
         $content.= "<input type=\"hidden\" name=\"type\" value=\"0\">";
     } else {
         $content = '';
         $media_url = GetDownloadLink($datei['dokument_id'], $datei['filename'], $type);
-        if (strtolower(getFileExtension($datei['filename'])) == 'flv') {
+        $media_type = get_mime_type($datei['filename']);
+        if ($media_type == 'video/x-flv') {
             $cfg = Config::GetInstance();
             $DOCUMENTS_EMBEDD_FLASH_MOVIES = $cfg->getValue('DOCUMENTS_EMBEDD_FLASH_MOVIES');
             if (trim($DOCUMENTS_EMBEDD_FLASH_MOVIES) != 'deny') {
                 $flash_player = get_flash_player($datei['dokument_id'], $datei['filename'], $type);
                 $content = "<div style=\"margin-bottom: 10px; height: {$flash_player['height']}; width: {$flash_player['width']};\">" . $flash_player['player'] . '</div>';
             }
-        } else if (in_array(strtolower(getFileExtension($datei['filename'])), words('ogg ogv mp4 webm'))) {
-            $content = sprintf('<video class="preview" src="%s" controls></video><br>', htmlspecialchars($media_url));
-        } else if (in_array(strtolower(getFileExtension($datei['filename'])), words('oga mp3 wav'))) {
-            $content = sprintf('<audio class="preview" src="%s" controls></audio><br>', htmlspecialchars($media_url));
-        } else if (in_array(strtolower(getFileExtension($datei['filename'])), words('jpg jpeg gif png'))) {
+        } else if (strpos($media_type, 'video/') === 0 || $media_type == 'application/ogg') {
+            $content = sprintf('<video class="preview" controls><source src="%s" type="%s"></video><br>', htmlspecialchars($media_url), $media_type);
+        } else if (strpos($media_type, 'audio/') === 0) {
+            $content = sprintf('<audio class="preview" controls><source src="%s" type="%s"></audio><br>', htmlspecialchars($media_url), $media_type);
+        } else if (strpos($media_type, 'image/') === 0) {
             $content = sprintf('<img class="preview" src="%s" alt=""><br>', htmlspecialchars($media_url));
         }
         if ($datei["description"]) {
@@ -1839,8 +1840,8 @@ function display_folder ($folder_id, $open, $change, $move, $upload, $refresh=FA
         print URLHelper::getLink("?open=".$folder_id."#anker");
         print "\" class=\"tree\" onClick=\"return STUDIP.Filesystem.changefolderbody('".$folder_id."')\"><img id=\"folder_".$folder_id."_arrow_img\" src=\"".$GLOBALS['ASSETS_URL']."images/forumgrau2.png\"".tooltip(_("Objekt aufklappen"))." border=0></a></td>";
         print "<td class=\"printhead\" valign=\"bottom\">";
-                if ($move && ($move != $folder_id) && $folder_tree->isWritable($folder_id, $user->id) && (!$folder_tree->isFolder($move) || ($folder_tree->checkCreateFolder($folder_id, $user->id) && !$folder_tree->isExerciseFolder($folder_id, $user->id)))){
-                print "&nbsp;<a href=\"".URLHelper::getLink("?open=".$folder_id."_md_")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/yellow/arr_2right.png\" border=0></a>&nbsp";
+        if ($move && ($move != $folder_id) && $folder_tree->isWritable($folder_id, $user->id) && (!$folder_tree->isFolder($move) || ($folder_tree->checkCreateFolder($folder_id, $user->id) && !$folder_tree->isExerciseFolder($folder_id, $user->id)))){
+            print "&nbsp;<a href=\"".URLHelper::getLink("?open=".$folder_id."_md_")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/yellow/arr_2right.png\" border=0></a>&nbsp";
         }
         print "<a href=\"".URLHelper::getLink("?open=".$folder_id."#anker")."\" class=\"tree\" " .
                 "onClick=\"return STUDIP.Filesystem.changefolderbody('".$folder_id."')\"><span id=\"folder_".$folder_id."_header\" " .
@@ -2000,6 +2001,66 @@ function GetFileIcon($ext, $with_img_tag = false){
         break;
     }
     return ($with_img_tag ? '<img src="'.$GLOBALS['ASSETS_URL'].'images/'.$icon.'" border="0">' : $icon);
+}
+
+/**
+ * Determines an appropriate MIME type for a file based on the
+ * extension of the file name.
+ *
+ * @param string $filename      file name to check
+ */
+function get_mime_type($filename)
+{
+    static $mime_types = array(
+        // archive types
+        'gz'   => 'application/x-gzip',
+        'tgz'  => 'application/x-gzip',
+        'bz2'  => 'application/x-bzip2',
+        'zip'  => 'application/zip',
+        // document types
+        'txt'  => 'text/plain',
+        'css'  => 'text/css',
+        'csv'  => 'text/csv',
+        'rtf'  => 'application/rtf',
+        'pdf'  => 'application/pdf',
+        'doc'  => 'application/msword',
+        'xls'  => 'application/ms-excel',
+        'ppt'  => 'application/ms-powerpoint',
+        'swf'  => 'application/x-shockwave-flash',
+        // image types
+        'gif'  => 'image/gif',
+        'jpeg' => 'image/jpeg',
+        'jpg'  => 'image/jpeg',
+        'jpe'  => 'image/jpeg',
+        'png'  => 'image/png',
+        'bmp'  => 'image/x-ms-bmp',
+        // audio types
+        'mp3'  => 'audio/mp3',
+        'oga'  => 'audio/ogg',
+        'wav'  => 'audio/wave',
+        'ra'   => 'application/x-pn-realaudio',
+        'ram'  => 'application/x-pn-realaudio',
+        // video types
+        'mpeg' => 'video/mpeg',
+        'mpg'  => 'video/mpeg',
+        'mpe'  => 'video/mpeg',
+        'qt'   => 'video/quicktime',
+        'mov'  => 'video/quicktime',
+        'avi'  => 'video/x-msvideo',
+        'flv'  => 'video/x-flv',
+        'ogg'  => 'application/ogg',
+        'ogv'  => 'video/ogg',
+        'mp4'  => 'video/mp4',
+        'webm' => 'video/webm',
+    );
+
+    $extension = strtolower(getFileExtension($filename));
+
+    if (isset($mime_types[$extension])) {
+        return $mime_types[$extension];
+    } else {
+        return 'application/octet-stream';
+    }
 }
 
 /**

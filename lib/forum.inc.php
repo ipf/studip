@@ -1599,7 +1599,7 @@ function DisplayFolders ($open=0, $update="", $zitat="") {
     if ($forum["sortthemes"] == "last")
         $order = "last DESC";
     else
-        $order = "t.mkdate ".$forum["sortthemes"];
+        $order = "t.mkdate ". ($forum["sortthemes"] == 'asc' ? 'ASC' : 'DESC');
 
     while (list($key,$val)=each($fields)) {
         $query .= $comma."t.".$val;

@@ -546,23 +546,7 @@ if ($form == 3)
                                                                 );
                 }
 
-            if (is_array($tmp_metadata_termin["turnus_data"])) {
-                //check for dublettes
-                $tmp_array_assi = $tmp_metadata_termin["turnus_data"];
-                foreach ($tmp_array_assi as $key1=>$val1)  {
-                    foreach ($tmp_metadata_termin["turnus_data"] as $key2=>$val2) {
-                        if (($val1["day"] == $val2["day"]) &&
-                            ($val1["start_stunde"] == $val2["start_stunde"]) &&
-                            ($val1["start_minute"] == $val2["start_minute"]) &&
-                            ($val1["end_stunde"] == $val2["end_stunde"]) &&
-                            ($val1["end_minute"] == $val2["end_minute"]) &&
-                            ($val1["room"] == $val2["room"]) &&
-                            ($val1["ressource_id"] == $val2["ressource_id"]) &&
-                            ($key1 != $key2))
-                            unset ($tmp_metadata_termin["turnus_data"][$key1]);
-                    }
-                }
-
+            if (is_array($tmp_metadata_termin["turnus_data"])) {                
                 //sortieren
                 sort ($tmp_metadata_termin["turnus_data"]);
 
@@ -2594,7 +2578,7 @@ if ($level == 2)
                            $i++;
                         }
                            echo "</table>";
-                     //     printf ("&nbsp; <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/blue/trash.png\" border=\"0\"></a> &nbsp; <font size=\"-1\"><b>%s (%s)&nbsp; &nbsp; <br>", URLHelper::getLink($PHP_SELF."?delete_doz=".get_username($key)), get_fullname($key,"full_rev",true), get_username($key));
+                     //     printf ("&nbsp; <a href=\"%s\"><img src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/blue/trash.png\" border=\"0\"></a> &nbsp; <font size=\"-1\"><b>%s (%s)&nbsp; &nbsp; <br>", URLHelper::getLink("?delete_doz=".get_username($key)), get_fullname($key,"full_rev",true), get_username($key));
                          } else {
                                 printf ("<font size=\"-1\">&nbsp;  ". sprintf(_("Keine %s gew&auml;hlt."), get_title_for_status('dozent', 2, $sem_create_data["sem_status"]))."</font><br >");
                             }

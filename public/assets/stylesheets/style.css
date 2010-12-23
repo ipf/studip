@@ -155,8 +155,8 @@ td.infoboxrahmen {
     background-color: #dee2e8;
 }
 
-/* --- image preview -------------------------------------------------------- */
-img.preview {
+/* --- media preview -------------------------------------------------------- */
+img.preview, video.preview, audio.preview {
     max-height: 500px;
     max-width: 750px;
 }
@@ -476,6 +476,12 @@ td.tree-elbow-end img {
     background-image: url('../images/plastic_red.jpg');
 }
 
+.semtree li {
+    padding-bottom: 5px;
+    list-style: none;
+    font-weight: bold;
+}
+
 /* descriptional texts */
 p.info {
     padding: 10px;
@@ -593,7 +599,7 @@ A:hover.calhead {
     text-decoration: none;
 }
 .celltoday {
-    background-image: url('../images/celltoday.jpg');
+    background-image: url('../images/celltoday.png');
 }
 th.inccal {
 }
@@ -622,7 +628,7 @@ td.currenttoday {
     border-width: 2px;
     border-style: solid;
     border-color: #DD0000;
-    background-image: url('../images/celltoday.jpg');
+    background-image: url('../images/celltoday.png');
 }
 td.month {
     background-image: url('../images/steelcal.jpg');
