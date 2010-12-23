@@ -473,9 +473,9 @@ if ($perm->have_studip_perm("admin",$i_view) || $i_view == "new") {
 	<tr <? $cssSw->switchClass() ?>><td class="<? echo $cssSw->getClass() ?>" colspan=2 align="center">
 
 	<?
-	if ($i_view != "new") {
+    if ($i_view != "new" && isset($i_id)) {
 		?>
-		<input type="hidden" name="i_id"   value="<?php $db->p("Institut_id") ?>">
+        <input type="hidden" name="i_id" value="<?= $i_id ?>">
 		<input type="IMAGE" name="i_edit" <?=makeButton("uebernehmen", "src")?> border=0 value=" Ver&auml;ndern ">
 		<?
 		if ($db->f("number") < 1 && !$_num_inst) {
