@@ -1887,6 +1887,7 @@ function display_folder ($folder_id, $open, $change, $move, $upload, $refresh=FA
 		     ", " . ($tmp_titel ? $tmp_titel : _("ohne Titel"));
 	}
 	if (($change == $folder_id) 
+            && (!$isissuefolder)
 			&& ((count($folder_tree->getParents($folder_id)) > 1) 
 			 || $result['range_id'] == md5($SessSemName[1] . 'top_folder') 
 			 || $folder_tree->isGroupFolder($result['folder_id'])
@@ -1910,11 +1911,7 @@ function display_folder ($folder_id, $open, $change, $move, $upload, $refresh=FA
 	}
 	print $titel;
 	
-	$is_issue_folder = ((count($folder_tree->getParents($folder_id)) > 1) && IssueDB::isIssue($result["range_id"]));
-	if ($is_issue_folder) {
-		$dates_for_issue = IssueDB::getDatesforIssue($result['range_id']);
-	}
-	if ($is_issue_folder) {
+    if ($isissuefolder) {
 		$dates_title = array();
 		foreach ($dates_for_issue as $date) {
 			$dates_title[] .= date('d.m.y, H:i', $date['date']).' - '.date('H:i', $date['end_time']);

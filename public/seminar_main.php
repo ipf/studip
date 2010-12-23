@@ -213,7 +213,7 @@ $quarter_year = 60 * 60 * 24 * 90;
 							</td>
 							<td>
 								<?= _("Sie haben noch nicht die für diese Veranstaltung benötigten Zusatzinformationen eingetragen.")?><br>
-								<?= _("Um das nochzuholen gehen Sie unter \"TeilnehmerInnen\" auf \"Zusatzangaben\"")?><br>
+								<?= _("Um das nachzuholen, gehen Sie unter \"TeilnehmerInnen\" auf \"Zusatzangaben\"")?><br>
 								<?= _("oder klicken sie auf")?>
 								&nbsp;&nbsp;<a href="<?=URLHelper::getLink("teilnehmer_aux.php")?>"><img src="<?=$GLOBALS['ASSETS_URL']?>/images/link_intern.gif" border="0" valign="absmiddle">&nbsp;<?= _("Direkt zu den Zusatzangaben") ?></a>
 							</td>
