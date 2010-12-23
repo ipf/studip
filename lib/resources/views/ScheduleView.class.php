@@ -214,7 +214,7 @@ class ScheduleView {
 	function createHtmlOutput($print_view=false) {
 		$glb_colspan = count($this->show_columns);
 		?>
-		<table <? if ($print_view) { ?> bgcolor="#eeeeee" <? } ?> width ="99%" align="center" cellspacing=1 cellpadding=0 border=0>
+        <table width ="100%" align="center" cellspacing=1 cellpadding=1 border=0>
 			<tr>
 				<td width="5%" align="center" class="rahmen_steelgraulight" ><?=_("Zeit");?>
 				</td>
@@ -365,7 +365,7 @@ class ScheduleView {
 		$out = htmlReady(substr($name, 0,50));
 		if (strlen($name)>50) $out.= "...";
 		if ($print_view){
-			$out = preg_replace('/EB[0-9]+/', '<b>\0</b>', $name);
+            $out = preg_replace('/EB[0-9]+/', '<b>\0</b>', htmlready($name,false,false));
 		}
 		return nl2br($out);
 	}
