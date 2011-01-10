@@ -482,7 +482,7 @@ class SemBrowse {
 						if ($studygroup_mode) {
 							echo "<div style=\"font-size:smaller\">" . htmlReady(substr($seminar_obj->description,0,100)) . "</div>";
 						} else {
-                            $temp_turnus_string = $seminar_obj->getDatesExport(array('short' => $short, 'shrink' => true, 'semester_id' => $current_semester_id));
+                            $temp_turnus_string = $seminar_obj->getFormattedTurnus(true);
 							//Shorten, if string too long (add link for details.php)
 							if (strlen($temp_turnus_string) > 70) {
 								$temp_turnus_string = htmlReady(substr($temp_turnus_string, 0, strpos(substr($temp_turnus_string, 70, strlen($temp_turnus_string)), ",") + 71));
