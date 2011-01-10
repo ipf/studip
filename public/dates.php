@@ -169,9 +169,9 @@ if ($cmd == 'openAll') $openAll = true;
                     <td class="steelgraulight" colspan="10" height="24" align="center">
                         <a href="<?= URLHelper::getLink('?cmd='.(($openAll) ? 'close' : 'open') .'All') ?>">
                             <? if ($openAll) : ?>
-                            <?= Assets::img('close_all.png', array('title' => _("Alle Termine zuklappen"))) ?>
+                            <?= Assets::img('close_all.gif', array('title' => _("Alle Termine zuklappen"))) ?>
                             <? else : ?>
-                            <?= Assets::img('open_all.png', array('title' => _("Alle Termine aufklappen"))) ?>
+                            <?= Assets::img('open_all.gif', array('title' => _("Alle Termine aufklappen"))) ?>
                             <? endif ?>
                         </a>
                     </td>
