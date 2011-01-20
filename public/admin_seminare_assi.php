@@ -2201,9 +2201,7 @@ elseif ((!$level) || ($level == 1))
 							&nbsp; <input type="text" name="sem_ects" size=6 maxlength=32 value="<? echo  htmlReady(stripslashes($sem_create_data["sem_ects"])) ?>">
 							<img  src="<?= $GLOBALS['ASSETS_URL'] ?>images/info.gif"
 								<? echo tooltip(_("ECTS-Kreditpunkte, die in dieser Veranstaltung erreicht werden können."), TRUE, TRUE) ?>
-							> <br>
-							&nbsp; <input type="radio" name="sem_admission" value=3 <? if ($sem_create_data["sem_admission"]=="3") echo 'checked'?>>
-							<?=_("gesperrt"); ?>&nbsp;
+							>
 						</td>
 					</tr>
 					<?
@@ -2223,7 +2221,9 @@ elseif ((!$level) || ($level == 1))
  							<?=_("per Losverfahren"); ?>&nbsp;
  							<img  src="<?= $GLOBALS['ASSETS_URL'] ?>images/info.gif"
  								<? echo tooltip(_("Sie können die Anzahl der Teilnehmenden beschränken. Möglich ist die Zulassung von Interessierten über das Losverfahren oder über die Reihenfolge der Anmeldung. Sie können später Angaben über zugelassene Teilnehmer machen."), TRUE, TRUE) ?>
-							>
+							> <br>
+							&nbsp; <input type="radio" name="sem_admission" value=3 <? if ($sem_create_data["sem_admission"]=="3") echo 'checked'?>>
+							<?=_("gesperrt"); ?>&nbsp;
 						</td>
 						<td class="<? echo $cssSw->getClass() ?>" width="10%" align="right">
 							<?=_("maximale Teilnehmeranzahl:"); ?>

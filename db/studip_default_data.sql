@@ -231,8 +231,8 @@ INSERT INTO `schema_version` (`domain`, `version`) VALUES('studip', 55);
 -- Daten für Tabelle `semester_data`
 --
 
-INSERT INTO `semester_data` (`semester_id`, `name`, `description`, `semester_token`, `beginn`, `ende`, `vorles_beginn`, `vorles_ende`) VALUES('f2b4fdf5ac59a9cb57dd73c4d3bbb651', 'SS 2010', '', '', 1270072800, 1285883999, 1270504800, 1278712799);
-INSERT INTO `semester_data` (`semester_id`, `name`, `description`, `semester_token`, `beginn`, `ende`, `vorles_beginn`, `vorles_ende`) VALUES('eb828ebb81bb946fac4108521a3b4697', 'WS 2009/10', '', '', 1254348000, 1270072799, 1255903200, 1265410799);
+INSERT INTO `semester_data` (`semester_id`, `name`, `description`, `semester_token`, `beginn`, `ende`, `vorles_beginn`, `vorles_ende`) VALUES('f2b4fdf5ac59a9cb57dd73c4d3bbb651', 'SS 2011', '', '', 1301608800, 1317419999, 1302040800, 1310248799);
+INSERT INTO `semester_data` (`semester_id`, `name`, `description`, `semester_token`, `beginn`, `ende`, `vorles_beginn`, `vorles_ende`) VALUES('eb828ebb81bb946fac4108521a3b4697', 'WS 2010/11', '', '', 1285884000, 1301608799, 1287439200, 1296946799);
 
 --
 -- Daten für Tabelle `semester_holiday`
