@@ -60,13 +60,22 @@ if (get_config('ELEARNING_INTERFACE_ENABLE')) {
     if ($new_account_cms != "")
         $new_account_form = ELearningUtils::getNewAccountForm($new_account_cms);
     foreach($ELEARNING_INTERFACE_MODULES as $cms => $cms_preferences) {
-        if (ELearningUtils::isCMSActive($cms) AND ($cms_preferences["auth_necessary"] == true))
+        if (ELearningUtils::isCMSActive($cms))
         {
             ELearningUtils::loadClass($cms);
-            ELearningUtils::bench("load cms $cms");
-            $new_module_form[$cms] = ELearningUtils::getNewModuleForm($cms);
-        } else {
-            $messages['error'] = sprintf(_("Das System %s ist momentan nicht erreichbar. Bitte wenden Sie sich an Ihren Systemadministrator."),$cms);
+            if ( $cms_preferences["auth_necessary"] == true) {
+                $new_module_form[$cms] = ELearningUtils::getNewModuleForm($cms);
+            }
+            $connection_status = $connected_cms[$cms]->getConnectionStatus($cms);
+
+            foreach ($connection_status as $type => $msg)
+            {
+                if ($msg["error"] != "")
+                {
+                    $messages['error'] = sprintf(_("Es traten Probleme bei der Anbindung einzelner Lermodule auf. Bitte wenden Sie sich an Ihren Systemadministrator."),$cms);
+                    $errors[] = $msg['error'];
+                }
+            }
         }
     }
     if ($messages["info"] != "")
@@ -75,7 +84,8 @@ if (get_config('ELEARNING_INTERFACE_ENABLE')) {
     }
     if ($messages["error"] != "")
     {
-        echo MessageBox::error($messages["error"]);
+        echo MessageBox::error($messages["error"], $errors);
+
     }
 
     ELearningUtils::bench("init");
@@ -85,6 +95,8 @@ if (get_config('ELEARNING_INTERFACE_ENABLE')) {
     {
         if (ELearningUtils::isCMSActive($cms))
         {
+            $connected_cms = array();
+            ELearningUtils::loadClass($cms);
             if (($cms_preferences["auth_necessary"] == true))
             {
                 if ($GLOBALS["module_type_" . $cms] != "")
