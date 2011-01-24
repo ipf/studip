@@ -22,6 +22,17 @@ class Course_BasicdataController extends AuthenticatedController
     public $msg = array();
 
     /**
+     * common tasks for all actions
+     */
+    function before_filter(&$action, &$args)
+    {
+        parent::before_filter($action, $args);
+
+        // allow only "word" characters in arguments
+        $this->validate_args($args);
+    }
+
+    /**
      * Zeigt die Grunddaten an. Man beachte, dass eventuell zuvor eine andere
      * Action wie Set ausgeführt wurde, von der hierher weitergeleitet worden ist.
      * Wichtige Daten dazu wurden dann über $this->flash übertragen.
@@ -53,7 +64,7 @@ class Course_BasicdataController extends AuthenticatedController
 
         //Auswähler für Admin-Bereich:
         if (!$this->course_id) {
-            PageLayout::setTitle(_('Studienbereichsauswahl'));
+            PageLayout::setTitle(_("Verwaltung der Grunddaten"));
             $GLOBALS['view_mode'] = "sem";
 
             require_once 'lib/admin_search.inc.php';
@@ -201,6 +212,8 @@ class Course_BasicdataController extends AuthenticatedController
             'locked' => LockRules::Check($this->course_id, 'seminar_inst')
         );
 
+        $this->dozent_is_locked = LockRules::Check($this->course_id, 'dozent');
+        $this->tutor_is_locked = LockRules::Check($this->course_id, 'tutor');
 
         //Dritter Reiter: Personal
         $this->dozenten = $sem->getMembers('dozent');
@@ -302,13 +315,15 @@ class Course_BasicdataController extends AuthenticatedController
         if ($datenfelder) {
             foreach($datenfelder as $datenfeld) {
                 if ($datenfeld->isVisible()) {
+                    $locked = !$datenfeld->isEditable()
+                              || LockRules::Check($this->course_id, $datenfeld->getID());
                     $this->descriptions[] = array(
                         'title' => $datenfeld->getName(),
                         'name' => "datafield_".$datenfeld->getID(),
                         'type' => "datafield",
-                        'value' => $datenfeld->getHTML("datafields"),
-                        'locked' => !$datenfeld->isEditable()
-                            || LockRules::Check($this->course_id, $datenfeld->getID())
+                        'html_value' => $datenfeld->getHTML("datafields"),
+                        'display_value' => $datenfeld->getDisplayValue(),
+                        'locked' => $locked
                     );
                 }
             }
@@ -324,6 +339,13 @@ class Course_BasicdataController extends AuthenticatedController
         $this->perm_dozent = $perm->have_studip_perm("dozent", $this->course_id);
         $this->mkstring = $data['mkdate'] ? date("d.m.Y, G:i", $data['mkdate']) : _("unbekannt");
         $this->chstring = $data['chdate'] ? date("d.m.Y, G:i", $data['chdate']) : _("unbekannt");
+        if (get_config('SEMINAR_LOCK_ENABLE')) {
+            $lr = new LockRules();
+            $lockdata = $lr->getSemLockRule($this->course_id);
+            if ($lockdata['description'] && LockRules::CheckLockRulePermission($this->course_id, $lockdata['permission'])){
+                $this->flash['msg'] = array_merge((array)$this->flash['msg'], array(array("info", fixlinks($lockdata['description']))));
+            }
+        }
         $this->flash->discard(); //schmeißt ab jetzt unnötige Variablen aus der Session.
     }
 
@@ -349,18 +371,12 @@ class Course_BasicdataController extends AuthenticatedController
                     } elseif ($sem->{$varname} != $req_value) {
                         $sem->{$varname} = $req_value;
                         $changemade = true;
-                        if (in_array($varname, array("participants",
-                                "requirements",
-                                "orga",
-                                "leistungsnachweis",
-                                "location",
-                                "misc"))) {
-                        }
                     }
                 }
             }
             //seminar_inst:
-            if ($sem->setInstitutes($_POST['related_institutes'] ? $_POST['related_institutes'] : array())) {
+            if (!LockRules::Check($course_id, 'seminar_inst') &&
+                $sem->setInstitutes(Request::optionArray('related_institutes'))) {
                 $changemade = true;
             }
             //Datenfelder:
@@ -383,7 +399,18 @@ class Course_BasicdataController extends AuthenticatedController
             if (count($invalid_datafields)) {
                 $this->msg[] = array("error", _("Die Eingaben für folgende Felder sind ungültig und wurden nicht gespeichert:") . '<br>' . join(', ', array_map('htmlready', $invalid_datafields)));
             }
+
             $sem->store();
+
+            // Logging
+            $before = array_diff_assoc($sem->old_settings, $sem->getSettings());
+            $after  = array_diff_assoc($sem->getSettings(), $sem->old_settings);
+            if (sizeof($before) && sizeof($after)) {
+                foreach($before as $k => $v) $log_message .= "$k: $v => " . $after[$k] . " \n";
+                log_event('CHANGE_BASIC_DATA', $sem->getId(), " ", $log_message);
+            }
+            // end of logging
+
             if ($changemade) {
                 $this->msg[] = array("msg", _("Die Grunddaten der Veranstaltung wurden verändert."));
             } else {
