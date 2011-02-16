@@ -88,7 +88,7 @@ function studip_default_exception_handler($exception) {
 }
 
 // command line or http request?
-if (!isset($GLOBALS['argc'])) {
+if (isset($_SERVER['REQUEST_METHOD'])) {
     set_exception_handler('studip_default_exception_handler');
 }
 

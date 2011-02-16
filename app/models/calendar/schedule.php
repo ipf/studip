@@ -260,6 +260,8 @@ class CalendarScheduleModel
      */
     static function getSeminarEntries($user_id, $semester, $start_hour, $end_hour, $show_hidden = false)
     {
+        $seminars = array();
+        
         // get all virtually added seminars
         $stmt = DBManager::get()->prepare("SELECT * FROM schedule_seminare as c
             LEFT JOIN seminare as s ON (s.Seminar_id = c.Seminar_id)
@@ -273,21 +275,29 @@ class CalendarScheduleModel
         }
 
         // fetch seminar-entries 
-        $stmt = DBManager::get()->prepare("SELECT * FROM seminar_user as su
+        $stmt = DBManager::get()->prepare("SELECT s.Seminar_id FROM seminar_user as su
             LEFT JOIN seminare as s USING (Seminar_id)
             WHERE su.user_id = :userid AND (s.start_time = :begin
-                OR (s.start_time < :begin AND s.duration_time = -1)
+                OR (s.start_time <= :begin AND s.duration_time = -1)
                 OR (s.start_time + s.duration_time >= :begin
                     AND s.start_time <= :begin))");
         $stmt->bindParam(':begin', $semester['beginn']);
         $stmt->bindParam(':userid', $user_id);
         $stmt->execute();
 
-        while ($entry = $stmt->fetch()) {
-            $seminars[$entry['Seminar_id']] = $entry;
+        while ($entry = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // if the entry is virtual and permantent at the same time, remove the virtual one!
+            if (isset($seminars[$entry['Seminar_id']])) {
+                self::deleteSeminarEntries($user_id, $entry['Seminar_id']);
+            } else {
+                $seminars[$entry['Seminar_id']] = array(
+                    'Seminar_id' => $entry['Seminar_id']
+                );
+            }
         }
-        
-        if (is_array($seminars)) foreach ($seminars as $data) {
+
+        $ret = array();
+        foreach ($seminars as $data) {
             $entries = self::getSeminarEntry($data['Seminar_id'], $user_id);
 
             foreach ($entries as $entry) {

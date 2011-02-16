@@ -152,7 +152,9 @@ class StudipAuthShib extends StudipAuthSSO
      */
     function getUserData ($key)
     {
-        return $this->userdata[$key];
+        $data = explode(';', $this->userdata[$key]);
+
+        return $data[0];
     }
 }
 ?>
