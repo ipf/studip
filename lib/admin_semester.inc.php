@@ -178,8 +178,8 @@ function semester_show_new_semester_form($link, $cssSw, $semesterdata, $modus=""
     $data =     "<form method=\"POST\" name=\"newSemester\" action=\"".$link."\">";
     $data .=    "<tr><td class=\"";
     $cssSw->switchClass();
-    $data .=    "".$cssSw->getClass()."\"><font size=2><b>"._("Name des Semesters:")."</b></font></td><td class=".$cssSw->getClass()."><input type=\"text\" name=\"semesterdata[name]\" value=\"".$semesterdata["name"]."\"size=60 maxlength=254></td></tr>";
-    $data .=    "<tr><td class=\"".$cssSw->getClass()."\"><font size=2><b>"._("Beschreibung:")."</b></font></td><td class=\"".$cssSw->getClass()."\"><textarea cols=50 ROWS=4 name=\"semesterdata[description]\">".$semesterdata["description"]."</textarea></td></tr>";
+    $data .=    "".$cssSw->getClass()."\"><font size=2><b>"._("Name des Semesters:")."</b></font></td><td class=".$cssSw->getClass()."><input type=\"text\" name=\"semesterdata[name]\" value=\"".htmlReady($semesterdata["name"])."\"size=60 maxlength=254></td></tr>";
+    $data .=    "<tr><td class=\"".$cssSw->getClass()."\"><font size=2><b>"._("Beschreibung:")."</b></font></td><td class=\"".$cssSw->getClass()."\"><textarea cols=50 ROWS=4 name=\"semesterdata[description]\">".htmlReady($semesterdata["description"])."</textarea></td></tr>";
     $cssSw->switchClass();
     $data .= "<tr><td height=50 colspan=2 class=\"".$cssSw->getClass()."\"><font size=2><b>"._("Bitte geben Sie den zeitlichen Rahmen des Semester ein")."</b></font>";
     if ($modus=="change") {
@@ -585,7 +585,7 @@ function semester_show_semester($semester, $i, $duration_seminar_semester, $abso
         $style = "steelgraulight";
    }
    $row =   "<tr>";
-   $row .=  "<td class=".$style." width=\"15%\">".$semester["name"]."</td>";
+   $row .=  "<td class=".$style." width=\"15%\">".htmlReady($semester["name"])."</td>";
    $row .=  "<td class=".$style." width=\"12%\">".date("d.m.Y", $semester["beginn"])."</td>";
    $row .=  "<td class=".$style." width=\"12%\">".date("d.m.Y", $semester["ende"])."</td>";
    $row .=  "<td class=".$style." width=\"12%\">".date("d.m.Y", $semester["vorles_beginn"])."</td>";
@@ -654,7 +654,7 @@ function holiday_show_holiday($holidaydata, $i) {
         $style = "steelgraulight";
    }
    $row =   "<tr>";
-   $row .=  "<td class=".$style." width=\"35%\">".$holidaydata["name"]."</td>";
+   $row .=  "<td class=".$style." width=\"35%\">".htmlReady($holidaydata["name"])."</td>";
    $row .=  "<td class=".$style." width=\"20%\">".date("d.m.Y", $holidaydata["beginn"])."</td>";
    $row .=  "<td class=".$style." width=\"20%\">".date("d.m.Y", $holidaydata["ende"])."</td>";
    $row .=  "<td width=\"15%\" align=\"RIGHT\" class=".$style."><a href=\"admin_semester.php?holidayChange=1&holiday_id=".$holidaydata["holiday_id"]."\">".makeButton("bearbeiten")."</a></td>";
@@ -680,8 +680,8 @@ function holiday_show_new_holiday_form($link, $cssSw, $holidaydata, $modus="") {
     $data =     "<form method=\"POST\" name=\"newHoliday\" action=\"".$link."\">";
     $data .=    "<tr><td class=\"";
     $cssSw->switchClass();
-    $data .=    "".$cssSw->getClass()."\"><font size=2><b>"._("Name der Ferien:")."</b></font></td><td class=".$cssSw->getClass()."><input type=\"text\" name=\"holidaydata[name]\" value=\"".$holidaydata["name"]."\"size=60 maxlength=254></td></tr>";
-    $data .=    "<tr><td class=\"".$cssSw->getClass()."\"><font size=2><b>"._("Beschreibung:")."</b></font></td><td class=\"".$cssSw->getClass()."\"><textarea cols=50 ROWS=4 name=\"holidaydata[description]\">".$holidaydata["description"]."</textarea></td></tr>";
+    $data .=    "".$cssSw->getClass()."\"><font size=2><b>"._("Name der Ferien:")."</b></font></td><td class=".$cssSw->getClass()."><input type=\"text\" name=\"holidaydata[name]\" value=\"".htmlReady($holidaydata["name"])."\"size=60 maxlength=254></td></tr>";
+    $data .=    "<tr><td class=\"".$cssSw->getClass()."\"><font size=2><b>"._("Beschreibung:")."</b></font></td><td class=\"".$cssSw->getClass()."\"><textarea cols=50 ROWS=4 name=\"holidaydata[description]\">".htmlReady($holidaydata["description"])."</textarea></td></tr>";
     $cssSw->switchClass();
     $data .= "<tr><td height=50 colspan=2 class=\"".$cssSw->getClass()."\"><font size=2><b>Bitte geben Sie den zeitlichen Rahmen der Ferien ein</b></font></td></tr>";
     $cssSw->switchClass();

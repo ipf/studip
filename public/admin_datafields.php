@@ -242,10 +242,10 @@ if ($kill_datafield) { // contains a datafield_id
                     <?
                     if ($admin_datafields_data["change_datafield"] == $val->getID()) {
                         print "<a name=\"a\"></a>";
-                        printf ("<input type=\"TEXT\" maxlength=\"255\" size=\"25\" style=\"font-size: 8pt; width: 90%%;\" value=\"%s\" name=\"datafield_name\">", $val->getName());
+                        printf ("<input type=\"TEXT\" maxlength=\"255\" size=\"25\" style=\"font-size: 8pt; width: 90%%;\" value=\"%s\" name=\"datafield_name\">", htmlReady($val->getName()));
                     }
                     else
-                        print $val->getName();
+                        print htmlReady($val->getName());
                     ?>
                     </font>
                 </td>
@@ -476,10 +476,10 @@ if ($kill_datafield) { // contains a datafield_id
                           if ($admin_datafields_data["change_datafield"] == $val->getID()) {
                         print "<a name=\"a\"></a>";
                               print "<input type=\"TEXT\" maxlength=\"255\" size=\"25\" style=\"font-size: 8pt; width: 90%;\" ";
-                               print "value=\"".$val->getName()."\" name=\"datafield_name\">";
+                               print "value=\"".htmlReady($val->getName())."\" name=\"datafield_name\">";
                           }
                           else
-                              print $val->getName()
+                              print htmlReady($val->getName())
                     ?>
                     </font>
                 </td>
@@ -710,9 +710,9 @@ if ($kill_datafield) { // contains a datafield_id
                     <?
                     if ($admin_datafields_data["change_datafield"] == $val->getID()) {
                         print "<a name=\"a\"></a>";
-                        printf ("<input type=\"TEXT\" maxlength=\"255\" size=\"25\" style=\"font-size: 8pt; width: 90%%;\" value=\"%s\" name=\"datafield_name\">", $val->getName());
+                        printf ("<input type=\"TEXT\" maxlength=\"255\" size=\"25\" style=\"font-size: 8pt; width: 90%%;\" value=\"%s\" name=\"datafield_name\">", htmlReady($val->getName()));
                     } else
-                        print $val->getName()
+                        print htmlReady($val->getName())
                     ?>
                     </font>
                 </td>
@@ -948,9 +948,9 @@ if ($kill_datafield) { // contains a datafield_id
                     <?
                     if ($admin_datafields_data["change_datafield"] == $val->getID()) {
                         print "<a name=\"a\"></a>";
-                        printf ("<input type=\"TEXT\" maxlength=\"255\" size=\"25\" style=\"font-size: 8pt; width: 90%%;\" value=\"%s\" name=\"datafield_name\">", $val->getName());
+                        printf ("<input type=\"TEXT\" maxlength=\"255\" size=\"25\" style=\"font-size: 8pt; width: 90%%;\" value=\"%s\" name=\"datafield_name\">", htmlReady($val->getName()));
                     } else
-                        print $val->getName()
+                        print htmlReady($val->getName())
                     ?>
                     </font>
                 </td>
@@ -1191,9 +1191,9 @@ if ($kill_datafield) { // contains a datafield_id
                     <?
                     if ($admin_datafields_data["change_datafield"] == $val->getID()) {
                         print "<a name=\"a\"></a>";
-                        printf ("<input type=\"TEXT\" maxlength=\"255\" size=\"25\" style=\"font-size: 8pt; width: 90%%;\" value=\"%s\" name=\"datafield_name\">", $val->getName());
+                        printf ("<input type=\"TEXT\" maxlength=\"255\" size=\"25\" style=\"font-size: 8pt; width: 90%%;\" value=\"%s\" name=\"datafield_name\">", htmlReady($val->getName()));
                     } else
-                        print $val->getName()
+                        print htmlReady($val->getName())
                     ?>
                     </font>
                 </td>
@@ -1433,9 +1433,9 @@ if ($kill_datafield) { // contains a datafield_id
                     <?
                     if ($admin_datafields_data["change_datafield"] == $val->getID()) {
                         print "<a name=\"a\"></a>";
-                        printf ("<input type=\"TEXT\" maxlength=\"255\" size=\"25\" style=\"font-size: 8pt; width: 90%%;\" value=\"%s\" name=\"datafield_name\">", $val->getName());
+                        printf ("<input type=\"TEXT\" maxlength=\"255\" size=\"25\" style=\"font-size: 8pt; width: 90%%;\" value=\"%s\" name=\"datafield_name\">", htmlReady($val->getName()));
                     } else
-                        print $val->getName()
+                        print htmlReady($val->getName())
                     ?>
                     </font>
                 </td>
