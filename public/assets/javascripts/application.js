@@ -1407,7 +1407,7 @@ STUDIP.Schedule = {
     STUDIP.Calendar.noNewEntry = true;
     jQuery.ajax({
       type: 'GET',
-      url: STUDIP.ABSOLUTE_URI_STUDIP + 'dispatch.php/calendar/schedule/unbind/' + seminar_id + '/' + cycle_id
+      url: STUDIP.ABSOLUTE_URI_STUDIP + 'dispatch.php/calendar/schedule/unbind/' + seminar_id + '/' + cycle_id + '/true'
     });
     jQuery(element).parents('.schedule_entry').fadeOut('fast');
   },
