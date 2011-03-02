@@ -170,7 +170,9 @@ class User {
   * restore saved registered user variables
   **/
   function thaw() {
-  
+    if ($this->id == 'nobody'){
+          return;
+    }
     $vals = $this->that->ac_get_value($this->id, $this->name);
    
     $this->checksum = hash('md5', $vals);

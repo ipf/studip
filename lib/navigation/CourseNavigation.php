@@ -249,7 +249,7 @@ class CourseNavigation extends Navigation
         }
 
         // schedule
-        if ($modules['schedule'] && $user->id != 'nobody') {
+        if ($modules['schedule']) {
             $navigation = new Navigation(_('Ablaufplan'));
             $navigation->addSubNavigation('all', new Navigation(_('Alle Termine'), 'dates.php?cmd=setType&type=all'));
             $navigation->addSubNavigation('type1', new Navigation(_('Sitzungstermine'), 'dates.php?cmd=setType&type=1'));
