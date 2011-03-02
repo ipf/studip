@@ -9,7 +9,7 @@
 
     <td nowrap class="<?=$tpl['class']?>" valign="bottom">
         <a class="tree" href="<?=URLHelper::getLink("?cmd=".($issue_open[$tpl['sd_id']] ? 'close' : 'open')."&open_close_id=".$tpl['sd_id']."#".$tpl['sd_id'])?>">
-                &nbsp;<i><?=$tpl['art']?>:&nbsp;</i>
+                &nbsp;<i><?= htmlReady($tpl['art']) ?>:</i>
                 <?=$tpl['date']?>&nbsp;&nbsp;&nbsp;&nbsp;
         </a>
     </td>
@@ -56,16 +56,16 @@
     <TD colspan="8" class="steel1" align="left" style="padding-left: 10px">
             <FONT size="-1">
                 <BR/>
-                <B><?=($tpl['theme_title']) ? $tpl['theme_title'] : _("Keine Titel vorhanden.")?></B><BR/>
-                <?=($tpl['theme_description']) ? $tpl['theme_description'] : _("Keine Beschreibung vorhanden.")?><BR/>
+                <B><?=($tpl['theme_title']) ? htmlReady($tpl['theme_title']) : _("Keine Titel vorhanden.")?></B><BR/>
+                <?=($tpl['theme_description']) ? formatReady($tpl['theme_description']) : _("Keine Beschreibung vorhanden.")?><BR/>
                 <BR/>
-                <B><?=_("Art des Termins:")?></B>&nbsp;<?=$tpl['art']?><BR/>
+                <B><?=_("Art des Termins:")?></B>&nbsp;<?= htmlReady($tpl['art']) ?><BR/>
                 <BR/>
                 <? if ($tpl['additional_themes']) { ?>
                 <U><?=_("Weitere Themen:")?></U><BR/>
                 <?  foreach ($tpl['additional_themes'] as $val) { ?>
-                    <B><?=$val['title']?></B><BR/>
-                    <?=$val['desc']?><BR/>
+                    <B><?= htmlReady($val['title']) ?></B><BR/>
+                    <?= formatReady($val['desc'])?><BR/>
                     <BR/>
                 <?  }
                     }

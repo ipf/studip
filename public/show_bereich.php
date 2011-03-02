@@ -116,7 +116,7 @@ $sem_browse_obj->print_result();
 ?>
 </td><td class="blank" width="270" align="right" valign="top">
 <?
-$goup_by_links = "";
+$group_by_links = "";
 for ($i = 0; $i < count($sem_browse_obj->group_by_fields); ++$i){
     if($group_by != $i){
         $group_by_links .= "<a href=\"".URLHelper::getLink("",array('group_by'=>$i))."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/blank.gif\" width=\"10\" height=\"20\" border=\"0\">";
@@ -129,6 +129,7 @@ for ($i = 0; $i < count($sem_browse_obj->group_by_fields); ++$i){
     }
     $group_by_links .= "<br>";
 }
+$infobox = array();
 $infobox[] =    array(  "kategorie" => _("Anzeige gruppieren:"),
                         "eintrag" => array(array(   "icon" => "blank.gif",
                                                     "text" => $group_by_links))
@@ -140,7 +141,7 @@ if (($EXPORT_ENABLE) AND ($level == "s") AND ($perm->have_perm("tutor")))
                             "eintrag" => array(array(   "icon" => "icons/16/black/download.png",
                                                         "text" => export_link($SessSemName[1], "veranstaltung", $SessSemName[0])),
                                                 array( 'icon' => 'icons/16/black/file-xls.png',
-                                                        "text" => '<a href="'.$PHP_SELF.'?send_excel=1&group_by='.(int)$group_by.'">'._("Download als Excel Tabelle").'</a>')
+                                                        "text" => '<a href="' . UrlHelper::getLink('?send_excel=1&group_by='.(int)$group_by) . '">'._("Download als Excel Tabelle").'</a>')
 
                                                         )
                     );
@@ -152,7 +153,7 @@ if (($EXPORT_ENABLE) AND ($level == "sbb") AND ($perm->have_perm("tutor")))
                             "eintrag" => array(array(   "icon" => "icons/16/black/download.png",
                                                         "text" => export_link($id, "veranstaltung", $id)),
                                                 array( 'icon' => 'icons/16/black/file-xls.png',
-                                                        "text" => '<a href="'.$PHP_SELF.'?send_excel=1&group_by='.(int)$group_by.'">'._("Download als Excel Tabelle").'</a>')
+                                                        "text" => '<a href="' . UrlHelper::getLink('?send_excel=1&group_by='.(int)$group_by) . '">'._("Download als Excel Tabelle").'</a>')
 
                                                         )
                     );
