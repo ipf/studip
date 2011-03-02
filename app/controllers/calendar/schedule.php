@@ -39,9 +39,9 @@ class Calendar_ScheduleController extends AuthenticatedController
         if ($inst_mode) {
 
             // try to find the correct institute-id
-            $institute_id = Request::get('institute_id', 
+            $institute_id = Request::option('institute_id',
                             $SessSemName[1] ? $SessSemName[1] :
-                            Request::get('cid', false));
+                            Request::option('cid', false));
 
             
             if (!$institute_id) {
@@ -60,7 +60,7 @@ class Calendar_ScheduleController extends AuthenticatedController
         }
 
         // check, if the hidden seminar-entries shall be shown
-        $show_hidden = Request::get('show_hidden', false);
+        $show_hidden = Request::option('show_hidden', false);
         if ($this->flash['show_hidden']) $show_hidden = true;
 
         // load semester-data and current semester
@@ -147,7 +147,7 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         $this->controller = $this;
         $this->calendar_view = new CalendarView($this->entries, 'schedule');
-        $this->calendar_view->setHeight(40 + (20 * Request::get('zoom', 0)));
+        $this->calendar_view->setHeight(40 + (20 * Request::option('zoom', 0)));
         $this->calendar_view->setDays($this->days);
         $this->calendar_view->setRange($my_schedule_settings['glb_start_time'], $my_schedule_settings['glb_end_time']);
 
@@ -164,7 +164,7 @@ class Calendar_ScheduleController extends AuthenticatedController
         $factory = new Flexi_TemplateFactory($this->dispatcher->trails_root . '/views');
         PageLayout::addStyle($factory->render('calendar/stylesheet', $style_parameters));
 
-        if (Request::get('printview')) {
+        if (Request::option('printview')) {
             $this->calendar_view->setReadOnly();
             PageLayout::addStylesheet('style_print.css');
         } else {
@@ -201,7 +201,7 @@ class Calendar_ScheduleController extends AuthenticatedController
             }
         } else {
             $data['start'] = (Request::int('entry_start_hour') * 100) + Request::int('entry_start_minute');
-            $data['end']   = (Request::int('entry_end_hour') * 100) + Request::int('entry_end_minute');
+            $data['end']   = (Request::int('entry_end_hour')   * 100) + Request::int('entry_end_minute');
             $data['day']   = Request::int('entry_day');
 
             if ($data['start'] >= $data['end']
@@ -252,7 +252,7 @@ class Calendar_ScheduleController extends AuthenticatedController
             'cycle_id' => $cycle_id
         );
 
-        if (Request::get('show_hidden')) {
+        if (Request::option('show_hidden')) {
             $this->flash['show_hidden'] = true;
         }
 
@@ -300,7 +300,7 @@ class Calendar_ScheduleController extends AuthenticatedController
             $this->response->add_header('Content-Type', 'text/html; charset=windows-1252');
             $this->render_template('calendar/schedule/_entry_inst');
         } else {
-            if (Request::get('show_hidden')) {
+            if (Request::option('show_hidden')) {
                 $this->flash['show_hidden'] = true;
             }
 
@@ -415,7 +415,7 @@ class Calendar_ScheduleController extends AuthenticatedController
     {
         CalendarScheduleModel::bind($seminar_id, $cycle_id);
 
-        if (Request::get('show_hidden')) {
+        if (Request::option('show_hidden')) {
             $this->flash['show_hidden'] = true;
         }
 
@@ -449,10 +449,10 @@ class Calendar_ScheduleController extends AuthenticatedController
         global $my_schedule_settings;
 
         if ($start_hour === false) {
-            $start_hour  = Request::get('start_hour');
-            $end_hour  = Request::get('end_hour');
+            $start_hour  = Request::int('start_hour');
+            $end_hour    = Request::int('end_hour');
             $days        = Request::getArray('days');
-            $semester_id = Request::get('semester_id');
+            $semester_id = Request::option('semester_id');
         }
 
         $my_schedule_settings = array(
