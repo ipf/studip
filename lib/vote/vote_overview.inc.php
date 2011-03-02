@@ -231,9 +231,8 @@ function callSafeguard($voteaction, $voteID = "", $showrangeID = NULL, $search =
 
     // If theres an error ... print it and return
     if ($vote->isError()){
-        createErrorReport ($vote);
-        $safeguard .= printSafeguard("",createErrorReport($vote));
-        //return;
+        $report = createErrorReport ($vote);
+        return $report;
     }
     $votename = htmlReady($vote->getTitle($voteID));
     //$vote->finalize ();
@@ -278,16 +277,14 @@ function callSafeguard($voteaction, $voteID = "", $showrangeID = NULL, $search =
             $vote->setResultvisibility(VOTE_RESULTS_AFTER_END);
             // error_ausgabe
             if ($vote->isError()){
-                createErrorReport ($vote);
-                $safeguard .= printSafeguard("",createErrorReport($vote));
-                return $safeguard;
+                $report = createErrorReport ($vote);
+                return $report;
             }
             $vote->executeWrite();
             $vote->executeSetVisible(YES);
             if ($vote->isError()){
-                createErrorReport ($vote);
-                $safeguard .= printSafeguard("",createErrorReport($vote));
-                return $safeguard;
+                $report = createErrorReport ($vote);
+                return $report;
             }
             $type
             ? $safeguard .= printSafeguard("ok", sprintf(_("Die Umfrage \"%s\" wurde jetzt f&uuml;r die Teilnehmer sichtbar gemacht."),$votename))
@@ -303,9 +300,8 @@ function callSafeguard($voteaction, $voteID = "", $showrangeID = NULL, $search =
             $vote->executeStart();
             // error_ausgabe
             if ($vote->isError()){
-                createErrorReport ($vote);
-                $safeguard .= printSafeguard("",createErrorReport($vote));
-                return $safeguard;
+                $report = createErrorReport ($vote);
+                return $report;
             }
             $type
             ? $safeguard .= printSafeguard("ok", sprintf(_("Die Umfrage \"%s\" wurde gestartet."),$votename))
@@ -316,9 +312,8 @@ function callSafeguard($voteaction, $voteID = "", $showrangeID = NULL, $search =
             $vote->executeStop();
             // error_ausgabe
             if ($vote->isError()){
-                createErrorReport ($vote);
-                $safeguard .= printSafeguard("",createErrorReport($vote));
-                return $safeguard;
+                $report = createErrorReport ($vote);
+                return $report;
             }
             $type
             ? $safeguard .= printSafeguard("ok", sprintf(_("Die Umfrage \"%s\" wurde gestoppt."),$votename),"","","",$referer)
@@ -329,9 +324,8 @@ function callSafeguard($voteaction, $voteID = "", $showrangeID = NULL, $search =
             $vote->executeContinue();
             // error_ausgabe
             if ($vote->isError()){
-                createErrorReport ($vote);
-                $safeguard .= printSafeguard("",createErrorReport($vote));
-                return $safeguard;
+                $report = createErrorReport ($vote);
+                return $report;
             }
             $type
             ? $safeguard .= printSafeguard("ok", sprintf(_("Die Umfrage \"%s\" wurde fortgesetzt."),$votename))
@@ -342,9 +336,8 @@ function callSafeguard($voteaction, $voteID = "", $showrangeID = NULL, $search =
             $vote->executeRestart();
             // error_ausgabe
             if ($vote->isError()){
-                createErrorReport ($vote);
-                $safeguard .= printSafeguard("",createErrorReport($vote));
-                return $safeguard;
+                $report = createErrorReport ($vote);
+                return $report;
             }
             $type
             ? $safeguard .= printSafeguard("ok", sprintf(_("Die Umfrage \"%s\" wurde zur&uuml;ckgesetzt."),$votename))
@@ -360,9 +353,8 @@ function callSafeguard($voteaction, $voteID = "", $showrangeID = NULL, $search =
             $vote->executeRemove();
             // error_ausgabe
             if ($vote->isError()){
-                createErrorReport ($vote);
-                $safeguard .= printSafeguard("",createErrorReport($vote));
-                return $safeguard;
+                $report = createErrorReport ($vote);
+                return $report;
             }
             $type
             ? $safeguard .= printSafeguard("ok", sprintf(_("Die Umfrage \"%s\" wurde gel&ouml;scht."),$votename),"","","",$referer)
