@@ -12,7 +12,7 @@
 	<TD nowrap="nowrap" class="<?=$tpl['class']?>" valign="bottom">
 		<A class="tree" href="<?= URLHelper::getLink('?cmd='. ($issue_open[$tpl['sd_id']] ? 'close' : 'open') .'&open_close_id='. $tpl['sd_id'] .'#'. $tpl['sd_id'])?>">
 			<FONT size="-1">
-				<i><?=$tpl['art']?>:&nbsp;</i>
+				<i><?=htmlReady($tpl['art'])?>:&nbsp;</i>
 				<?=$tpl['date']?>&nbsp;&nbsp;&nbsp;&nbsp;
 			</FONT>
 		</A>
@@ -43,21 +43,21 @@
 				<TD width="70%" class="steel1">
 					<FONT size="-1">
 						<B><?=("Thema:")?></B><br>
-						<INPUT type="text" name="theme_title<?=$openAll ? '§'.$tpl['sd_id']: ''?>" maxlength="255" size="50" value="<?=$tpl['theme_title']?>" style="width: 98%"><br>
+                        <INPUT type="text" name="theme_title<?=$openAll ? '§'.$tpl['sd_id']: ''?>" maxlength="255" size="50" value="<?= htmlReady($tpl['theme_title']) ?>" style="width: 98%"><br>
 						<B><?=_("Beschreibung:")?></B><br>
-						<TEXTAREA name="theme_description<?=$openAll ? '§'.$tpl['sd_id']: ''?>" rows="5" cols="50" style="width: 98%"><?=$tpl['theme_description']?></TEXTAREA><br>
+                        <TEXTAREA name="theme_description<?=$openAll ? '§'.$tpl['sd_id']: ''?>" rows="5" cols="50" style="width: 98%"><?= htmlReady($tpl['theme_description']) ?></TEXTAREA><br>
 					</FONT>
 				</TD>
 				<TD class="steel1" valign="top" nowrap="nowrap">
 					<font size="-1">
 						<? if ($modules['forum'] || $modules['documents']) : ?>
 						<b><?=_("Verknüfpungen mit diesem Termin:")?></b><br>
-						<? 
+						<?
 						if ($modules['forum']) :
 							if ($tpl['forumEntry']) :
 								echo _("Forenthema vorhanden").'<br>';
 								echo '<INPUT type="hidden" name="forumFolder" value="on">';
-							else : 
+							else :
 								echo '<input type="checkbox" name="forumFolder'.($openAll ? '§'.$tpl['sd_id']: '').'"> ';
 								echo _("Thema im Forum anlegen"). '<br>';
 							endif;
@@ -75,7 +75,7 @@
 
 						echo '<br><br>';
 					endif; ?>
-						<b><?=_("Art des Termins")?>:</b> <?=$tpl['art']?>
+                        <b><?=_("Art des Termins")?>:</b> <?= htmlReady($tpl['art']) ?>
 					</font>
 				</TD>
 			</TR>

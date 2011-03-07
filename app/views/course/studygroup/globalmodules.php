@@ -6,18 +6,18 @@
 $infobox['picture'] = 'groups.jpg';
 $infobox['content'] = array(
 	array(
-		'kategorie' => _("Information"), 
+		'kategorie' => _("Information"),
 		'eintrag'   => array(
 			array(
 				'text' => 'Hier können Sie angeben, welche Module/Plugins in Studiengruppen verwendet werden dürfen.',
 				'icon' => 'ausruf_small.gif'
 			)
 		)
-	)   
+	)
 );
 
 /* * * * * * * * * * * *
- * * * O U T P U T * * * 
+ * * * O U T P U T * * *
  * * * * * * * * * * * */
 
 $cssSw = new cssClassSwitcher();
@@ -31,7 +31,7 @@ $cssSw = new cssClassSwitcher();
 				'config.inc.php'))) ?>
 <? endif ?>
 <? if (!Config::getInstance()->getValue('STUDYGROUPS_ENABLE')):?>
-	<?= MessageBox::info( _("Die Studiengruppen sind derzeit <b>nicht</b> aktiviert.") 
+	<?= MessageBox::info( _("Die Studiengruppen sind derzeit <b>nicht</b> aktiviert.")
 			. '<br>'. _("Zum Aktivieren füllen Sie bitte das Formular aus und klicken Sie auf \"Speichern\".")); ?>
 <? else: ?>
 	<? if ($can_deactivate) : ?>
@@ -57,12 +57,12 @@ $cssSw = new cssClassSwitcher();
 	</tr>
 
 	<!-- Modules / Plugins -->
-<? if (is_array($modules)) foreach( $modules as $key => $name ) : 
-	if (in_array($key, array('participants', 'schedule'))) continue; 
+<? if (is_array($modules)) foreach( $modules as $key => $name ) :
+	if (in_array($key, array('participants', 'schedule'))) continue;
 	$cssSw->switchClass(); ?>
 
 	<tr>
-		<td <?= $cssSw->getFullClass() ?>> <?= $name ?> </td>
+        <td <?= $cssSw->getFullClass() ?>> <?= htmlReady($name) ?> </td>
 		<td <?= $cssSw->getFullClass() ?>>
 			<select name='modules[<?= $key ?>]'>
 				<? if (!Config::getInstance()->getValue('STUDYGROUPS_ENABLE')):?>
@@ -93,7 +93,7 @@ $cssSw = new cssClassSwitcher();
 				<option value='invalid' selected><?= _("-- bitte auswählen --")?></option>
 			<? endif ?>
 			<? foreach ($institutes as $fak_id => $faculty) : ?>
-				<option value="<?= $fak_id ?>" style="font-weight: bold" 
+				<option value="<?= $fak_id ?>" style="font-weight: bold"
 					<?= ($fak_id == $default_inst) ? 'selected="selected"' : ''?>>
 					<?= htmlReady(my_substr($faculty['name'], 0, 60)) ?>
 				</option>
@@ -110,7 +110,7 @@ $cssSw = new cssClassSwitcher();
 </table>
 
 <br />
-	
+
 <? $cssSw->resetClass(); ?>
 <!-- Title -->
 <table class="default">
@@ -126,7 +126,7 @@ $cssSw = new cssClassSwitcher();
 	<tr>
 		<td colspan="2" <?= $cssSw->getFullClass() ?>>
 		<br />
-		<textarea name="terms" style="width: 90%" rows="10" style='align:middle;'><?= $terms ?></textarea>
+		<textarea name="terms" style="width: 90%" rows="10" style='align:middle;'><?= htmlReady($terms) ?></textarea>
 		<br />
 		</td>
 	</tr>

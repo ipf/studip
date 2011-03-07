@@ -37,12 +37,15 @@ abstract class AuthenticatedController extends StudipController {
                     'user' => 'Seminar_User'));
 
     // show login-screen, if authentication is "nobody"
-    $auth->login_if($auth->auth["uid"] == "nobody"); 
+    $auth->login_if($auth->auth["uid"] == "nobody");
 
     $this->flash = Trails_Flash::instance();
 
     // set up user session
     include 'lib/seminar_open.php';
+
+    // allow only "word" characters in arguments
+    $this->validate_args($args);
 
     # Set base layout
     #

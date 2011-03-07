@@ -70,8 +70,8 @@ function mainView() {
 	foreach ((array)$rules as $id => $data) {
 		echo $zt->openRow();
 		echo $zt->cell('&nbsp;', array('class' => 'blank'));
-		echo $zt->cell('&nbsp;'.$data['name']);
-		echo $zt->cell('&nbsp;'.$data['description']);
+        echo $zt->cell('&nbsp;'.htmlReady($data['name']));
+        echo $zt->cell('&nbsp;'.htmlReady($data['description']));
 		echo $zt->cell('<a href="'.$link.'?cmd=edit&id='.$id.'">'. makebutton('bearbeiten').'</a>&nbsp;&nbsp;&nbsp;&nbsp;'.
 		               '<a href="'.$link.'?cmd=delete&id='.$id.'">'. makebutton('loeschen').'</a>', array('width' => '30%', 'align' => 'center'));
 		echo $zt->cell('&nbsp;', array('class' => 'blank'));
@@ -98,7 +98,7 @@ function ruleView($rule_id = false) {
 	if (Request::get('description')) $rule['description'] = Request::get('description');
 	if (Request::getArray('fields')) $rule['attributes']  = Request::getArray('fields');
 
-	echo '<form action="'.$PHP_SELF.'" method="post">';
+    echo '<form action="'.URLHelper::getLink().'" method="post">';
 
 	echo $zt->openRow();
 	echo $zt->cell('&nbsp;', array('class' => 'blank'));
@@ -108,14 +108,14 @@ function ruleView($rule_id = false) {
 	echo $zt->openRow();
 	echo $zt->cell('&nbsp;', array('class' => 'blank'));
 	echo $zt->cell('&nbsp;'. _("Name:"), array('width' => '80%'));
-	echo $zt->cell('<input type="text" name="name" value="'. $rule['name'] .'">', array('colspan' => '3'));
+    echo $zt->cell('<input type="text" name="name" value="'. htmlReady($rule['name']) .'">', array('colspan' => '3'));
 	echo $zt->cell('&nbsp;', array('class' => 'blank'));
 	echo $zt->closeRow();
 
 	echo $zt->openRow();
 	echo $zt->cell('&nbsp;', array('class' => 'blank'));
 	echo $zt->cell('&nbsp;'. _("Beschreibung:"));
-	echo $zt->cell('<textarea name="description" cols="40" rows="4">'. $rule['description'] .'</textarea>', array('colspan' => '3'));
+    echo $zt->cell('<textarea name="description" cols="40" rows="4">'. htmlReady($rule['description']) .'</textarea>', array('colspan' => '3'));
 	echo $zt->cell('&nbsp;', array('class' => 'blank'));
 	echo $zt->closeRow();
 
@@ -140,7 +140,7 @@ function ruleView($rule_id = false) {
 	foreach ($semFields as $id => $name) {
 		echo $zt->openRow();
 		echo $zt->cell('&nbsp;', array('class' => 'blank'));
-		echo $zt->cell('&nbsp;'. $name);
+        echo $zt->cell('&nbsp;'. htmlReady($name));
 		$checked = '';
 		echo $zt->cell('<input type="text" max="3" size="3" name="order['.$id.']" value="'.(($z = $rule['order'][$id]) ? $z : '0').'">', $center);
 		echo $zt->cell('<input type="radio" name="fields['.$id.']" value="0"'. (($rule['attributes'][$id]) ? '' : 'checked="checked"') .'>', $center);
@@ -166,7 +166,7 @@ function ruleView($rule_id = false) {
 		foreach ($entries as $id => $entry) {
 			echo $zt->openRow();
 			echo $zt->cell('&nbsp;', array('class' => 'blank'));
-			echo $zt->cell('&nbsp;'. $entry->getName());
+            echo $zt->cell('&nbsp;'. htmlReady($entry->getName()));
 			$checked = '';
 			echo $zt->cell('<input type="text" max="3" size="3" name="order['.$id.']" value="'.(($z = $rule['order'][$id]) ? $z : '0').'">', $center);
 			echo $zt->cell('<input type="radio" name="fields['.$id.']" value="0"'.(($rule['attributes'][$id]) ? '' : 'checked="checked"').'>', $center);
@@ -216,7 +216,7 @@ switch ($_REQUEST['cmd']) {
 		
 		if (!$view) {
 			AuxLockRules::createLockRule(Request::get('name'), Request::get('description'), Request::getArray('fields'), Request::getArray('order'));
-			$msg['success'][] = sprintf(_("Die Regel %s wurde angelegt!"), $_REQUEST['name']);
+            $msg['success'][] = sprintf(_("Die Regel %s wurde angelegt!"), htmlReady($_REQUEST['name']));
 			$view = 'main';
 		}
 		break;
@@ -227,7 +227,7 @@ switch ($_REQUEST['cmd']) {
 		break;
 
 	case 'doEdit':
-		$edit_id = Request::get('id');
+        $edit_id = Request::option('id');
 		if (!Request::get('name')) {
 			$msg['error'][] = sprintf(_("Bitte geben sie der Regel einen Namen!"));
 			$view = 'edit';
@@ -240,7 +240,7 @@ switch ($_REQUEST['cmd']) {
 		
  		if (!$view) {
 			AuxLockRules::updateLockRule(Request::get('id'), Request::get('name'), Request::get('description'), Request::getArray('fields'), Request::getArray('order'));
-			$msg['success'][] = sprintf(_("Die Regel %s wurde geändert!"), $_REQUEST['name']);
+            $msg['success'][] = sprintf(_("Die Regel %s wurde geändert!"), htmlReady($_REQUEST['name']));
 			$view = 'main';
 		}
 		break;

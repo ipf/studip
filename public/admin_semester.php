@@ -33,7 +33,7 @@ require_once('lib/classes/HolidayData.class.php');
 
 // Set this to something, just something different...
   $hash_secret = "humptydumpty";
-  
+
 // If is set 'cancel', we leave the adminstration form...
  if (isset($cancel_x)) unset ($i_view);
 
@@ -46,7 +46,7 @@ Navigation::activateItem('/admin/config/semester');
 
 	require_once ('lib/msg.inc.php'); //Funktionen fuer Nachrichtenmeldungen
 	require_once ('lib/visual.inc.php');
-	
+
 	$cssSw=new cssClassSwitcher;
 ?>
 <table border="0" bgcolor="#000000" align="center" cellspacing="0" cellpadding="5" width="100%">
@@ -57,7 +57,7 @@ $semester = new SemesterData;
 $holiday = new HolidayData;
 //got data, now check, whether data is correct
 if ($create=="Anlegen") {
-	$checkForm = semester_check_form_field($semesterdata); 
+	$checkForm = semester_check_form_field($semesterdata);
 	if ($checkForm!=1) {	// Formular war falsch ausgefüllt
 		$checkForm = "error§".$checkForm;
 		parse_msg($checkForm);
@@ -71,7 +71,7 @@ if ($create=="Anlegen") {
 	} else {	// neu eingfügen
 		// wandle day, month, year in start bzw. enddate um
 		$semesterdata = semester_make_single_data_to_timestamp($semesterdata);
-		$inserted = $semester->insertNewSemester($semesterdata); 
+		$inserted = $semester->insertNewSemester($semesterdata);
 		unset($checkForm);
 		unset($new);
 		if ($inserted) {
@@ -87,9 +87,9 @@ if ($create=="Anlegen") {
 
 // edit existing db-entry
 else if ($create=="Bearbeiten") {
-     //print_r($_POST);
+    //print_r($_POST);
     // is new Entry correct?
-    $checkForm = semester_check_form_field($semesterdata); 
+    $checkForm = semester_check_form_field($semesterdata);
     if ($checkForm!=1) {	// neue Daten sind inkorrekt
         $checkForm = "error§".$checkForm;
         parse_msg($checkForm);
@@ -100,7 +100,7 @@ else if ($create=="Bearbeiten") {
 		echo semester_show_new_semester_form($PHP_SELF, $cssSw, $semesterdata, "change");
     } else {	// alle Daten korrekt, versuche upzudaten
 		// wandle day, month, year in start bzw. enddate um
-		$semesterdata = semester_make_single_data_to_timestamp($semesterdata);	
+		$semesterdata = semester_make_single_data_to_timestamp($semesterdata);
         $edited = $semester->updateExistingSemester($semesterdata);
         unset($checkForm);
         if ($edited) {
@@ -112,7 +112,7 @@ else if ($create=="Bearbeiten") {
         }
     }
 }
-// nun die beiden Holiday-Fälle 
+// nun die beiden Holiday-Fälle
 
 else if ($create=="Ferienanlegen") {
 	$holidaydata = holiday_make_single_data_to_timestamp($holidaydata);
@@ -152,7 +152,7 @@ else if ($create=="Ferienbearbeiten") {
 else if (isset($change) && isset($semester_id)) {  // zeige Form mit vordefinierten Werten fuer Semester (edit bzw. update)
     $semesterdata = $semester->getSemesterData($semester_id);
 	$semesterdata = semester_make_timestamp_data_to_single_data($semesterdata);
-	$editForm = semester_show_new_semester_form($PHP_SELF, $cssSw, $semesterdata, "change"); 
+	$editForm = semester_show_new_semester_form($PHP_SELF, $cssSw, $semesterdata, "change");
     echo $editForm;
 } else if (isset($delete) && isset($semester_id) && (!$confirm)) {		// bestätige Löschen!
 	$confirm_form = semester_confirm_delete($semester_id, $PHP_SELF);
@@ -174,7 +174,7 @@ else if (isset($change) && isset($semester_id)) {  // zeige Form mit vordefinier
 	if ($deletedHoliday) {
 		$msg = "msg§"._("Ferien wurden gel&ouml;scht");
 	} else {
-		$msg = "error§"._("Ferien konnten nicht gel&ouml;scht werden");	
+		$msg = "error§"._("Ferien konnten nicht gel&ouml;scht werden");
 	}
 	parse_msg($msg);		// Übersicht
 	echo semester_show_overview($PHP_SELF);
@@ -190,7 +190,7 @@ else if (isset($change) && isset($semester_id)) {  // zeige Form mit vordefinier
 	$editHolidayForm = holiday_show_new_holiday_form($PHP_SELF, $cssSw, $holidaydata, "change");
 	echo $editHolidayForm;
 } else if (!isset($checkForm)) {	// es ist nix passiert, zeige Übersicht
-    // show all terms 
+    // show all terms
 	echo semester_show_overview($PHP_SELF);
 }
 echo '</table>';

@@ -38,8 +38,8 @@ require_once 'lib/classes/SemBrowse.class.php';
 		URLHelper::bindLinkParam('level',$level);
 	}
 
-	$level = Request::get('level');
-	$id = Request::get('id');
+    $level = Request::option('level');
+    $id = Request::option('id');
 
 	$group_by = Request::int('group_by', 0);
 
@@ -113,7 +113,7 @@ $sem_browse_obj->print_result();
 ?>
 </td><td class="blank" width="270" align="right" valign="top">
 <?
-$goup_by_links = "";
+$group_by_links = "";
 for ($i = 0; $i < count($sem_browse_obj->group_by_fields); ++$i){
 	if($group_by != $i){
 		$group_by_links .= "<a href=\"".URLHelper::getLink("",array('group_by'=>$i))."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/blank.gif\" width=\"10\" height=\"20\" border=\"0\">";
@@ -126,6 +126,7 @@ for ($i = 0; $i < count($sem_browse_obj->group_by_fields); ++$i){
 	}
 	$group_by_links .= "<br>";
 }
+$infobox = array();
 $infobox[] = 	array(	"kategorie" => _("Anzeige gruppieren:"),
 						"eintrag" => array(array(	"icon" => "blank.gif",
 													"text" => $group_by_links))
@@ -137,7 +138,7 @@ if (($EXPORT_ENABLE) AND ($level == "s") AND ($perm->have_perm("tutor")))
 							"eintrag" => array(array(	"icon" => "blank.gif",
 														"text" => export_link($SessSemName[1], "veranstaltung", $SessSemName[0])),
 												array( 'icon' => 'blank.gif',
-														"text" => '<a href="'.$PHP_SELF.'?send_excel=1&group_by='.(int)$group_by.'"><img src="'.$GLOBALS['ASSETS_URL'].'images/xls-icon.gif" align="absbottom" border="0">&nbsp;'._("Download als Excel Tabelle").'</a>')
+                                                        "text" => '<a href="' . UrlHelper::getLink('?send_excel=1&group_by='.(int)$group_by) . '"><img src="'.$GLOBALS['ASSETS_URL'].'images/xls-icon.gif" align="absbottom" border="0">&nbsp;'._("Download als Excel Tabelle").'</a>')
 
 														)
 					);
@@ -149,7 +150,7 @@ if (($EXPORT_ENABLE) AND ($level == "sbb") AND ($perm->have_perm("tutor")))
 							"eintrag" => array(array(	"icon" => "blank.gif",
 														"text" => export_link($id, "veranstaltung", $id)),
 												array( 'icon' => 'blank.gif',
-														"text" => '<a href="'.$PHP_SELF.'?send_excel=1&group_by='.(int)$group_by.'"><img src="'.$GLOBALS['ASSETS_URL'].'images/xls-icon.gif" align="absbottom" border="0">&nbsp;'._("Download als Excel Tabelle").'</a>')
+                                                        "text" => '<a href="' . UrlHelper::getLink('?send_excel=1&group_by='.(int)$group_by) . '"><img src="'.$GLOBALS['ASSETS_URL'].'images/xls-icon.gif" align="absbottom" border="0">&nbsp;'._("Download als Excel Tabelle").'</a>')
 
 														)
 					);

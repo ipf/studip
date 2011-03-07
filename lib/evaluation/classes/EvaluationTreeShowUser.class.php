@@ -195,7 +195,7 @@ class EvaluationTreeShowUser {
 	    }
 	    echo "&nbsp;".$chapter_num." ";
 	    echo "<b>";
-	    echo $this->tree->tree_data[$group_id]['name'];
+        echo htmlReady($this->tree->tree_data[$group_id]['name']);
 	    echo "</b>";
 	    echo "</td>";
 

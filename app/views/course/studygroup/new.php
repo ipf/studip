@@ -8,7 +8,7 @@ $infobox['content'] = array(
             array("text"=>_("Studiengruppen sind eine einfache Möglichkeit, mit KommilitonInnen, KollegInnen und anderen zusammenzuarbeiten. JedeR kann Studiengruppen gründen."),"icon"=>"ausruf_small2.gif"),
             array("text"=>_("Wählen Sie 'Offen für alle', wenn beliebige Nutzer der Gruppe ohne Nachfrage beitreten können sollen. 'Auf Anfrage' erfordert Ihr Eingreifen: Sie müssen jede einzelne Aufnahmeanfrage annehmen oder ablehnen."),"icon"=>"ausruf_small2.gif"),
             array("text"=>_("Alle Einstellungen können auch später noch unter dem Reiter 'Admin' geändert werden."),"icon"=>"ausruf_small2.gif")
-            )    
+            )
     )
 );
 
@@ -39,14 +39,14 @@ $infobox['content'] = array(
     <? foreach($available_modules as $key => $name) : ?>
 	    <? if ($key != 'participants') :?>
 	    <label>
-	        <input name="groupmodule[<?= $key ?>]" type="checkbox" <?= ($this->flash['request']['groupmodule'][$key]) ? 'checked="checked"' : '' ?>> <?= $name ?>
+            <input name="groupmodule[<?= $key ?>]" type="checkbox" <?= ($this->flash['request']['groupmodule'][$key]) ? 'checked="checked"' : '' ?>> <?= htmlReady($name) ?>
 	    </label><br>
 	    <? endif; ?>
     <? endforeach; ?>
 
     <? foreach($available_plugins as $key => $name) : ?>
         <label>
-            <input name="groupplugin[<?= $key ?>]" type="checkbox" <?= ($this->flash['request']['groupplugin'][$key]) ? 'checked="checked"' : '' ?>> <?= $name ?>
+            <input name="groupplugin[<?= $key ?>]" type="checkbox" <?= ($this->flash['request']['groupplugin'][$key]) ? 'checked="checked"' : '' ?>> <?= htmlReady($name) ?>
         </label><br>
     <? endforeach; ?>
   </td>
@@ -59,7 +59,7 @@ $infobox['content'] = array(
 <tr>
   <td style='text-align:right;'><?= _("Zugang:") ?></td>
   <td>
-      <select size=0 name="groupaccess">
+      <select name="groupaccess">
          <option <?= ($groupaccess == 'all') ? 'selected="selected"':'' ?> value="all"><?= _("Offen für alle") ?></option>
          <option <?= ($groupaccess == 'invite') ? 'selected="selected"':'' ?> value="invite"><?= _("Auf Anfrage") ?></option>
       </select>

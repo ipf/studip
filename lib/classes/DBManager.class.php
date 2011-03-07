@@ -12,6 +12,7 @@
  * the License, or (at your option) any later version.
  */
 
+require_once 'lib/classes/StudipPDO.class.php';
 
 /**
  * This class provides a singleton instance that is used to manage PDO database
@@ -114,7 +115,7 @@ class DBManager {
    * @return DBManager this instance, useful for cascading method calls
    */
   public function setConnection($database, $dsn, $user, $pass) {
-    $this->connections[$database] = new PDO($dsn, $user, $pass);
+    $this->connections[$database] = new StudipPDO($dsn, $user, $pass);
     $this->connections[$database]->setAttribute(PDO::ATTR_ERRMODE,
                                                 PDO::ERRMODE_EXCEPTION);
     if ($this->connections[$database]->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
