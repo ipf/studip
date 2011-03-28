@@ -390,6 +390,8 @@ class ExternModuleTemplateSemBrowse extends ExternModule {
         $sem_status = (is_array($this->sem_browse_data['sem_status'])) ? $this->sem_browse_data['sem_status'] : false;
 
         $params = $this->sem_browse_data;
+        // delete array of semester data from the search object's parameters
+        $params['sem_status'] = false;
         if ($this->config->getValue('Main', 'mode') == 'show_sem_range') {
             $params['scope_choose'] = $this->sem_browse_data['start_item_id'];
         } else {
@@ -780,7 +782,7 @@ class ExternModuleTemplateSemBrowse extends ExternModule {
                         $semester = SemesterData::GetSemesterArray();
                         while(list($seminar_id, ) = each($sem_ids['Seminar_id'])) {
                             $content['RESULT']['GROUP'][$j]['COURSE'][$k]['TITLE'] = ExternModule::ExtHtmlReady(key($sem_data[$seminar_id]['Name']));
-                            $content['RESULT']['GROUP'][$j]['COURSE'][$k]['COUSE-NO'] = $k + 1;
+                            $content['RESULT']['GROUP'][$j]['COURSE'][$k]['COURSE-NO'] = $k + 1;
                             $content['RESULT']['GROUP'][$j]['COURSE'][$k]['COURSEDETAILS-HREF'] = $this->elements['LinkInternLecturedetails']->createUrl(array('link_args' => 'seminar_id=' . $seminar_id));
                             $content['RESULT']['GROUP'][$j]['COURSE'][$k]['COURSE_NUMBER'] = ExternModule::ExtHtmlReady(key($sem_data[$seminar_id]['VeranstaltungsNummer']));
 
@@ -901,7 +903,7 @@ class ExternModuleTemplateSemBrowse extends ExternModule {
             if ($GLOBALS['RESOURCES_ENABLE']) {
                 if ($resource_ids = CycleDataDB::getPredominantRoomDB($metadate_id, $start_time, $end_time)) {
                     foreach ($resource_ids as $resource_id) {
-                        $cont['REGULAR_DATES']['REGULAR_DATE'][$i]['REGULAR_ROOMS']['ROOMS'][$k]['ROOM'] = ResourceObject::Factory($resource_id)->getName();
+                        $cont['REGULAR_DATES']['REGULAR_DATE'][$i]['REGULAR_ROOMS']['ROOMS'][$k]['ROOM'] = ExternModule::ExtHtmlReady(trim(ResourceObject::Factory($resource_id)->getName()));
                         $cont['REGULAR_DATES']['REGULAR_DATE'][$i]['REGULAR_ROOMS']['ROOMS'][$k]['ROOMS_DELIMITER'] = true;
                         $k++;
                     }
