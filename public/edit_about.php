@@ -289,12 +289,14 @@ if (check_ticket($studipticket)) {
 
     // general settings from mystudip: language, jshover, accesskey
     if ($cmd=="change_general") {
-        $my_about->db->query("UPDATE user_info SET preferred_language = '$forced_language' WHERE user_id='" . $my_about->auth_user["user_id"] ."'");
-        $_language = $forced_language;
-        $forum["jshover"]=$jshover;
-        $my_studip_settings["startpage_redirect"] = $personal_startpage;
-        UserConfig::get($user->id)->store('ACCESSKEY_ENABLE', (int)$_REQUEST['accesskey_enable']);
-        UserConfig::get($user->id)->store('SHOWSEM_ENABLE', (int)$_REQUEST['showsem_enable']);
+        if(array_key_exists(Request::get('forced_language'), $GLOBALS['INSTALLED_LANGUAGES'])) {
+            $my_about->db->query("UPDATE user_info SET preferred_language = '".Request::get('forced_language')."' WHERE user_id='" . $my_about->auth_user["user_id"] ."'");
+            $_SESSION['_language'] = $_language = Request::get('forced_language');
+        }
+        $forum["jshover"] = Request::int('jshover');
+        $my_studip_settings["startpage_redirect"] = Request::int('personal_startpage');
+        UserConfig::get($user->id)->store('ACCESSKEY_ENABLE', Request::int('accesskey_enable'));
+        UserConfig::get($user->id)->store('SHOWSEM_ENABLE', Request::int('showsem_enable'));
     }
 
     if (Request::submitted('change_global_visibility')) {
