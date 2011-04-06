@@ -31,7 +31,8 @@ class MessagesController extends AuthenticatedController {
    */                            
   
   function get_msg_body_action($id = NULL, $open = NULL , $n = NULL) {
-    global $sms_data, $count;
+    global $sms_data, $count, $msging;
+    $msging = new messaging();
     $count = $n;
     if (is_null($id) || is_null($open) || is_null($n)) {
       $this->set_status(400);

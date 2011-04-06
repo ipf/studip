@@ -441,7 +441,7 @@ function check_admission ($send_message=TRUE) {
 					if ($sem_preliminary) {
 						// Bei Seminaren mit vorläufiger Akzeptierung wird nicht in die Teilnehmerliste
 						// gelost, sondern der Status wird auf "accepted" gesetzt
-						$db4->query("UPDATE seminar_user SET status='accepted' WHERE Seminar_id = '".$seminar->getId()."' AND user_id = '".$winner["user_id"]."'");
+						$db4->query("UPDATE admission_seminar_user SET status='accepted' WHERE Seminar_id = '".$seminar->getId()."' AND user_id = '".$winner["user_id"]."'");
 						if ($send_message) {
 							setTempLanguage($winner["user_id"]);
 							$message = sprintf (_("Sie wurden als TeilnehmerIn der Veranstaltung **%s** ausgelost. Die endgültige Zulassung zu der Veranstaltung ist noch von weiteren Bedingungen abhängig, die Sie bitte der Veranstaltungsbeschreibung entnehmen."), $seminar->getName());
