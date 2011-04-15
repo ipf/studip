@@ -36,6 +36,8 @@ class Calendar_ScheduleController extends AuthenticatedController
 
         if ($GLOBALS['perm']->have_perm('admin')) $inst_mode = true;
 
+        if (Request::get('zoom')) URLHelper::bindLinkParam('zoom', Request::get('zoom'));
+
         if ($inst_mode) {
 
             // try to find the correct institute-id
