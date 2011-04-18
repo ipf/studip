@@ -33,7 +33,7 @@
                 <?= sprintf ( _("Diese Belegung ist ein regelm&auml;&szlig;iger Termin der Veranstaltung %s, die in diesem Raum stattfindet."),
                     ($perm->have_studip_perm("user", $seminarID)) ?
                         "<a href=\"seminar_main.php?auswahl=". $seminarID ."\" onClick=\"return check_opener(this)\">". htmlReady($seminarName) ."</a>" :
-                        "<a href=\"details.php?&sem_id=". $seminarID ."\" onClick=\"return check_opener(this)\">". htmlReady($seminareName) ."</a>");
+                        "<a href=\"details.php?&sem_id=". $seminarID ."\" onClick=\"return check_opener(this)\">". htmlReady($seminarName) ."</a>");
                 ?>
                 <? if ($perm->have_studip_perm("tutor", $seminarID)) : ?>
                     <br>
@@ -46,7 +46,7 @@
                 <?= sprintf (_("Diese Belegung ist ein Einzeltermin der Veranstaltung %s, die in diesem Raum stattfindet."),
                     ($perm->have_studip_perm("user", $seminarID)) ?
                         "<a href=\"seminar_main.php?auswahl=". $seminarID ."\" onClick=\"return check_opener(this)\">". htmlReady($seminarName) ."</a>" :
-                        "<a href=\"details.php?&sem_id=". $seminarID ."\" onClick=\"return check_opener(this)\">". htmlReady($seminareName) ."</a>");
+                        "<a href=\"details.php?&sem_id=". $seminarID ."\" onClick=\"return check_opener(this)\">". htmlReady($seminarName) ."</a>");
                     ?>
                 <? if ($perm->have_studip_perm("tutor", $seminarID)) : ?>
                     <br>
