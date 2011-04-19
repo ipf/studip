@@ -693,10 +693,10 @@ if ($perm->have_perm("tutor")) {
     $gruppe['accepted'] = get_title_for_status('accepted', 2);
 }
 
-$multiaction['tutor'] = array('insert' => null, 'delete' => array('tutor_to_autor', sprintf(_("Ausgewählte %s entlassen"), get_title_for_status('tutor', 2))), 'send' => array('send_msg', 'Nachricht an ausgewählte Benutzer schicken'));
-$multiaction['autor'] = array('insert' => array('autor_to_tutor', sprintf(_("Ausgewählte Benutzer als %s eintragen"), get_title_for_status('tutor', 2))), 'delete' => array('autor_to_user', _("Ausgewählten Benutzern das Schreibrecht entziehen")), 'send' => array('send_msg', 'Nachricht an ausgewählte Benutzer schicken'));
-$multiaction['user'] = array('insert' => array('user_to_autor',_("Ausgewählten Benutzern das Schreibrecht erteilen")), 'delete' => array('user_to_null', _("Ausgewählte Benutzer aus der Veranstaltung entfernen")),'send' => array('send_msg', 'Nachricht an ausgewählte Benutzer schicken'));
-$multiaction['accepted'] = array('insert' => array('admission_insert',_("Ausgewählte Benutzer akzeptieren")), 'delete' => array('admission_delete', _("Ausgewählte Benutzer aus der Veranstaltung entfernen")), 'send' => array('send_msg', 'Nachricht an ausgewählte Benutzer schicken'));
+$multiaction['tutor'] = array('insert' => null, 'delete' => array('tutor_to_autor', sprintf(_("Ausgewählte %s entlassen"), get_title_for_status('tutor', 2))), 'send' => array('send_msg', 'Nachricht an ausgewählte Benutzer verfassen'));
+$multiaction['autor'] = array('insert' => array('autor_to_tutor', sprintf(_("Ausgewählte Benutzer als %s eintragen"), get_title_for_status('tutor', 2))), 'delete' => array('autor_to_user', _("Ausgewählten Benutzern das Schreibrecht entziehen")), 'send' => array('send_msg', 'Nachricht an ausgewählte Benutzer verfassem'));
+$multiaction['user'] = array('insert' => array('user_to_autor',_("Ausgewählten Benutzern das Schreibrecht erteilen")), 'delete' => array('user_to_null', _("Ausgewählte Benutzer aus der Veranstaltung entfernen")),'send' => array('send_msg', 'Nachricht an ausgewählte Benutzer verfassen'));
+$multiaction['accepted'] = array('insert' => array('admission_insert',_("Ausgewählte Benutzer akzeptieren")), 'delete' => array('admission_delete', _("Ausgewählte Benutzer aus der Veranstaltung entfernen")), 'send' => array('send_msg', 'Nachricht an ausgewählte Benutzer verfassen'));
 
 $db->query("SELECT COUNT(user_id) as teilnehmer, COUNT(IF(admission_studiengang_id <> '',1,NULL)) as teilnehmer_kontingent FROM seminar_user WHERE seminar_id='".$SessSemName[1]."' AND status IN('autor','user')");
 $db->next_record();
@@ -1180,6 +1180,9 @@ if ($db->f('visible') == 'yes' || $i_see_everybody || $db->f('user_id') == $user
     ?>
         <span style="position: relative">
             <a href="<?= URLHelper::getLink('about.php?username='.$db->f("username")) ?>">
+                <? if (!$GLOBALS['perm']->have_studip_perm('tutor', $SessionSeminar)) :
+                    $last_visitdate = time()+10;
+                endif ?>
                 <? $db->f('mkdate') >= $last_visitdate
                     ? $options = array('title' => _('DieseR NutzerIn ist nach Ihrem '.
                         'letzten Besuch dieser Veranstaltung beigetreten'))
@@ -1393,7 +1396,7 @@ if($key != 'dozent' && $rechte && !$info_is_open && !LockRules::Check($id, 'part
     echo '<tr><td class="blank" colspan="'.($showscore ? 7 : 6).'">&nbsp;</td>';
 
     if (isset($multiaction[$key]['send'][0]))
-        echo '<td class="blank" align="center">' . makeButton('versenden','input', $multiaction[$key]['send'][1],'do_' . $multiaction[$key]['send'][0]) . '</td>';
+        echo '<td class="blank" align="center">' . makeButton('neuenachricht','input', $multiaction[$key]['send'][1],'do_' . $multiaction[$key]['send'][0]) . '</td>';
     else
         echo '<td class="blank">&nbsp;</td>';
 

@@ -341,6 +341,7 @@ class Seminar_Session extends Session {
             StudipNews::DoGarbageCollect();
         }
         if (($zufall % 1000) < $this->gc_probability){
+            $db = new DB_Seminar();
             //messages aufräumen
             $db->query("SELECT message_id, count( message_id ) AS gesamt, count(IF (deleted =0, NULL , 1) ) AS geloescht
                         FROM message_user GROUP BY message_id HAVING gesamt = geloescht");
@@ -650,10 +651,9 @@ class Seminar_Auth extends Auth {
     }
 
     function auth_set_user_settings($uid){
-        global $resolution, $_language;
-        $divided = explode("x",$resolution);
-        $this->auth["xres"] = ($divided[0] != 0) ? $divided[0] : 1024; //default
-        $this->auth["yres"] = ($divided[1] != 0) ? $divided[1] : 768; //default
+        $divided = explode("x",Request::get('resolution'));
+        $this->auth["xres"] = ($divided[0] != 0) ? (int)$divided[0] : 1024; //default
+        $this->auth["yres"] = ($divided[1] != 0) ? (int)$divided[1] : 768; //default
         // Change X-Resulotion on Multi-Screen Systems (as Matrox Graphic-Adapters are)
         if (($this ->auth["xres"] / $this ->auth["yres"]) > 2){
             $this->auth["xres"] = $this->auth["xres"] /2;
@@ -663,7 +663,7 @@ class Seminar_Auth extends Auth {
         if ($db->next_record()) {
             if ($db->f("preferred_language")) {
                 // we found a stored setting for preferred language
-                $_language = $db->f("preferred_language");
+                $_SESSION['_language'] = $db->f("preferred_language");
             }
         }
     }

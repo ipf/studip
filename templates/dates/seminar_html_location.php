@@ -35,24 +35,26 @@ if (is_array($output_dates)) foreach ($output_dates as $dates) :
     if ($dates[0]['resource_id']) :
         $resObj = ResourceObject::Factory($dates[0]['resource_id']);
         if ($link) {
-            $output[$resObj->getFormattedLink(TRUE, TRUE, TRUE)][] = implode(', ', shrink_dates($dates));
+            $output[$resObj->getFormattedLink(TRUE, TRUE, TRUE)][] = implode('<br>', shrink_dates($dates));
         } else {
-            $output[htmlReady($resObj->getName())][] = implode(', ', shrink_dates($dates));
+            $output[htmlReady($resObj->getName())][] = implode('<br>', shrink_dates($dates));
         }
     elseif ($dates[0]['raum']) :
-        $output['('. htmlReady($dates[0]['raum']) .')'][] = implode(', ', shrink_dates($dates));
+        $output['('. htmlReady($dates[0]['raum']) .')'][] = implode('<br>', shrink_dates($dates));
     endif;
 endforeach;
 ?>
 
 <? if (sizeof($output) == 0) : ?>
   <?= _("nicht angegeben") ?>
+<? elseif (sizeof($output) == 1) : ?>
+    <?= array_pop(array_keys($output)) ?>
 <? else: ?>
 <table class="default">
   <? foreach ($output as $room => $dates) : ?>
   <tr>
-    <td><?= $room ?></td>
-    <td><?= implode(', ', $dates) ?></td>
+    <td style="vertical-align: top"><?= $room ?></td>
+    <td><?= implode('<br>', $dates) ?></td>
   <? endforeach ?>
 </table>
 <? endif ?>

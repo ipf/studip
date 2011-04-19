@@ -315,12 +315,12 @@ function fach_abschluss_edit($fach_abschluss_delete,$new_studiengang,$new_abschl
 
         $any_change = true;
         if (is_array($fach_abschluss_delete)) {
-            $course_delete=true;
             $any_change = false;
             for ($i=0; $i < count($fach_abschluss_delete); $i++) {
                 $this->db->query("DELETE FROM user_studiengang WHERE user_id='".$this->auth_user["user_id"]."' AND studiengang_id='$fach_abschluss_delete[$i]'");
-                if (!$this->db->affected_rows())
-                    $this->msg = $this->msg."error§" . sprintf(_("Fehler beim L&ouml;schen in user_studiengang bei ID=%s"), $fach_abschluss_delete[$i]) . "§";
+                if ($this->db->affected_rows()) {
+                    $delete = true;
+                }
             }
         }
 
@@ -334,18 +334,14 @@ function fach_abschluss_edit($fach_abschluss_delete,$new_studiengang,$new_abschl
                 }
             }
 
-            if ($new_studiengang && $new_abschluss && $new_studiengang != '-- Bitte Fach auswählen --' && $new_abschluss != '-- Bitte Abschluss auswählen --') {
+            if ($new_studiengang && $new_studiengang != 'none') {
                 $this->db->query("INSERT IGNORE INTO user_studiengang (user_id,studiengang_id,abschluss_id,semester) VALUES ('".$this->auth_user["user_id"]."','$new_studiengang','$new_abschluss','$fachsem')");
-                if (!$this->db->affected_rows()) {
-                    $this->msg = $this->msg."error§" . sprintf(_("Fehler beim Einf&uuml;gen in user_studiengang bei ID=%s"), $new_studiengang) . "§";
-                }
-            } else {
-                if (!$edit_fachsem) {
-                    $this->msg = $this->msg."error§". _("Bitte Fach und Abschluss ausfüllen"). "§";
+                if ($this->db->affected_rows()) {
+                    $new = true;
                 }
             }
         }
-        if ( ($fach_abschluss_delete || $new_studiengang || $new_abschluss || $change_fachsem) && !$this->msg) {
+        if ( ($new || $delete|| $edit_fachsem) && !$this->msg) {
             $this->msg = "msg§" . _("Die Zuordnung zu Studiengängen wurde ge&auml;ndert.");
             setTempLanguage($this->auth_user["user_id"]);
             $this->priv_msg= _("Die Zuordnung zu Studiengängen wurde geändert!\n");
@@ -379,22 +375,24 @@ function fach_abschluss_edit($fach_abschluss_delete,$new_studiengang,$new_abschl
     {
         if (is_array($inst_delete)) {
             for ($i=0; $i < count($inst_delete); $i++) {
-                log_event('INST_USER_DEL', $inst_delete[$i], $this->auth_user["user_id"]);
                 $this->db->query("DELETE FROM user_inst WHERE user_id='".$this->auth_user["user_id"]."' AND Institut_id='$inst_delete[$i]'");
-                if (!$this->db->affected_rows())
-                    $this->msg = $this->msg . "error§" . sprintf(_("Fehler beim L&ouml;schen in user_inst bei ID=%s"), $inst_delete[$i]) . "§";
+                if ($this->db->affected_rows()) {
+                    $delete = true;
+                    log_event('INST_USER_DEL', $inst_delete[$i], $this->auth_user["user_id"]);
+                }
             }
         }
 
         if ($new_inst) {
-            log_event('INST_USER_ADD', $new_inst , $this->auth_user['user_id'], 'user');
-
             $this->db->query("INSERT IGNORE INTO user_inst (user_id,Institut_id,inst_perms) VALUES ('".$this->auth_user["user_id"]."','$new_inst','user')");
-            if (!$this->db->affected_rows())
-                $this->msg = $this->msg . "error§" . sprintf(_("Fehler beim Einf&uuml;gen in user_inst bei ID=%s"), $new_inst) . "§";
+            if ($this->db->affected_rows()) {
+                log_event('INST_USER_ADD', $new_inst , $this->auth_user['user_id'], 'user');
+                $new = true;
+            }
+
         }
 
-        if ( ($inst_delete || $new_inst) && !$this->msg) {
+        if ( $delete || $new ) {
             $this->msg = "msg§" . _("Die Zuordnung zu Einrichtungen wurde ge&auml;ndert.");
             setTempLanguage($this->auth_user["user_id"]);
             $this->priv_msg= _("Die Zuordnung zu Einrichtungen wurde geändert!\n");
@@ -710,7 +708,7 @@ function fach_abschluss_edit($fach_abschluss_delete,$new_studiengang,$new_abschl
     function select_inst()
     {
 
-        echo '<select name="new_inst id="select_new_inst""><option selected="selected"> ' . _("-- Bitte Einrichtung auswählen --") . ' </option>'."\n";
+        echo '<select name="new_inst" id="select_new_inst"><option selected="selected" value=""> ' . _("-- Bitte Einrichtung auswählen --") . ' </option>'."\n";
         $this->db->query("SELECT a.Institut_id,a.Name FROM Institute AS a LEFT JOIN user_inst AS b ON (b.user_id='".$this->auth_user["user_id"]."' AND a.Institut_id=b.Institut_id) WHERE b.Institut_id IS NULL ORDER BY a.Name");
         while ($this->db->next_record()) {
             echo "<option value=\"".$this->db->f("Institut_id")."\">".htmlReady(my_substr($this->db->f("Name"),0,50))."</option>\n";
@@ -981,7 +979,7 @@ function fach_abschluss_edit($fach_abschluss_delete,$new_studiengang,$new_abschl
         // Now join all available elements with visibility settings.
         $homepage_elements = array();
         if (Avatar::getAvatar($this->auth_user['user_id'])->is_customized() && !$NOT_HIDEABLE_FIELDS[$this->auth_user['perms']]['picture']) {
-            $homepage_elements["picture"] = array("name" => _("eigenes Bild"), "visibility" => $homepage_visibility["picture"] ? $homepage_visibility["picture"] : get_default_homepage_visibility($this->auth_user['user_id']), "extern" => true, 'category' => 'Allgemeine Daten');
+            $homepage_elements["picture"] = array("name" => _("Eigenes Bild"), "visibility" => $homepage_visibility["picture"] ? $homepage_visibility["picture"] : get_default_homepage_visibility($this->auth_user['user_id']), "extern" => true, 'category' => 'Allgemeine Daten');
         }
         if ($my_data["motto"] && !$NOT_HIDEABLE_FIELDS[$this->auth_user['perms']]['motto'])
             $homepage_elements["motto"] = array("name" => _("Motto"), "visibility" => $homepage_visibility["motto"] ? $homepage_visibility["motto"] : get_default_homepage_visibility($this->auth_user['user_id']), 'category' => 'Private Daten');
@@ -994,11 +992,11 @@ function fach_abschluss_edit($fach_abschluss_delete,$new_studiengang,$new_abschl
             }
         }
         if ($my_data["privatnr"] && !$NOT_HIDEABLE_FIELDS[$this->auth_user['perms']]['Private Daten_phone'])
-            $homepage_elements["private_phone"] = array("name" => _("private Telefonnummer"), "visibility" => $homepage_visibility["private_phone"] ? $homepage_visibility["private_phone"] : get_default_homepage_visibility($this->auth_user['user_id']), 'category' => 'Private Daten');
+            $homepage_elements["private_phone"] = array("name" => _("Private Telefonnummer"), "visibility" => $homepage_visibility["private_phone"] ? $homepage_visibility["private_phone"] : get_default_homepage_visibility($this->auth_user['user_id']), 'category' => 'Private Daten');
         if ($my_data["privatcell"] && !$NOT_HIDEABLE_FIELDS[$this->auth_user['perms']]['private_cell'])
-            $homepage_elements["private_cell"] = array("name" => _("private Handynummer"), "visibility" => $homepage_visibility["private_cell"] ? $homepage_visibility["private_cell"] : get_default_homepage_visibility($this->auth_user['user_id']), 'category' => 'Private Daten');
+            $homepage_elements["private_cell"] = array("name" => _("Private Handynummer"), "visibility" => $homepage_visibility["private_cell"] ? $homepage_visibility["private_cell"] : get_default_homepage_visibility($this->auth_user['user_id']), 'category' => 'Private Daten');
         if ($my_data["privadr"] && !$NOT_HIDEABLE_FIELDS[$this->auth_user['perms']]['privadr'])
-            $homepage_elements["privadr"] = array("name" => _("private Adresse"), "visibility" => $homepage_visibility["privadr"] ? $homepage_visibility["privadr"] : get_default_homepage_visibility($this->auth_user['user_id']), 'category' => 'Private Daten');
+            $homepage_elements["privadr"] = array("name" => _("Private Adresse"), "visibility" => $homepage_visibility["privadr"] ? $homepage_visibility["privadr"] : get_default_homepage_visibility($this->auth_user['user_id']), 'category' => 'Private Daten');
         if ($my_data["Home"] && !$NOT_HIDEABLE_FIELDS[$this->auth_user['perms']]['homepage'])
             $homepage_elements["homepage"] = array("name" => _("Homepage-Adresse"), "visibility" => $homepage_visibility["homepage"] ? $homepage_visibility["homepage"] : get_default_homepage_visibility($this->auth_user['user_id']), "extern" => true, 'category' => 'Private Daten');
         if ($news && !$NOT_HIDEABLE_FIELDS[$this->auth_user['perms']]['news'])

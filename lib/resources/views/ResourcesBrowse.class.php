@@ -153,9 +153,13 @@ class ResourcesBrowse {
             }
             $result = sprintf (" <font size=\"-1\">%s %s %s</font>", ($view=='search') ? "<a href=\"$PHP_SELF?view=search&quick_view_mode=$view_mode&reset=TRUE\">" : "", $top_level_name, ($view=='search') ? "</a>" : "");
             for ($i = sizeof($result_arr)-1; $i>=0; $i--) {
-                if ($view)
-                    $result.= sprintf (" > <a href=\"%s?quick_view=%s&quick_view_mode=%s&%s=%s\"><font size = -1>%s</font></a>", $PHP_SELF, (!$view) ? "search" : $view, $view_mode, ($view=='search') ? "open_level" : "actual_object", $result_arr[$i]["id"], htmlReady($result_arr[$i]["name"]));
-                else
+                if ($view) {
+                    $result .= '> <a href="';
+                    $result .= URLHelper::getLink(sprintf('?quick_view=%s&quick_view_mode=%s&%s=%s',
+                        (!$view) ? "search" : $view, $view_mode,
+                        ($view=='search') ? "open_level" : "actual_object", $result_arr[$i]["id"]));
+                    $result .= '">'. htmlReady($result_arr[$i]["name"]) .'</a>';
+                } else {
                     $result.= sprintf (" > %s", htmlReady($result_arr[$i]["name"]));
             }
         return $result;

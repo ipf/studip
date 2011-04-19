@@ -19,6 +19,11 @@ require_once 'app/models/user.php';
 require_once 'lib/classes/UserManagement.class.php';
 require_once 'vendor/email_message/blackhole_message.php';
 
+/**
+ *
+ * controller class for the user-administration
+ *
+ */
 class Admin_UserController extends AuthenticatedController
 {
     /**
@@ -96,8 +101,10 @@ class Admin_UserController extends AuthenticatedController
             //Suchparameter
             $this->user = $request;
             $this->sortby = Request::option('sortby', 'username');
-            $this->order = (Request::option('order', 'asc') == 'asc') ? 'asc' : 'desc';
-            $this->order_icon = (Request::option('order', 'asc') == 'asc') ? 'asc' : 'desc';
+            $this->order = Request::option('order', 'asc');
+            if (Request::int('toggle')) {
+                $this->order = $this->order == 'desc' ? 'asc' : 'desc';
+            }
             $request['vorname'] = ($request['vorname']) ? $request['vorname'] : NULL;
             $request['nachname'] = ($request['nachname']) ? $request['nachname'] : NULL;
 
@@ -139,6 +146,8 @@ class Admin_UserController extends AuthenticatedController
                 PageLayout::postMessage(MessageBox::error(_('Fehler! Der zu löschende Benutzer ist nicht vorhanden.')));
             //antwort ja
             } elseif (!empty($user) && Request::submitted('delete')) {
+
+                CSRFProtection::verifyUnsafeRequest();
 
                 //if deleting user, go back to mainpage
                 $parent = '';
@@ -186,12 +195,10 @@ class Admin_UserController extends AuthenticatedController
                 return;
             }
 
-            $users = array();
-            foreach ($user_ids as $user_id) {
-                $users[] = UserModel::getUser($user_id);
-            }
-
             if (Request::submitted('delete')) {
+
+                CSRFProtection::verifyUnsafeRequest();
+
                 //deactivate message
                 if (!Request::int('mail')) {
                     $dev_null = new blackhole_message_class();
@@ -221,6 +228,10 @@ class Admin_UserController extends AuthenticatedController
 
             //sicherheitsabfrage
             } elseif (!Request::submitted('back')) {
+                $users = array();
+                foreach ($user_ids as $user_id) {
+                    $users[] = UserModel::getUser($user_id);
+                }
                 $this->flash['delete'] = array(
                     'question' => _('Wollen Sie folgende Benutzer wirklich löschen?'),
                     'action' => $this->url_for('admin/user/delete'),
@@ -356,7 +367,7 @@ class Admin_UserController extends AuthenticatedController
             }
 
             //change userdomain
-            if (Request::get('new_userdomain') != 'none' && $editPerms[0] != 'root') {
+            if (Request::get('new_userdomain', 'none') != 'none' && $editPerms[0] != 'root') {
                 $domain = new UserDomain(Request::option('new_userdomain'));
                 $domain->addUser($user_id);
                 $details[] = _('Die Nutzerdomäne wurde hinzugefügt.');
@@ -393,14 +404,22 @@ class Admin_UserController extends AuthenticatedController
                 }
             }
 
-            //save action and messages
-            if ($um->changeUser($editUser)) {
-                PageLayout::postMessage(Messagebox::success(_('Die Änderungen wurden erfolgreich gespeichert.'), $details));
-            } else {
-                //get message
-                $details = explode('§', str_replace(array('msg§', 'info§', 'error§'), '', substr($um->msg, 0, -1)));
-                PageLayout::postMessage(Messagebox::error(_('Die Änderungen konnten nicht gespeichert werden.'), $details));
+            if (!Request::int('u_edit_send_mail')) {
+                $dev_null = new blackhole_message_class();
+                $default_mailer = StudipMail::getDefaultTransporter();
+                StudipMail::setDefaultTransporter($dev_null);
+                $GLOBALS['MAIL_VALIDATE_BOX'] = false;
+                $GLOBALS['MAIL_VALIDATE_HOST'] = false;
             }
+            //save action and messages
+            $um->changeUser($editUser);
+            if (!Request::int('u_edit_send_mail')) {
+                StudipMail::setDefaultTransporter($default_mailer);
+            }
+            //get message
+            $umdetails = explode('§', str_replace(array('msg§', 'info§', 'error§'), '', substr($um->msg, 0, -1)));
+            $details = array_reverse(array_merge((array)$details,(array)$umdetails));
+            PageLayout::postMessage(Messagebox::info(_('Hinweise:'), $details));
         }
 
         //get user informations
@@ -525,7 +544,7 @@ class Admin_UserController extends AuthenticatedController
                             foreach ($users as $admin) {
                                 $subject = _("Neuer Administrator in Ihrer Einrichtung angelegt");
                                 $mailbody = sprintf(_("Liebe(r) %s %s,\n\n"
-                                          . "In der Einrichtung '%s' wurde %s %s als Administrator eingetragen "
+                                          . "in der Einrichtung '%s' wurde %s %s als Administrator eingetragen "
                                           ." und steht Ihnen als neuer Ansprechpartner bei Fragen oder Problemen "
                                           ."in Stud.IP zur Verfügung. "),
                                           $admin['Vorname'], $admin['Nachname'],
@@ -551,7 +570,7 @@ class Admin_UserController extends AuthenticatedController
                                 foreach ($fak_admins as $admin) {
                                     $subject = _("Neuer Administrator in Ihrer Einrichtung angelegt");
                                     $mailbody = sprintf(_("Liebe(r) %s %s,\n\n"
-                                              . "In der Einrichtung '%s' wurde %s %s als Administrator eingetragen "
+                                              . "in der Einrichtung '%s' wurde %s %s als Administrator eingetragen "
                                               ." und steht Ihnen als neuer Ansprechpartner bei Fragen oder Problemen "
                                               ."in Stud.IP zur Verfügung. "),
                                               $admin['Vorname'], $admin['Nachname'],

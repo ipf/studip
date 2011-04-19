@@ -210,7 +210,7 @@ class AdminNewsController {
         $this->news_query['expire'] = Request::int('expire', $this->news_query['expire']);
         $this->news_query['allow_comments'] = Request::int('allow_comments', $this->news_query['allow_comments']);
     }
-    
+
     function edit_news($news_id=0) {
         global $perm;
         $aktuell=mktime(0,0,0,strftime("%m",time()),strftime("%d",time()),strftime("%y",time()));
@@ -368,7 +368,7 @@ $('#starttime').change(function () {
                     $news_obj->setValue('expire', $expire);
                     $news_obj->setValue('allow_comments', $allow_comments);
                     if ($news_obj->store()){
-                        $this->msg .= "msg§" . _("Ok, Ihre neue Ankündigung wurde gespeichert!") . "§";
+                        $this->msg .= "msg§" . _("Ihre neue Ankündigung wurde gespeichert!") . "§";
                     }
                 } else {
                     if ($this->news_query["topic"]!=stripslashes($topic)
@@ -660,6 +660,5 @@ $('#starttime').change(function () {
             $msg_object->insert_message(mysql_escape_string($msg), get_username($user_id) , "____%system%____", FALSE, FALSE, "1", FALSE, _("Systemnachricht:")." "._("Ankündigung geändert"));
         }
     }
-
 }   //Ende Klassendefintion
-?>
+

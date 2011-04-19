@@ -23,10 +23,12 @@ require_once 'SimpleORMap.class.php';
  * separated string
  *
  * Usage:
+ * @code
  * $csvarray = new CSVArrayObject('eins,zwei,drei');
  * $csvarray[] = 'vier';
  * echo $csvarray; // prints out "eins,zwei,drei,vier"
- *
+ * @endcode
+ * 
  * @link http://www.php.net/manual/en/class.arrayobject.php
 */
 class CSVArrayObject extends ArrayObject
@@ -56,9 +58,18 @@ class CSVArrayObject extends ArrayObject
 }
 
 /**
- * Enter description here ...
- * @author noack
- *
+ * this class represents one record of the table webservice_access_rules
+ * the column ip_range is converted from a comma separated list to an ArrayObject and vice-versa,
+ * to allow array-like access
+ * 
+ * Example:
+ * @code
+ * $rule = WebserviceAccessRule::find($id);
+ * echo $rule['ip_range']; //prints out e.g. 127.0.0.1
+ * $rule['ip_range'][] = '192.168.19.0/8';
+ * echo $rule['ip_range']; //prints out 127.0.0.1,192.168.19.0/8
+ * @endcode
+ * 
  */
 class WebserviceAccessRule extends SimpleORMap
 {
@@ -137,7 +148,7 @@ class WebserviceAccessRule extends SimpleORMap
     }
 
     /**
-     *
+     * Constructor
      * @param string $id primary key of table
      */
     function __construct($id = null)

@@ -182,6 +182,14 @@ function parse_link($link, $level=0) {
 }
 
 
+/**
+ * creates a zip file from given ids in tmp directory
+ * 
+ * @param array $file_ids array of document ids
+ * @param bool $perm_check if true, files are checked for folder permissions
+ * @param bool $size_check if true, number and size of files are checked against config values
+ * @return string filename(id) of the created zip without path 
+ */
 function createSelectedZip ($file_ids, $perm_check = TRUE, $size_check = false) {
     global $TMP_PATH, $ZIP_PATH, $SessSemName;
     $zip_file_id = false;
@@ -232,6 +240,14 @@ function createSelectedZip ($file_ids, $perm_check = TRUE, $size_check = false) 
     return $zip_file_id;
 }
 
+/**
+ * creates a zip file from all files in given folder, including subfolders
+ * 
+ * @param string $folder_id id of document folder
+ * @param bool $perm_check if true, files are checked for folder permissions
+ * @param bool $size_check if true, number and size of files are checked against config values
+ * @return string filename(id) of the created zip without path 
+ */
 function createFolderZip ($folder_id, $perm_check = TRUE, $size_check = false) {
     global $TMP_PATH, $ZIP_PATH;
     $zip_file_id = false;
@@ -259,6 +275,16 @@ function createFolderZip ($folder_id, $perm_check = TRUE, $size_check = false) {
     return $zip_file_id;
 }
 
+/**
+ * used by createFolderZip() to dive into subfolders
+ * collects a list of file metadata and returns it when recursion finishes
+ * 
+ * @param string $folder_id id of a folder
+ * @param string $tmp_full_path temporary path 
+ * @param bool $perm_check if true, files are checked for folder permissions
+ * @param bool $in_recursion used internally to indicate recursive call
+ * @return array assoc array with metadata from zipped files
+ */
 function createTempFolder($folder_id, $tmp_full_path, $perm_check = TRUE, $in_recursion = false) {
     global $SessSemName;
     static $filelist;
@@ -308,7 +334,7 @@ function createTempFolder($folder_id, $tmp_full_path, $perm_check = TRUE, $in_re
        return $filelist;
     } else {
         return true;
-}
+    }
 }
 
 
@@ -786,7 +812,17 @@ function form($refresh = FALSE) {
     return $print;
 }
 
-//kill the forbidden characters, shorten filename to 31 Characters
+/**
+ * kills forbidden characters in filenames,
+ * shortens filename to 31 Characters if desired,
+ * checks for unique filename in given folder and modifies
+ * filename if needed
+ * 
+ * @param string $filename original filename
+ * @param bool $shorten if true, filename is shortened to 31 chars
+ * @param bool $checkfolder if true, uniqueness of filename in this folder is guaranteed
+ * @return string 
+ */
 function prepareFilename($filename, $shorten = FALSE, $checkfolder = false) {
     $bad_characters = array (":", chr(92), "/", "\"", ">", "<", "*", "|", "?", " ", "(", ")", "&", "[", "]", "#", chr(36), "'", "*", ";", "^", "`", "{", "}", "|", "~", chr(255));
     $replacements = array ("", "", "", "", "", "", "", "", "", "_", "", "", "+", "", "", "", "", "", "", "-", "", "", "", "", "-", "", "");
@@ -1360,7 +1396,7 @@ function display_file_body($datei, $folder_id, $open, $change, $move, $upload, $
         $content.= "\n&nbsp;<input type=\"CHECKBOX\" name=\"change_protected\" $protect>&nbsp;"._("geschützter Inhalt")."</br>";
         $content.= "<br><textarea name=\"change_description\" aria-label=\"Beschreibung des Ordners eingeben\" rows=\"3\" cols=\"40\">".htmlReady($datei["description"])."</textarea><br>";
         $content.= makeButton("uebernehmen", 'input', _("&Auml;nderungen speichern"));
-        $content.= "&nbsp;" . makeButton("abbrechen", 'input', _("Abbrechen", 'cancel'));
+        $content.= "&nbsp;" . makeButton("abbrechen", 'input', _("Abbrechen"), 'cancel');
         $content.= "<input type=\"hidden\" name=\"open\" value=\"".htmlReady($datei["dokument_id"])."_sc_\">";
         $content.= "<input type=\"hidden\" name=\"type\" value=\"0\">";
     } else {
@@ -1612,12 +1648,12 @@ function display_folder_body($folder_id, $open, $change, $move, $upload, $refres
 
     $content='';
     if ($super_folder){
-        $content .=  '<img  src="'.$GLOBALS['ASSETS_URL'].'images/icons/16/black/lock-locked.png">&nbsp;'
+        $content .=  '<img class=\"texttop\" src="'.$GLOBALS['ASSETS_URL'].'images/icons/16/grey/lock-locked.png">&nbsp;'
             . sprintf(_("Dieser Ordner ist nicht zugänglich, da der übergeordnete Ordner \"%s\" nicht lesbar oder nicht sichtbar ist!"), htmlReady($folder_tree->getValue($super_folder,'name')))
             . '<hr>';
     }
     if ($folder_tree->isExerciseFolder($folder_id)){
-        $content .=  '<img  src="'.$GLOBALS['ASSETS_URL'].'images/icons/16/black/edit.png">&nbsp;'
+        $content .=  '<img  class=\"texttop\" src="'.$GLOBALS['ASSETS_URL'].'images/icons/16/grey/edit.png">&nbsp;'
                 . _("Dieser Ordner ist ein Hausaufgabenordner. Es können nur Dateien eingestellt werden.")
                 . (!$rechte ? _("Sie selbst haben folgende Dateien in diesen Ordner eingestellt:")
                 . '<br><b>' . htmlReady(join('; ', get_user_documents_in_folder($folder_id, $GLOBALS['user']->id))).'</b>' : '')
@@ -1695,7 +1731,7 @@ function display_folder_body($folder_id, $open, $change, $move, $upload, $refres
         if ($rechte)
             $edit.= "&nbsp;<a href=\"".URLHelper::getLink("?open=".$folder_id."_l_&rand=".rand()."#anker")."\">" . makeButton("link", "img", _("Datei verlinken")) . "</a>";
         if ($document_count && $folder_tree->isReadable($folder_id, $user->id))
-            $edit.= "&nbsp;&nbsp;&nbsp;<a href=\"".URLHelper::getLink("?folderzip=".$folder_id)."\">" . makeButton("ordneralszip", "img", _("Ordner als ZIP hochladen")) . "</a>";
+            $edit.= "&nbsp;&nbsp;&nbsp;<a href=\"".URLHelper::getLink("?folderzip=".$folder_id)."\">" . makeButton("ordneralszip", "img", _("Ordner als ZIP")) . "</a>";
         if ($perm->have_studip_perm('autor', $SessionSeminar) && $folder_tree->checkCreateFolder($folder_id, $user->id)) {
             if ($folder_tree->isWritable($folder_id, $user->id) && !$folder_tree->isExerciseFolder($folder_id, $user->id)) {
                 $edit.= "&nbsp;&nbsp;&nbsp;<a href=\"".URLHelper::getLink("?open=".$folder_id."_n_#anker")."\">" . makeButton("neuerordner", "img", _("Ordner anlegen")) . "</a>";
@@ -1907,15 +1943,6 @@ function display_folder ($folder_id, $open, $change, $move, $upload, $refresh=FA
     else
         print "<img src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/blue/folder-full.png\" border=0>&nbsp;";
 
-    // Schloss, wenn Folder gelockt
-    if ($folder_tree->isLockedFolder($folder_id))
-        print "<img ".tooltip(_("Dieser Ordner ist gesperrt."))." src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/black/lock-locked.png\">";
-    //Wenn verdeckt durch gesperrten übergeordneten Ordner
-    else if ( ($super_folder = $folder_tree->getNextSuperFolder($folder_id)) )
-        print "<img ".tooltip(_("Dieser Ordner ist nicht zugänglich, da ein übergeordneter Ordner gesperrt ist."))." src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/black/lock-locked.png\">";
-    // Wenn es ein Hausaufgabenordner ist
-    if ($folder_tree->isExerciseFolder($folder_id))
-        print "<img ".tooltip(_("Dieser Ordner ist ein Hausaufgabenordner. Es können nur Dateien eingestellt werden."))." src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/black/edit.png\" width=\"18\" HEIGTH=\"18\">";
     //Pfeile, wenn Datei bewegt werden soll
     if ($move && ($folder_id != $move) && $folder_tree->isWritable($folder_id, $user->id) && (!$folder_tree->isFolder($move) || ($folder_tree->checkCreateFolder($folder_id, $user->id) && !$folder_tree->isExerciseFolder($folder_id, $user->id)))){
         print "</a><span class=\"move_arrows\"><a href=\"".URLHelper::getLink("?open=".$folder_id."_md_")."\"><img src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/yellow/arr_2right.png\" border=0></a></span>";
@@ -1937,6 +1964,7 @@ function display_folder ($folder_id, $open, $change, $move, $upload, $refresh=FA
         $tmp_titel = sprintf(_("Sitzung am: %s"), implode(', ', $dates_title)) .
              ", " . ($tmp_titel ? $tmp_titel : _("ohne Titel"));
     }
+    
     if (($change == $folder_id)
             && (!$isissuefolder)
             && ((count($folder_tree->getParents($folder_id)) > 1)
@@ -1977,7 +2005,19 @@ function display_folder ($folder_id, $open, $change, $move, $upload, $refresh=FA
         }
     }
 
-    print "</a></td>";
+    print "</a>&nbsp;";
+	
+	// Schloss, wenn Folder gelockt
+    if ($folder_tree->isLockedFolder($folder_id))
+        print "<img class=\"text-bottom\" ".tooltip(_("Dieser Ordner ist gesperrt."))." src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/grey/lock-locked.png\">";
+    //Wenn verdeckt durch gesperrten übergeordneten Ordner
+    else if ( ($super_folder = $folder_tree->getNextSuperFolder($folder_id)) )
+        print "<img class=\"text-bottom\" ".tooltip(_("Dieser Ordner ist nicht zugänglich, da ein übergeordneter Ordner gesperrt ist."))." src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/grey/lock-locked.png\">";
+    // Wenn es ein Hausaufgabenordner ist
+    if ($folder_tree->isExerciseFolder($folder_id))
+        print "<img class=\"text-bottom\" ".tooltip(_("Dieser Ordner ist ein Hausaufgabenordner. Es können nur Dateien eingestellt werden."))." src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/grey/edit.png\">";
+   
+    print "</td>";
 
     //So und jetzt die rechtsbündigen Sachen:
     print "</td><td align=right class=\"printhead\" valign=\"bottom\">";
@@ -2052,7 +2092,7 @@ function GetFileIcon($ext, $with_img_tag = false){
             $icon = 'icons/16/blue/file-generic.png';
         break;
     }
-    return ($with_img_tag ? '<img src="'.$GLOBALS['ASSETS_URL'].'images/'.$icon.'" border="0">' : $icon);
+    return ($with_img_tag ? '<img class=\"text-top\" src="'.$GLOBALS['ASSETS_URL'].'images/'.$icon.'" border="0">' : $icon);
 }
 
 /**
