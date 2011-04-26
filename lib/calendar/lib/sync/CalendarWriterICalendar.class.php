@@ -23,7 +23,7 @@
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
 // CalendarWriteriCalendar.class.php
-// 
+//
 // Copyright (C) 2003 Peter Thienel <pthienel@web.de>,
 // Suchi & Berg GmbH <info@data-quest.de>
 // +---------------------------------------------------------------------------+
@@ -46,33 +46,33 @@ global $RELATIVE_PATH_CALENDAR;
 require_once("$RELATIVE_PATH_CALENDAR/lib/sync/CalendarWriter.class.php");
 
 class CalendarWriteriCalendar extends CalendarWriter {
-    
+
     var $newline = "\r\n";
-    
+
     function CalendarWriteriCalendar () {
-        
+
         parent::CalendarWriter();
         $this->default_filename_suffix = "ics";
         $this->format = "iCalendar";
     }
-    
+
     function writeHeader () {
-    
+
         // Default values
         $header = "BEGIN:VCALENDAR" . $this->newline;
         $header .= "VERSION:2.0" . $this->newline;
         $header .= "PRODID:-//Stud.IP//Stud.IP_iCalendar Library, Stud.IP ";
         $header .= $GLOBALS['SOFTWARE_VERSION'] . " //EN" . $this->newline;
         $header .= "METHOD:PUBLISH" . $this->newline;
-        
+
         return $header;
     }
-    
+
     function writeFooter () {
-    
+
         return "END:VCALENDAR" . $this->newline;
     }
-    
+
     /**
      * Export this component as iCalendar format
      *
@@ -80,18 +80,18 @@ class CalendarWriteriCalendar extends CalendarWriter {
      * @return String iCalendar formatted data
      */
     function write (&$event) {
-        
+
         $match_pattern_1 = array('\\', '\n', ';', ',');
         $replace_pattern_1 = array('\\\\', '\\n', '\;', '\,');
         $match_pattern_2 = array('\\', '\n', ';');
         $replace_pattern_2 = array('\\\\', '\\n', '\;');
-        
+
         $safe_categories = $event->properties['CATEGORIES'];
         $event->properties['CATEGORIES'] = str_replace($match_pattern_2, $replace_pattern_2,
                 $event->toStringCategories());
-        
+
         $result = 'BEGIN:VEVENT' . $this->newline;
-        
+
         foreach ($event->properties as $name => $value) {
             $name = $name;
             $params = array();
@@ -99,32 +99,32 @@ class CalendarWriteriCalendar extends CalendarWriter {
 
             if ($value === '')
                 continue;
-            
+
             switch ($name) {
                 // not supported event properties
                 case 'SEMNAME':
                 case 'EXPIRE':
                 case 'STUDIP_CATEGORY':
                     continue 2;
-                    
+
                 // text fields
                 case 'SUMMARY':
                 case 'DESCRIPTION':
                 case 'LOCATION':
                     $value = str_replace($match_pattern_1, $replace_pattern_1, $value);
                     break;
-                
+
                 case 'CATEGORIES':
                     $event->properties['CATEGORIES'] = $safe_categories;
                     break;
-                
+
                 // Date fields
                 case 'LAST-MODIFIED':
                 case 'CREATED':
                 case 'COMPLETED':
                     $value = $this->_exportDateTime($value);
                     break;
-                
+
                 case 'DTSTAMP':
                     $value = $this->_exportDateTime(time());
                     break;
@@ -157,7 +157,7 @@ class CalendarWriteriCalendar extends CalendarWriter {
                     else
                         $value = $this->_exportExdate($value, 'DATE-TIME');
                     break;
-                    
+
                 case 'RDATE':
                     if (array_key_exists('VALUE', $params)) {
                         if ($params['VALUE'] == 'DATE') {
@@ -217,7 +217,7 @@ class CalendarWriteriCalendar extends CalendarWriter {
                 case 'SEQUENCE':
                     $value = "$value";
                     break;
-                
+
                 case 'PRIORITY':
                     switch ($value) {
                         case 1:
@@ -233,7 +233,7 @@ class CalendarWriteriCalendar extends CalendarWriter {
                             $value = '0';
                     }
                     break;
-                
+
                 // Geo fields
                 case 'GEO':
                     $value = $value['latitude'] . ',' . $value['longitude'];
@@ -247,12 +247,12 @@ class CalendarWriteriCalendar extends CalendarWriter {
                     else
                         continue 2;
                     break;
-                
+
                 case "UID":
                     $value = "$value";
-                
+
             }
-            
+
             $attr_string = "$name$params_str:$value";
             $result .= $this->_foldLine($attr_string) . $this->newline;
         }
@@ -261,11 +261,11 @@ class CalendarWriteriCalendar extends CalendarWriter {
 
         return utf8_encode($result);
     }
-    
+
         /**
      * Export a UTC Offset field
      *
-     * @param array $value 
+     * @param array $value
      * @return String UTC offset field iCalendar formatted
      */
     function _exportUtcOffset ($value) {
@@ -304,7 +304,7 @@ class CalendarWriteriCalendar extends CalendarWriter {
      * @return String Date and time (UTC) iCalendar formatted
      */
     function _exportDateTime ($value) {
-        
+
 //      $TZOffset  = 3600 * substr(date('O', $value), 0, 3);
 //      $TZOffset += 60 * substr(date('O', $value), 3, 2);
 
@@ -323,7 +323,7 @@ class CalendarWriteriCalendar extends CalendarWriter {
     function _exportTime ($value) {
         $time = date ("His", $value);
         $time .= 'Z';
-        
+
         return $time;
     }
 
@@ -379,7 +379,7 @@ class CalendarWriteriCalendar extends CalendarWriter {
 
         return $duration;
     }
-    
+
     /**
     *Export a recurrence rule
     */
@@ -387,12 +387,12 @@ class CalendarWriteriCalendar extends CalendarWriter {
         $rrule = array();
         // the last day of week in a MONTHLY or YEARLY recurrence in the
         // Stud.IP calendar is 5, in iCalendar it is -1
-        if ($value['sinterval'] == 5)
-            $value['sinterval'] = -1;
-            
+        if ($value['sinterval'] == '5')
+            $value['sinterval'] = '-1';
+
         if ($value['count'])
             unset($value['expire']);
-        
+
         foreach ($value as $r_param => $r_value) {
             if ($r_value) {
                 switch ($r_param) {
@@ -422,8 +422,8 @@ class CalendarWriteriCalendar extends CalendarWriter {
                                 $rrule[] = 'BYDAY=' . $this->_exportWdays($r_value);
                                 // The Stud.IP calendar don't support multiple values in a
                                 // comma separated list.
-                                if ($r_value['sinterval'])
-                                    $rrule[] = 'BYSETPOS=' . $r_value['sinterval'];
+                                if ($value['sinterval'])
+                                    $rrule[] = 'BYSETPOS=' . $value['sinterval'];
                                 break;
                         }
                         break;
@@ -439,10 +439,10 @@ class CalendarWriteriCalendar extends CalendarWriter {
                 }
             }
         }
-                
+
         return implode(';', $rrule);
     }
-    
+
     /**
     * Return the Stud.IP calendar wdays attribute of a event recurrence
     */
@@ -454,10 +454,10 @@ class CalendarWriteriCalendar extends CalendarWriter {
         foreach ($matches[1] as $match) {
             $wdays[] = $wdays_map[$match];
         }
-        
+
         return implode(',', $wdays);
     }
-    
+
     function _exportExdate ($value, $param) {
         $exdates = array();
         $date_times = explode(',', $value);
@@ -467,11 +467,11 @@ class CalendarWriteriCalendar extends CalendarWriter {
             else
                 $exdates[] = $this->_exportDate($date_time);
         }
-        
+
         return implode(',', $exdates);
     }
-            
-    
+
+
     /**
     * Return the folded version of a line
     */
