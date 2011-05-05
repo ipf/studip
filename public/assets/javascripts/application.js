@@ -394,10 +394,14 @@ STUDIP.Tabs = (function () {
 
   // truncates an item
   function truncate(item) {
-    var text = jQuery(item).html(),
-      length = Math.max(text.length - 4, 4);
+    var text = jQuery(item).text();
+    if (text.charAt(text.length - 1) === "\u2026") {
+      text = text.substr(0, text.length - 1);
+    }
+    text = text.replace("\u2026", "");
+    var length = Math.max(text.length - 1, 4);
     if (length < text.length) {
-      jQuery(item).html(text.substr(0, length) + "\u2026");
+      jQuery(item).text(text.substr(0, length) + "\u2026");
     }
   }
 
@@ -937,6 +941,7 @@ STUDIP.QuickSearch = {
   autocomplete: function (name, url, func, title, disabled) {
     if (typeof disabled === "undefined" || disabled !== true) {
       jQuery('#' + name).autocomplete({
+        delay: 500,
         minLength: 3,
         source: function (input, add) {
           //get the variables that should be sent:
@@ -1508,6 +1513,15 @@ jQuery(function ($) {
     yearSuffix: ''
   };
   $.datepicker.setDefaults($.datepicker.regional.de);
+}(jQuery));
+
+jQuery(function () {
+  jQuery(".datepickerbutton").datepicker({
+    showOn: "button",
+    buttonImage: STUDIP.ASSETS_URL + "images/popupcalendar.png",
+    buttonImageOnly: true,
+    dateFormat: 'dd.mm.yy'
+  });
 });
 
 STUDIP.SkipLinks = {

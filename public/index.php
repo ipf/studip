@@ -101,9 +101,7 @@ if ($auth->is_authenticated() && $user->id != 'nobody') {
     }
 
     // Warning for Users
-    if (get_config("EXTERNAL_HELP")) {
-        $help_url = format_help_url("Basis.AnmeldungMail");
-    }
+    $help_url = format_help_url("Basis.AnmeldungMail");
 
     // Display banner ad
     if (get_config('BANNER_ADS_ENABLE')) {

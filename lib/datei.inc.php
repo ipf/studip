@@ -167,7 +167,7 @@ function parse_link($link, $level=0) {
             do {
                 $response .= fgets($socket, 128);
                 $info = stream_get_meta_data($socket);
-            } while (!feof($socket) && !$info['timed_out'] && strlen($response) < 512);
+            } while (!feof($socket) && !$info['timed_out'] && strlen($response) < 1024);
             fclose($socket);
         }
         $parsed_link = parse_header($response);
@@ -184,11 +184,11 @@ function parse_link($link, $level=0) {
 
 /**
  * creates a zip file from given ids in tmp directory
- * 
+ *
  * @param array $file_ids array of document ids
  * @param bool $perm_check if true, files are checked for folder permissions
  * @param bool $size_check if true, number and size of files are checked against config values
- * @return string filename(id) of the created zip without path 
+ * @return string filename(id) of the created zip without path
  */
 function createSelectedZip ($file_ids, $perm_check = TRUE, $size_check = false) {
     global $TMP_PATH, $ZIP_PATH, $SessSemName;
@@ -242,11 +242,11 @@ function createSelectedZip ($file_ids, $perm_check = TRUE, $size_check = false) 
 
 /**
  * creates a zip file from all files in given folder, including subfolders
- * 
+ *
  * @param string $folder_id id of document folder
  * @param bool $perm_check if true, files are checked for folder permissions
  * @param bool $size_check if true, number and size of files are checked against config values
- * @return string filename(id) of the created zip without path 
+ * @return string filename(id) of the created zip without path
  */
 function createFolderZip ($folder_id, $perm_check = TRUE, $size_check = false) {
     global $TMP_PATH, $ZIP_PATH;
@@ -278,9 +278,9 @@ function createFolderZip ($folder_id, $perm_check = TRUE, $size_check = false) {
 /**
  * used by createFolderZip() to dive into subfolders
  * collects a list of file metadata and returns it when recursion finishes
- * 
+ *
  * @param string $folder_id id of a folder
- * @param string $tmp_full_path temporary path 
+ * @param string $tmp_full_path temporary path
  * @param bool $perm_check if true, files are checked for folder permissions
  * @param bool $in_recursion used internally to indicate recursive call
  * @return array assoc array with metadata from zipped files
@@ -817,11 +817,11 @@ function form($refresh = FALSE) {
  * shortens filename to 31 Characters if desired,
  * checks for unique filename in given folder and modifies
  * filename if needed
- * 
+ *
  * @param string $filename original filename
  * @param bool $shorten if true, filename is shortened to 31 chars
  * @param bool $checkfolder if true, uniqueness of filename in this folder is guaranteed
- * @return string 
+ * @return string
  */
 function prepareFilename($filename, $shorten = FALSE, $checkfolder = false) {
     $bad_characters = array (":", chr(92), "/", "\"", ">", "<", "*", "|", "?", " ", "(", ")", "&", "[", "]", "#", chr(36), "'", "*", ";", "^", "`", "{", "}", "|", "~", chr(255));
@@ -921,11 +921,7 @@ function validate_upload($the_file, $real_file_name='') {
                     else
                         $emsg.= "error§" . sprintf(_("Die Datei konnte nicht &uuml;bertragen werden: Sie d&uuml;rfen die Dateitypen %s nicht hochladen!"), trim($exts)) . "§";
                     if ($doc) {
-                        if (get_config("EXTERNAL_HELP")) {
-                            $help_url=format_help_url("Basis.DateienUpload");
-                        } else {
-                            $help_url="help/index.php?referrer_page=datei.inc.php&doc=TRUE";
-                        }
+                        $help_url = format_help_url("Basis.DateienUpload");
                         $emsg.= "info§" . sprintf(_("%sHier%s bekommen Sie Hilfe zum Upload von Word-Dokumenten."), "<a target=\"_blank\" href=\"".$help_url."\">", "</a>") . "§";
                     }
                 }
@@ -946,11 +942,7 @@ function validate_upload($the_file, $real_file_name='') {
                     else
                         $emsg.= "error§" . sprintf(_("Die Datei konnte nicht &uuml;bertragen werden: Sie d&uuml;rfen nur die Dateitypen %s hochladen!"), trim($exts)) . "§";
                     if ($doc) {
-                        if (get_config("EXTERNAL_HELP")) {
-                            $help_url=format_help_url("Basis.DateienUpload");
-                        } else {
-                            $help_url="help/index.php?referrer_page=datei.inc.php&doc=TRUE";
-                        }
+                        $help_url = format_help_url("Basis.DateienUpload");
                         $emsg.= "info§" . sprintf(_("%sHier%s bekommen Sie Hilfe zum Upload von Word-Dokumenten."), "<a target=\"_blank\" href=\"".$help_url."\">", "</a>") . "§";
                     }
                     }
@@ -974,11 +966,7 @@ function validate_upload($the_file, $real_file_name='') {
                     else
                         $emsg.= "error§" . sprintf(_("Die Datei konnte nicht &uuml;bertragen werden: Sie d&uuml;rfen die Dateitypen %s nicht hochladen!"), trim($exts)) . "§";
                     if ($doc) {
-                        if (get_config("EXTERNAL_HELP")) {
-                            $help_url=format_help_url("Basis.DateienUpload");
-                        } else {
-                            $help_url="help/index.php?referrer_page=datei.inc.php&doc=TRUE";
-                        }
+                        $help_url = format_help_url("Basis.DateienUpload");
                         $emsg.= "info§" . sprintf(_("%sHier%s bekommen Sie Hilfe zum Upload von Word-Dokumenten."), "<a target=\"_blank\" href=\"".$help_url."\">", "</a>") . "§";
                     }
                     }
@@ -1000,11 +988,7 @@ function validate_upload($the_file, $real_file_name='') {
                     else
                         $emsg.= "error§" . sprintf(_("Die Datei konnte nicht &uuml;bertragen werden: Sie d&uuml;rfen nur die Dateitypen %s hochladen!"), trim($exts)) . "§";
                     if ($doc) {
-                        if (get_config("EXTERNAL_HELP")) {
-                            $help_url=format_help_url("Basis.DateienUpload");
-                        } else {
-                            $help_url="help/index.php?referrer_page=datei.inc.php&doc=TRUE";
-                        }
+                        $help_url = format_help_url("Basis.DateienUpload");
                         $emsg.= "info§" . sprintf(_("%sHier%s bekommen Sie Hilfe zum Upload von Word-Dokumenten."), "<a target=\"_blank\" href=\"".$help_url."\">", "</a>") . "§";
                     }
                     }
@@ -1964,7 +1948,7 @@ function display_folder ($folder_id, $open, $change, $move, $upload, $refresh=FA
         $tmp_titel = sprintf(_("Sitzung am: %s"), implode(', ', $dates_title)) .
              ", " . ($tmp_titel ? $tmp_titel : _("ohne Titel"));
     }
-    
+
     if (($change == $folder_id)
             && (!$isissuefolder)
             && ((count($folder_tree->getParents($folder_id)) > 1)
@@ -2006,8 +1990,8 @@ function display_folder ($folder_id, $open, $change, $move, $upload, $refresh=FA
     }
 
     print "</a>&nbsp;";
-	
-	// Schloss, wenn Folder gelockt
+
+    // Schloss, wenn Folder gelockt
     if ($folder_tree->isLockedFolder($folder_id))
         print "<img class=\"text-bottom\" ".tooltip(_("Dieser Ordner ist gesperrt."))." src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/grey/lock-locked.png\">";
     //Wenn verdeckt durch gesperrten übergeordneten Ordner
@@ -2016,7 +2000,7 @@ function display_folder ($folder_id, $open, $change, $move, $upload, $refresh=FA
     // Wenn es ein Hausaufgabenordner ist
     if ($folder_tree->isExerciseFolder($folder_id))
         print "<img class=\"text-bottom\" ".tooltip(_("Dieser Ordner ist ein Hausaufgabenordner. Es können nur Dateien eingestellt werden."))." src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/grey/edit.png\">";
-   
+
     print "</td>";
 
     //So und jetzt die rechtsbündigen Sachen:
