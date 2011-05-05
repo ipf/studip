@@ -166,7 +166,7 @@ function parse_link($link, $level=0) {
             do {
                 $response .= fgets($socket, 128);
                 $info = stream_get_meta_data($socket);
-            } while (!feof($socket) && !$info['timed_out'] && strlen($response) < 512);
+            } while (!feof($socket) && !$info['timed_out'] && strlen($response) < 1024);
             fclose($socket);
         }
         $parsed_link = parse_header($response);
@@ -181,6 +181,14 @@ function parse_link($link, $level=0) {
 }
 
 
+/**
+ * creates a zip file from given ids in tmp directory
+ *
+ * @param array $file_ids array of document ids
+ * @param bool $perm_check if true, files are checked for folder permissions
+ * @param bool $size_check if true, number and size of files are checked against config values
+ * @return string filename(id) of the created zip without path
+ */
 function createSelectedZip ($file_ids, $perm_check = TRUE, $size_check = false) {
     global $TMP_PATH, $ZIP_PATH, $SessSemName;
     $zip_file_id = false;
@@ -228,6 +236,14 @@ function createSelectedZip ($file_ids, $perm_check = TRUE, $size_check = false) 
     return $zip_file_id;
 }
 
+/**
+ * creates a zip file from all files in given folder, including subfolders
+ *
+ * @param string $folder_id id of document folder
+ * @param bool $perm_check if true, files are checked for folder permissions
+ * @param bool $size_check if true, number and size of files are checked against config values
+ * @return string filename(id) of the created zip without path
+ */
 function createFolderZip ($folder_id, $perm_check = TRUE, $size_check = false) {
     global $TMP_PATH, $ZIP_PATH;
     $zip_file_id = false;
@@ -253,6 +269,15 @@ function createFolderZip ($folder_id, $perm_check = TRUE, $size_check = false) {
     return $zip_file_id;
 }
 
+/**
+ * used by createFolderZip() to dive into subfolders
+ *
+ *
+ * @param string $folder_id id of a folder
+ * @param string $tmp_full_path temporary path
+ * @param bool $perm_check if true, files are checked for folder permissions
+ * @return bool
+ */
 function createTempFolder($folder_id, $tmp_full_path, $perm_check = TRUE) {
     global $SessSemName;
     $db = new DB_Seminar();
@@ -1925,7 +1950,19 @@ function display_folder ($folder_id, $open, $change, $move, $upload, $refresh=FA
         }
     }
 
-    print "</a></td>";
+    print "</a>&nbsp;";
+
+    // Schloss, wenn Folder gelockt
+    if ($folder_tree->isLockedFolder($folder_id))
+        print "<img class=\"text-bottom\" ".tooltip(_("Dieser Ordner ist gesperrt."))." src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/grey/lock-locked.png\">";
+    //Wenn verdeckt durch gesperrten übergeordneten Ordner
+    else if ( ($super_folder = $folder_tree->getNextSuperFolder($folder_id)) )
+        print "<img class=\"text-bottom\" ".tooltip(_("Dieser Ordner ist nicht zugänglich, da ein übergeordneter Ordner gesperrt ist."))." src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/grey/lock-locked.png\">";
+    // Wenn es ein Hausaufgabenordner ist
+    if ($folder_tree->isExerciseFolder($folder_id))
+        print "<img class=\"text-bottom\" ".tooltip(_("Dieser Ordner ist ein Hausaufgabenordner. Es können nur Dateien eingestellt werden."))." src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/grey/edit.png\">";
+
+    print "</td>";
 
     //So und jetzt die rechtsbündigen Sachen:
     print "</td><td align=right class=\"printhead\" valign=\"bottom\">";

@@ -218,8 +218,8 @@ class Seminar
             $ex_termin = new SingleDate($termine['ex_termin']);
 
             $missing_date  = '<div style="border:1px solid black; background:#FFFFDD;">';
-            $missing_date .= sprintf(_("Der Termin am %s findet nicht statt."), DateFormatter::formatDateAndRoom($ex_termin, $return_mode));
-            $missing_date .= '<br>Kommentar: '.$ex_termin->getComment();
+            $missing_date .= sprintf(_("Der Termin am %s findet nicht statt."), DateFormatter::formatDateAndRoom($termine['ex_termin'], $return_mode));
+            $missing_date .= '<br>' . _("Kommentar"). ': '.htmlReady($ex_termin->getComment());
             $missing_date .= '</div>';
 
             if ($termine['termin']) {
@@ -2330,7 +2330,7 @@ class Seminar
                 "FROM seminar_user " .
                 "WHERE Seminar_id = ".$db->quote($this->id)." ".
                     "AND status = 'dozent' ")->fetch(PDO::FETCH_COLUMN, 0);
-        
+
         if (!$old_status) {
             $db->exec("INSERT INTO seminar_user " .
                       "SET status = ".$db->quote($status).", " .

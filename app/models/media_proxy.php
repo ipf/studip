@@ -235,7 +235,7 @@ class MediaProxy
         $db->exec("DELETE FROM media_cache WHERE id IN('" . join("','", $ids) . "')");
 
         foreach ($ids as $id) {
-            unlink($this->getCacheFile($id));
+            @unlink($this->getCacheFile($id));
         }
     }
 }

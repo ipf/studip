@@ -71,7 +71,7 @@ class DateTemplatesTests extends UnitTestCase
     {
         $data = renderTemplate('dates/seminar_export', $this->testData);
         $compare = 'Mo. 10:00 - 12:00 (wöchentlich) - Vorlesung, Ort: Hörsaal 1 <br>, (<script>alert("böse");</script>), '
-                 . "\n" . 'Termine am 12.05. 09:00 - 13:00';
+                 . "\n" . 'Termine am 12.05. 09:00 - 13:00, Ort: (<script>alert("böse");</script>)';
         $this->assertEqual($data, $compare);
 
 
@@ -83,6 +83,13 @@ class DateTemplatesTests extends UnitTestCase
         $data = renderTemplate('dates/date_export', $this->testData, array('date' => new SingleDate()));
         $compare = 'Mo., 11.11.2010 12:00 - 14:00, Ort: Hörsaal 1 <br>';
         $this->assertEqual($data, $compare);
+
+        // test single date with freetext
+        $singledate = new SingleDate();
+        $singledate->resource_id = NULL;
+        $data = renderTemplate('dates/date_export', $this->testData, array('date' => $singledate));
+        $compare = 'Mo., 11.11.2010 12:00 - 14:00, Ort: (<script>alert("böse");</script>)';
+        $this->assertEqual($data, $compare);
     }
 
 
@@ -92,7 +99,7 @@ class DateTemplatesTests extends UnitTestCase
         $compare = 'Montag: 10:00 - 12:00 (ab 18.10.2010), <i>Vorlesung</i>, Ort: '
                  . '<a onclick="window.open(...)">Hörsaal 1</a>, '
                  . '(&lt;script&gt;alert(&quot;b&ouml;se&quot;);&lt;/script&gt;)<br>'
-                 . 'Termine am 12.05. 09:00 - 13:00';
+                 . 'Termine am 12.05. 09:00 - 13:00, Ort: (&lt;script&gt;alert(&quot;b&ouml;se&quot;);&lt;/script&gt;)';
         $this->assertEqual($data, $compare);
 
 
@@ -124,7 +131,7 @@ class DateTemplatesTests extends UnitTestCase
         $data = renderTemplate('dates/seminar_html', $this->testData, array('link' => false));
         $compare = 'Montag: 10:00 - 12:00 (ab 18.10.2010), <i>Vorlesung</i>, Ort: H&ouml;rsaal 1 &lt;br&gt;, '
                  . '(&lt;script&gt;alert(&quot;b&ouml;se&quot;);&lt;/script&gt;)<br>'
-                 . 'Termine am 12.05. 09:00 - 13:00';
+                 . 'Termine am 12.05. 09:00 - 13:00, Ort: (&lt;script&gt;alert(&quot;b&ouml;se&quot;);&lt;/script&gt;)';
         $this->assertEqual($data, $compare);
 
 
@@ -148,6 +155,13 @@ class DateTemplatesTests extends UnitTestCase
 
         $data = renderTemplate('dates/date_html', $this->testData, array('date' => new SingleDate(), 'link' => false));
         $compare = 'Mo., 11.11.2010 12:00 - 14:00, Ort: H&ouml;rsaal 1 &lt;br&gt;';
+        $this->assertEqual($data, $compare);
+
+        // test single date with freetext
+        $singledate = new SingleDate();
+        $singledate->resource_id = NULL;
+        $data = renderTemplate('dates/date_html', $this->testData, array('date' => $singledate));
+        $compare = 'Mo., 11.11.2010 12:00 - 14:00, Ort: (&lt;script&gt;alert(&quot;b&ouml;se&quot;);&lt;/script&gt;)';
         $this->assertEqual($data, $compare);
     }
 
@@ -207,11 +221,18 @@ class ResourceObject
     }
 }
 
+
 class SingleDate
 {
+    public $resource_id = abcdef1234567890;
+
     function getResourceID()
     {
-        return 'abcdef1234567890';
+        return $this->resource_id;
+    }
+
+    function getFreeRoomText() {
+        return '<script>alert("böse");</script>';
     }
 
     function toString()

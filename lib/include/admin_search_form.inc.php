@@ -532,11 +532,11 @@ if ($perm->have_perm("tutor")) {    // Navigationsleiste ab status "Tutor"
             if (!$show_rooms_check_url) {
                 $_room = "&nbsp;";
             } else {
-                $_room = $sem->getDatesHTML();
-                if (!$_room) {
-                    $semdata = $semester->getSemesterDataByDate($db->f('start_time'));
-                    $_room = $sem->getDatesHTML(array('semester_id' => $semdata['semester_id']));
-                }
+                $sem = Seminar::getInstance($db->f('Seminar_id'));
+                $_room = $sem->getDatesHTML(array(
+                    'semester_id' => $links_admin_data['search_sem'],
+                    'show_room'   => true
+                ));
                 $_room = $_room ? $_room : "nicht angegeben";
             }
             $user_id = $auth->auth["uid"];

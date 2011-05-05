@@ -177,6 +177,7 @@ class CycleData
      */
     function storeCycleDate()
     {
+        if (!$this->description) $this->description = '';
         return $this->cycle_date->store();
     }
 
