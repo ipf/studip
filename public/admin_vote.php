@@ -51,7 +51,7 @@ PageLayout::setTitle(_("Verwaltung von Umfragen und Tests"));
 
 require_once 'lib/admin_search.inc.php';
 
-if ($list || $view) {
+if ($list || $view && !(isDeputyEditAboutActivated() && isDeputy($auth->auth["uid"], get_userid(Request::get('cid')), true))) {
     $view_mode = get_object_type($the_range);
     if ($view_mode == "fak"){
         $view_mode = "inst";

@@ -249,7 +249,7 @@ foreach (DataFieldEntry::getDataFieldEntries($user_id) as $entry) {
 
 
 $show_tabs = ($user_id == $user->id && $perm->have_perm("autor"))
-             || ((get_config('DEPUTIES_ENABLE') && get_config('DEPUTIES_DEFAULTENTRY_ENABLE') && get_config('DEPUTIES_EDIT_ABOUT_ENABLE'))
+             || (isDeputyEditAboutActivated()
                 && isDeputy($user->id, $user_id, true))
              || $perm->have_perm("root")
              || $admin_darf;
@@ -537,7 +537,8 @@ function open_im() {
 <?
 
 // News zur person anzeigen!!!
-$show_admin = $perm->have_perm("autor") && $auth->auth["uid"] == $user_id;
+$show_admin = ($perm->have_perm("autor") && $auth->auth["uid"] == $user_id) || 
+    (isDeputyEditAboutActivated() && isDeputy($auth->auth["uid"], $user_id, true));
 if (is_element_visible_for_user($user->id, $user_id, $visibilities['news'])) {
     show_news($user_id, $show_admin, 0, $about_data["nopen"], "100%", 0, $about_data);
 }
@@ -547,7 +548,8 @@ if (get_config('CALENDAR_ENABLE')) {
     $temp_user_perm = get_global_perm($user_id);
     if ($temp_user_perm != "root" && $temp_user_perm != "admin") {
         $start_zeit = time();
-        $show_admin = $perm->have_perm("autor") && $auth->auth["uid"] == $user_id;
+        $show_admin = ($perm->have_perm("autor") && 
+            $auth->auth["uid"] == $user_id);
         if (is_element_visible_for_user($user->id, $user_id, $visibilities['termine']))
             show_personal_dates($user_id, $start_zeit, -1, FALSE, $show_admin, $about_data["dopen"]);
     }
