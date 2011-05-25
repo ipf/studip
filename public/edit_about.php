@@ -342,13 +342,10 @@ if (check_ticket($studipticket)) {
     }
 
     if (Request::submitted('change_homepage_visibility')) {
-        $data = $_POST;
-        unset($data["change_homepage_visibility_x"]);
-        unset($data["change_homepage_visibility_y"]);
-        unset($data["change_homepage_visibility"]);
-        unset($data["view"]);
-        unset($data["default_homepage_visibility"]);
-        unset($data["all_homepage_visibility"]);
+        $data = array();
+        foreach(array_keys($my_about->get_homepage_elements()) as $key) {
+            if (Request::int($key) !== null) $data[$key] = Request::int($key);
+        }
         $success = $my_about->change_homepage_visibility($data);
         if ($success) {
             $my_about->msg .= 'msg§'._('Die Sichtbarkeit der Profilelemente wurde gespeichert.');
