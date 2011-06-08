@@ -161,6 +161,7 @@ class ResourcesBrowse {
                     $result .= '">'. htmlReady($result_arr[$i]["name"]) .'</a>';
                 } else {
                     $result.= sprintf (" > %s", htmlReady($result_arr[$i]["name"]));
+                }
             }
         return $result;
     }
