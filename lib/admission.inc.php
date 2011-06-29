@@ -121,10 +121,10 @@ function insert_seminar_user($seminar_id, $user_id, $status, $copy_studycourse =
     $db = new DB_Seminar;
     $db2 = new DB_Seminar;
 
-    $query = sprintf("SELECT comment, studiengang_id FROM admission_seminar_user WHERE user_id = '%s' AND seminar_id ='%s' ", $user_id, $seminar_id);
+    $query = sprintf("SELECT comment, studiengang_id, status FROM admission_seminar_user WHERE user_id = '%s' AND seminar_id ='%s' ", $user_id, $seminar_id);
     $db->query($query);
     if ($db->next_record()) {
-        $admission_entry = TRUE;
+        $admission_status = $db->f("status");
         $comment = $db->f("comment");
         if ($copy_studycourse)
             $studiengang_id = $db->f("studiengang_id");
@@ -134,7 +134,7 @@ function insert_seminar_user($seminar_id, $user_id, $status, $copy_studycourse =
     if (strlen($consider_contingent) > 1) $studiengang_id = $consider_contingent;
 
     $sem = Seminar::GetInstance($seminar_id);
-    if ($copy_studycourse && $consider_contingent && $sem->isAdmissionEnabled() && !$sem->getFreeAdmissionSeats($studiengang_id)) {
+    if ($admission_status != 'accepted' && $copy_studycourse && $consider_contingent && $sem->isAdmissionEnabled() && !$sem->getFreeAdmissionSeats($studiengang_id)) {
         return false;
     } else {
         $group = select_group($sem->getSemesterStartTime(), $user_id); //ok, here ist the "colored-group" meant (for grouping on meine_seminare), not the grouped seminars as above!
