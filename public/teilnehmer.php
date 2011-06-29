@@ -496,10 +496,14 @@ if (Seminar_Session::check_ticket($studipticket) && !LockRules::Check($id, 'part
                 //Only if user was on the waiting list
                 if($admission_user){
                     setTempLanguage($userchange);
-                    if (!$accepted) {
-                        $message = sprintf(_("Sie wurden vom einem/einer %s oder AdministratorIn aus der Warteliste in die Veranstaltung **%s** aufgenommen und sind damit zugelassen."), get_title_for_status('dozent', 1), $SessSemName[0]);
+                    if ($cmd == "add_user") {
+                        $message = sprintf(_("Sie wurden vom einem/einer %s oder AdministratorIn als TeilnehmerIn in die Veranstaltung **%s** eingetragen."), get_title_for_status('dozent', 1), $SessSemName[0]);
                     } else {
-                        $message = sprintf(_("Sie wurden von einem/einer %s oder AdministratorIn vom Status **vorläufig akzeptiert** zum/r TeilnehmerIn der Veranstaltung **%s** hochgestuft und sind damit zugelassen."), get_title_for_status('dozent', 1), $SessSemName[0]);
+                        if (!$accepted) {
+                            $message = sprintf(_("Sie wurden vom einem/einer %s oder AdministratorIn aus der Warteliste in die Veranstaltung **%s** aufgenommen und sind damit zugelassen."), get_title_for_status('dozent', 1), $SessSemName[0]);
+                        } else {
+                            $message = sprintf(_("Sie wurden von einem/einer %s oder AdministratorIn vom Status **vorläufig akzeptiert** zum/r TeilnehmerIn der Veranstaltung **%s** hochgestuft und sind damit zugelassen."), get_title_for_status('dozent', 1), $SessSemName[0]);
+                        }
                     }
                     restoreLanguage();
                     $messaging->insert_message(mysql_escape_string($message), $username, "____%system%____", FALSE, FALSE, "1", FALSE, _("Systemnachricht:")." "._("Eintragung in Veranstaltung"), TRUE);
@@ -718,6 +722,10 @@ $db->query("SELECT COUNT(user_id) as teilnehmer, COUNT(IF(admission_studiengang_
 $db->next_record();
 $anzahl_teilnehmer = $db->f('teilnehmer');
 $anzahl_teilnehmer_kontingent = $db->f('teilnehmer_kontingent');
+$db->query("SELECT COUNT(user_id) as teilnehmer, COUNT(IF(studiengang_id <> '',1,NULL)) as teilnehmer_kontingent FROM admission_seminar_user WHERE seminar_id='".$SessSemName[1]."' AND status = 'accepted'");
+$db->next_record();
+$anzahl_teilnehmer += $db->f('teilnehmer');
+$anzahl_teilnehmer_kontingent += $db->f('teilnehmer_kontingent');
 ?>
 
         <script type="text/javascript">
@@ -966,6 +974,12 @@ while (list ($key, $val) = each ($gruppe)) {
                 WHERE ".$tbl.".Seminar_id = '$SessionSeminar'
                 AND status = '$key' GROUP by ".$tbl.".user_id ORDER BY $sortby");
 
+    if($rechte && $key == 'autor'  && $sem->isAdmissionEnabled()){
+        echo '<tr><td class="blank" colspan="'.$colspan.'" align="right"><font size="-1">';
+        printf(_("<b>Teilnahmebeschränkte Veranstaltung</b> -  Teilnehmerkontingent: %s, davon belegt: %s, zusätzlich belegt: %s"),
+            $sem->admission_turnout, $anzahl_teilnehmer_kontingent, $anzahl_teilnehmer - $anzahl_teilnehmer_kontingent);
+        echo '</font></td></tr>';
+    }
     if ($db->num_rows()) { //Only if Users were found...
         $info_is_open = false;
         $tutor_count = 0;
@@ -973,12 +987,6 @@ while (list ($key, $val) = each ($gruppe)) {
     if ($key != 'dozent') echo "<form name=\"$key\" action=\"".URLHelper::getLink("?studipticket=$studipticket")."\" method=\"post\">";
     if ($key == 'accepted') echo '<input type="hidden" name="accepted" value="1">';
 
-    if($rechte && $key == 'autor'   && $sem->isAdmissionEnabled()){
-        echo '<tr><td class="blank" colspan="'.$colspan.'" align="right"><font size="-1">';
-        printf(_("<b>Teilnahmebeschränkte Veranstaltung</b> -  Teilnehmerkontingent: %s, davon belegt: %s, zusätzlich belegt: %s"),
-            $sem->admission_turnout, $anzahl_teilnehmer_kontingent, $anzahl_teilnehmer - $anzahl_teilnehmer_kontingent);
-        echo '</font></td></tr>';
-    }
     echo "<tr height=28>";
     if ($showscore==TRUE)
         echo "<td class=\"steel\" width=\"1%\">&nbsp; </td>";
@@ -1615,7 +1623,7 @@ if (!LockRules::Check($id, 'participants') && $rechte) {
             <? if($sem->isAdmissionEnabled()) : ?>
             <select name="consider_contingent">
                 <option value=""><?= _("Kein Kontingent") ?></option>
-                <? if(is_array($sem->admission_studiengang)) 
+                <? if(is_array($sem->admission_studiengang))
                     foreach($sem->admission_studiengang as $studiengang => $data) : ?>
                     <option value="<?= $studiengang ?>" <?= $_REQUEST['consider_contingent'] == $studiengang ? 'selected' : '' ?>>
                         <?= htmlReady($data['name'] . ' ' . '('.$sem->getFreeAdmissionSeats($studiengang).')') ?>
