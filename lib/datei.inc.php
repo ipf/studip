@@ -1655,7 +1655,7 @@ function display_folder_body($folder_id, $open, $change, $move, $upload, $refres
         }
         $content .=  '<hr>';
     }
-    if ($folder_tree->isGroupFolder(folder_id)){
+    if ($folder_tree->isGroupFolder($folder_id)){
         $content .=  sprintf(_("Dieser Ordner gehört der Gruppe <b>%s</b>. Nur Mitglieder dieser Gruppe können diesen Ordner sehen."),
         htmlReady(GetStatusgruppeName($result["range_id"]))) . '<hr>';
     }
