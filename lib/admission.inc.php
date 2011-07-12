@@ -381,7 +381,7 @@ function normal_update_admission($seminar_id, $send_message = TRUE) {
             $count = (int)$seminar->getFreeAdmissionSeats();
 
             //Studis auswaehlen, die jetzt aufsteigen koennen
-                $db3->query("SELECT admission_seminar_user.user_id, username, studiengang_id FROM admission_seminar_user LEFT JOIN auth_user_md5 USING (user_id) WHERE seminar_id =  '".$seminar->getId()."' AND status = 'awaiting' ORDER BY position LIMIT $count");
+            $db3->query("SELECT admission_seminar_user.user_id, username, studiengang_id FROM admission_seminar_user LEFT JOIN auth_user_md5 USING (user_id) WHERE seminar_id =  '".$seminar->getId()."' AND status = 'awaiting' ORDER BY position LIMIT $count");
             while ($db3->next_record()) {
                 $group = select_group ($seminar->getSemesterStartTime(), $db3->f("user_id")); //ok, here ist the "colored-group" meant (for grouping on meine_seminare), not the grouped seminars as above!
                 if (!$sem_preliminary) {
@@ -400,8 +400,9 @@ function normal_update_admission($seminar_id, $send_message = TRUE) {
                         } else {
                             $message = sprintf (_("Sie haben den Status vorläufig akzeptiert in der Veranstaltung **%s (%s)** erhalten, da für Sie ein Platz freigeworden ist."), $seminar->getName(), $seminar->getFormattedTurnus(true));
                         }
+                        $subject = sprintf(_("Teilnahme an der Veranstaltung %s"),$seminar->getName());
                         restoreLanguage();
-                        $messaging->insert_message(addslashes($message), $db3->f("username"), "____%system%____", FALSE, FALSE, "1", FALSE,sprintf(_("Teilnahme an der Veranstaltung %s"),$seminar->getName()));
+                        $messaging->insert_message(addslashes($message), $db3->f("username"), "____%system%____", FALSE, FALSE, "1", FALSE, addslashes($subject), true);
                     }
                 }
             }
@@ -414,7 +415,7 @@ function normal_update_admission($seminar_id, $send_message = TRUE) {
             foreach($seminar->admission_studiengang as $studiengang_id => $studiengang){
                 $free_quota = (int) $seminar->getFreeAdmissionSeats($studiengang_id);
                 //Studis auswaehlen, die jetzt aufsteigen koennen
-                    $db4->query("SELECT admission_seminar_user.user_id, username, studiengang_id FROM admission_seminar_user LEFT JOIN auth_user_md5 USING (user_id) WHERE seminar_id =  '".$seminar->getId()."' AND studiengang_id = '".$studiengang_id."' AND status = 'awaiting' ORDER BY position LIMIT $free_quota");
+                $db4->query("SELECT admission_seminar_user.user_id, username, studiengang_id FROM admission_seminar_user LEFT JOIN auth_user_md5 USING (user_id) WHERE seminar_id =  '".$seminar->getId()."' AND studiengang_id = '".$studiengang_id."' AND status = 'awaiting' ORDER BY position LIMIT $free_quota");
                 while ($db4->next_record()) {
                     $group = select_group ($seminar->getSemesterStartTime(), $db4->f("user_id")); //ok, here ist the "colored-group" meant (for grouping on meine_seminare), not the grouped seminars as above!
                     if (!$sem_preliminary) {
@@ -424,17 +425,18 @@ function normal_update_admission($seminar_id, $send_message = TRUE) {
                     }
                     if ($db5->affected_rows()) {
                         if (!$sem_preliminary)
-                            $db6->query("DELETE FROM admission_seminar_user WHERE user_id ='".$db4->f("user_id")."' AND seminar_id = '".$seminar->getId()."' ");
+                        $db6->query("DELETE FROM admission_seminar_user WHERE user_id ='".$db4->f("user_id")."' AND seminar_id = '".$seminar->getId()."' ");
                         //User benachrichtigen
                         if (($sem_preliminary || $db6->affected_rows()) && ($send_message)) {
                             setTempLanguage($db4->f("user_id"));
                             if (!$sem_preliminary) {
                                 $message = sprintf (_("Sie sind als TeilnehmerIn der Veranstaltung **%s (%s)** eingetragen worden, da für Sie ein Platz frei geworden ist. Ab sofort finden Sie die Veranstaltung in der Übersicht Ihrer Veranstaltungen. Damit sind Sie auch als TeilnehmerIn der Präsenzveranstaltung zugelassen."), $seminar->getName(), $seminar->getFormattedTurnus(true));
                             } else {
-                                 $message = sprintf (_("Sie haben den Status vorläufig akzeptiert in der Veranstaltung **%s (%s)** erhalten,  da für Sie ein Platz freigeworden ist."), $seminar->getName(), $seminar->getFormattedTurnus(true));
+                                $message = sprintf (_("Sie haben den Status vorläufig akzeptiert in der Veranstaltung **%s (%s)** erhalten,  da für Sie ein Platz freigeworden ist."), $seminar->getName(), $seminar->getFormattedTurnus(true));
                             }
+                            $subject = sprintf(_("Teilnahme an der Veranstaltung %s"),$seminar->getName());
                             restoreLanguage();
-                            $messaging->insert_message(addslashes($message), $db4->f("username"), "____%system%____", FALSE, FALSE, "1");
+                            $messaging->insert_message(addslashes($message), $db4->f("username"), "____%system%____", FALSE, FALSE, "1", FALSE, addslashes($subject), true);
                         }
                     }
                 }
