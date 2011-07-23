@@ -138,6 +138,7 @@ a.printhead {
 
 #layout_content {
     margin-right: 270px;
+    overflow: auto;
 }
 
 #layout_infobox {
