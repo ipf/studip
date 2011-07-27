@@ -40,8 +40,6 @@ checkObject();
 checkObjectModule("forum");
 object_set_visit_module("forum");
 
-mark_public_course();
-
 if ($forumsend && $forumsend!="bla") {
     PageLayout::setHelpKeyword("Basis.ForumEinstellungen");
     PageLayout::setTitle(_("Einstellungen des Forums anpassen"));
