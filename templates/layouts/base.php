@@ -41,8 +41,8 @@
       <div id="layout_content">
         <?= implode(PageLayout::getMessages()) ?>
         <?= $content_for_layout ?>
-        <div class="clear"></div>
       </div>
+      <div class="clear"></div>
     </div>
     <div id="layout_push"></div>
 </div>
