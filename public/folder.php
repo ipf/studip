@@ -282,7 +282,7 @@ if ($rechte || $owner || $create_folder_perm) {
 
     //wurde Code fuer Speichern von Aenderungen uebermittelt (=id+"_sc_"), wird entsprechende Funktion aufgerufen
     if ($open_cmd == 'sc' && (!Request::submitted("cancel"))) {
-        edit_item($open_id, Request::int('type'), Request::get('change_name'), Request::get('change_description'), $change_protected);
+        edit_item($open_id, Request::int('type'), Request::get('change_name'), Request::get('change_description'), Request::int('change_protected', 0));
     }
 
     //wurde Code fuer Verschieben-Vorwaehlen uebermittelt (=id+"_m_"), wird entsprechende Funktion aufgerufen
@@ -439,7 +439,7 @@ if (($SemUserStatus == "autor") || ($rechte)) {
 
     //wurde ein Link aktualisiert?
     if (($cmd=="link_update") && (!Request::submitted("cancel")) && ($folder_system_data["link"])) {
-        if (link_item ($range_id, TRUE, FALSE, FALSE, $link_update)) {
+        if (link_item ($range_id, TRUE, FALSE, FALSE, Request::option('link_update'))) {
             $open = $link_update;
             $close = $folder_system_data["refresh"];
             $folder_system_data["link"]='';

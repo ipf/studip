@@ -502,7 +502,7 @@ include ('lib/include/html_head.inc.php'); // Output of html head
 //JS Routinen einbinden, wenn benoetigt. Wird in der Funktion gecheckt, ob noetig...
 if ($GLOBALS["ENABLE_EMAIL_ATTACHMENTS"] == true) {
     JS_for_upload();
-    echo "\n<body onUnLoad=\"upload_end()\">";
+    echo "\n<body onUnLoad=\"STUDIP.OldUpload.upload_end()\">";
 }
 
 include ('lib/include/header.php');   // Output of Stud.IP head
@@ -594,7 +594,7 @@ $txt['008'] = _("Lesebestätigung");
                         </tr>
                         <tr>
                             <td valign="top" class="steelgraudunkel">
-                                <font size="-1" color="#FFFFFF"><b><?=$txt['006']?></b></font>
+                                <font size="-1" color="#FFFFFF"><b><?= _('Optionen') ?></b></font>
                             </td>
                         </tr>
                         <tr>
@@ -604,21 +604,11 @@ $txt['008'] = _("Lesebestätigung");
                         </tr>
                         <? if ($GLOBALS["MESSAGING_FORWARD_AS_EMAIL"]) { ?>
                         <tr>
-                            <td valign="top" class="steelgraudunkel">
-                                <font size="-1" color="#FFFFFF"><b><?=$txt['007']?></b></font>
-                            </td>
-                        </tr>
-                        <tr>
                             <td valign="top" class="steelgraulight">
                                 <?=show_msgemailoptionsform()?>
                             </td>
                         </tr>
                         <? } ?>
-                        <tr>
-                            <td valign="top" class="steelgraudunkel">
-                                <font size="-1" color="#FFFFFF"><b><?=$txt['008']?></b></font>
-                            </td>
-                        </tr>
                         <tr>
                             <td valign="top" class="steelgraulight">
                                 <?=show_msgreadconfirmoptionsform()?>

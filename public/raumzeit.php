@@ -79,6 +79,9 @@ $header_line = getHeaderLine($id);
 if ($header_line)
     PageLayout::setTitle($header_line." - ".PageLayout::getTitle());
 
+//save messages from
+$pmessages = PageLayout::getMessages();
+
 //Output starts here
 
 include ('lib/include/html_head.inc.php'); // Output of html head
@@ -113,7 +116,7 @@ foreach ($_REQUEST as $key => $val) {
 
 // what to do with the text-field
 if ($GLOBALS['RESOURCES_ENABLE'] && $resList->numberOfRooms()) {
-    if ( (($_REQUEST['freeRoomText'] != '') && ($_REQUEST['room'] != 'nothing')) || (($_REQUEST['freeRoomText_sd'] != '') && ($_REQUEST['room_sd'] != 'nothing'))) {
+    if ( ($_REQUEST['freeRoomText'] != '' && !in_array($_REQUEST['room'], words('nothing nochange'))) || ($_REQUEST['freeRoomText_sd'] != '' && !in_array($_REQUEST['room_sd'], words('nothing nochange'))) ) {
         $sem->createError("Sie k&ouml;nnen nur eine freie Raumangabe machen, wenn Sie \"keine Buchung, nur Textangabe\" ausw&auml;hlen!");
         unset($_REQUEST['freeRoomText']);
         unset($_REQUEST['room']);
@@ -175,6 +178,9 @@ if ($perm->have_studip_perm("admin",$sem->getId())) {
 
 // template-like output
 ?>
+<script>
+STUDIP.RoomRequestDialog.reloadUrlOnClose = '<?= UrlHelper::getUrl()?>';
+</script>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
         <td class="blank" width="100%" valign="top" style="padding-left: 8px">
@@ -182,7 +188,8 @@ if ($perm->have_studip_perm("admin",$sem->getId())) {
 
             <?php
                 // show messages
-                if ($messages = $sem->getStackedMessages()) :
+                $messages = $sem->getStackedMessages();
+                if ($messages || $pmessages) :
             ?>
             <tr>
                 <td colspan="9">
@@ -190,6 +197,7 @@ if ($perm->have_studip_perm("admin",$sem->getId())) {
                 foreach ($messages as $type => $message_data) :
                     echo MessageBox::$type( $message_data['title'], $message_data['details'] );
                 endforeach;
+                echo join("\n", $pmessages);
             ?>
                 </td>
             </tr>

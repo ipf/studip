@@ -370,7 +370,7 @@ function open_im() {
                 <br>
 
                 <? if (($email = get_visible_email($user_id)) != '') : ?>
-                    <b>&nbsp;<?= _("E-mail:") ?></b>
+                    <b>&nbsp;<?= _("E-Mail:") ?></b>
                     <a href="mailto:<?= htmlReady($email) ?>"><?= htmlReady($email) ?></a>
                     <br>
                 <? endif ?>
@@ -657,19 +657,20 @@ while ($category = $categories->fetch())  {
     if ($user->id == $user_id) {
         switch ($visibilities['kat_'.$category['kategorie_id']]) {
             case VISIBILITY_ME:
-                $vis_text = _("sichtbar für mich selbst");
+                $vis_text = _("nur für mich sichtbar");
                 break;
             case VISIBILITY_BUDDIES:
-                $vis_text = _("sichtbar für meine Buddies");
+                $vis_text = _("nur für meine Buddies sichtbar");
                 break;
             case VISIBILITY_DOMAIN:
-                $vis_text = _("sichtbar für meine Nutzerdomäne");
-                break;
-            case VISIBILITY_STUDIP:
-                $vis_text = _("sichtbar für alle Stud.IP-Nutzer");
+                $vis_text = _("nur für meine Nutzerdomäne sichtbar");
                 break;
             case VISIBILITY_EXTERN:
-                $vis_text = _("sichtbar auf externen Seiten");
+                $vis_text = _("auf externen Seiten sichtbar");
+                break;
+            default:
+            case VISIBILITY_STUDIP:
+                $vis_text = _("für alle Stud.IP-Nutzer sichtbar");
                 break;
         }
         $head .= ' ('.$vis_text.')';

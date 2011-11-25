@@ -33,7 +33,6 @@ page_open(array("sess" => "Seminar_Session", "auth" => "Seminar_Default_Auth", "
 $auth->login_if(!$logout && ($auth->auth["uid"] == "nobody"));
 
 require_once('config.inc.php');
-require_once('lib/my_rss_feed.inc.php');
 require_once('lib/kategorien.inc.php');
 require_once('lib/msg.inc.php');
 require_once('lib/messaging.inc.php');
@@ -303,14 +302,23 @@ if (check_ticket($studipticket)) {
     }
 
     if (Request::submitted('change_global_visibility')) {
-        $success = $my_about->change_global_visibility($global_visibility, $online, $chat, $search, $email);
-        if ($success) {
+        $success1 = $my_about->change_global_visibility($global_visibility, $online, $chat, $search, $email, $foaf_show_identity);
+        
+        //change_homepage_visibility
+        $data = array();
+        foreach(array_keys($my_about->get_homepage_elements()) as $key) {
+            if (Request::int($key) !== null) $data[$key] = Request::int($key);
+        }
+       
+
+        $success2 = $my_about->change_homepage_visibility($data);
+        if ($success1 || $success2) {
             $my_about->msg .= 'msg§'._('Ihre Sichtbarkeitseinstellungen wurden gespeichert.');
         } else {
             $my_about->msg .= 'error§'._('Ihre Sichtbarkeitseinstellungen wurden nicht gespeichert!');
         }
     }
-
+    
     if (Request::submitted('set_default_homepage_visibility')) {
         if (Request::get('default_homepage_visibility')) {
             $success = $my_about->set_default_homepage_visibility(
@@ -341,18 +349,6 @@ if (check_ticket($studipticket)) {
         }
     }
 
-    if (Request::submitted('change_homepage_visibility')) {
-        $data = array();
-        foreach(array_keys($my_about->get_homepage_elements()) as $key) {
-            if (Request::int($key) !== null) $data[$key] = Request::int($key);
-        }
-        $success = $my_about->change_homepage_visibility($data);
-        if ($success) {
-            $my_about->msg .= 'msg§'._('Die Sichtbarkeit der Profilelemente wurde gespeichert.');
-        } else {
-            $my_about->msg .= 'error§'._('Die Sichtbarkeitseinstellungen der Profilelemente wurden nicht gespeichert!');
-        }
-    }
 
     // Needed for QuickSearch to function without JavaScript.
     if (Request::get('deputy_id_parameter')) {
@@ -522,13 +518,6 @@ switch($view) {
         Navigation::activateItem('/links/settings/messaging');
         PageLayout::setTabNavigation('/links/settings');
         SkipLinks::addIndex(_("Einstellungen des Nachrichtensystems anpassen"), 'main_content', 100);
-        break;
-    case "rss":
-        PageLayout::setHelpKeyword("Basis.MyStudIPRSS");
-        PageLayout::setTitle(_("Einstellungen der RSS-Anzeige anpassen"));
-        Navigation::activateItem('/links/settings/rss');
-        PageLayout::setTabNavigation('/links/settings');
-        SkipLinks::addIndex(_("Einstellungen der RSS-Anzeige anpassen"), 'main_content', 100);
         break;
     case "allgemein":
         PageLayout::setTitle(_("Allgemeine Einstellungen anpassen"));
@@ -1431,15 +1420,6 @@ if ($view == "Sonstiges") {
 }
 
 // Ab hier die Views der MyStudip-Sektion
-
-if ($view=="rss") {
-        if ($rss=="create_rss") create_rss();
-        if ($rss=="delete_rss") delete_rss($rss_id);
-        if ($rss=="update_rss") update_rss();
-        if ($rss=="order_rss") order_rss($cat_id,$direction,$username);
-        print_rss($username);
-}
-
 
 if($view == "allgemein") {
     require_once('lib/mystudip.inc.php');

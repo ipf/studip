@@ -100,7 +100,7 @@ function callback_cmp_newsarray($a, $b) {
 }
 
 ?>
-<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<table id="layout_table" cellspacing="0" cellpadding="0">
 <?
 
 if ($perm->have_perm("admin"))  {

@@ -827,12 +827,16 @@ if (is_array($admin_admission_data["studg"]) && $admin_admission_data["admission
             </td>
             <td class="<? echo $cssSw->getClass() ?>"  colspan=2 align="left">
                 <font size=-1><b><?=_("Anmeldeverfahren:")?></b><br></font>
-                <? if (($admin_admission_data["admission_type_org"] && $admin_admission_data["admission_type_org"] != 3) && (!$perm->have_perm("admin"))) {
-                    $db->query("SELECT username, ". $_fullname_sql['full'] . "  as fullname FROM user_inst LEFT JOIN auth_user_md5 USING (user_id) LEFT JOIN user_info USING(user_id) WHERE institut_id ='".$admin_admission_data["heimat_inst_id"]."' AND perms = 'admin'");
+                
+                <? 
+                    $admission_type_name = get_admission_description('admission_type', $admin_admission_data["admission_type_org"]);
+
+                    if (($admin_admission_data["admission_type_org"] && $admin_admission_data["admission_type_org"] != 3) && (!$perm->have_perm("admin"))) {
+                    $db->query("SELECT username, ". $_fullname_sql['full'] . "  as fullname FROM user_inst LEFT JOIN auth_user_md5 USING (user_id) LEFT JOIN user_info USING(user_id) WHERE institut_id ='".$admin_admission_data["heimat_inst_id"]."' AND perms = 'admin' ORDER BY Nachname, Vorname ASC");
                     if  (!$db->num_rows())
-                        printf ("<font size=-1>"._("Sie haben ein Anmeldeverfahren aktiviert. Dieser Schritt kann %s nicht %s r&uuml;ckg&auml;ngig gemacht werden! Bei Problemen wenden Sie sich bitte an eine Administratorin oder einen Administrator.")."<br></font>", "</font><font size=-1 color=\"red\"><b>", "</b></font><font size=-1>");
+                        printf ("<font size=-1>"._("Sie haben ein Anmeldeverfahren aktiviert (%s). Dieser Schritt kann %s nicht %s r&uuml;ckg&auml;ngig gemacht werden! Bei Problemen wenden Sie sich bitte an eine Administratorin oder einen Administrator.")."<br></font>", $admission_type_name, "</font><font size=-1 color=\"red\"><b>", "</b></font><font size=-1>");
                     else
-                        printf ("<font size=-1>"._("Sie haben ein Anmeldeverfahren aktiviert. Dieser Schritt kann %s nicht %s r&uuml;ckg&auml;ngig gemacht werden! Bei Problemen wenden Sie sich bitte an eineN der hier aufgef&uuml;hrten AdministratorInnen.")."<br></font>", "</font><font size=-1 color=\"red\"><b>", "</b></font><font size=-1>");
+                        printf ("<font size=-1>"._("Sie haben ein Anmeldeverfahren aktiviert (%s). Dieser Schritt kann %s nicht %s r&uuml;ckg&auml;ngig gemacht werden! Bei Problemen wenden Sie sich bitte an eineN der hier aufgef&uuml;hrten AdministratorInnen.")."<br></font>", $admission_type_name, "</font><font size=-1 color=\"red\"><b>", "</b></font><font size=-1>");
                     printf ("<input type=\"HIDDEN\" name=\"commit_no_admission_data\" value=\"TRUE\">");
                     while ($db->next_record()) {
                         echo "<li><font size=-1><a href=\"". URLHelper::getLink('about.php?username='.$db->f("username")) ."\">". htmlReady($db->f("fullname")) ."</a></font></li>";
@@ -1319,7 +1323,7 @@ if (is_array($admin_admission_data["studg"]) && $admin_admission_data["admission
                     <font size=-1><b><?=_("Warteliste:")?> </b></font><br>
 
                     <? if (!LockRules::Check($seminar_id, 'admission_disable_waitlist')) : ?>
-                        <font size=-1><?=_("Bitte aktivieren Sie diese Einstellung, wenn eine Warteliste erstellt werden soll falls die Anmeldungen die maximale Teilnehmeranzahl überschreiten:")?></font><br>
+                        <font size=-1><?=_("Bitte aktivieren Sie diese Einstellung, wenn eine Warteliste erstellt werden soll, falls die Anmeldungen die maximale Teilnehmeranzahl überschreiten:")?></font><br>
                         <? if ($num_waitlist && !$admin_admission_data["admission_disable_waitlist"]){
                             ?>
                             <font size=-1 color="red"><b><?=_("Achtung:")?></b></font>&nbsp;

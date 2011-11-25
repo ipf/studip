@@ -1102,7 +1102,7 @@ STUDIP.MultiSelect = {
             jQuery(id).attr('multiple', 'multiple').css('height', '120px');
         }
         jQuery(id).multiselect({
-            sortable: true,
+            sortable: false,
             itemName: itemName,
             draggable: true
         });
@@ -1133,7 +1133,7 @@ STUDIP.Browse = {
  * application wide setup
  * ------------------------------------------------------------------------ */
 
-jQuery(function () {
+jQuery(function () { 
     // AJAX Indicator
     STUDIP.ajax_indicator = true;
     STUDIP.URLHelper.base_url = STUDIP.ABSOLUTE_URI_STUDIP;
@@ -1755,8 +1755,8 @@ STUDIP.Forms = {
             ':email'     : 'Bitte geben Sie gültige E-Mail-Adresse ein'.toLocaleString(),
             ':number'    : 'Bitte geben Sie eine Zahl ein'.toLocaleString(),
             ':url'       : 'Bitte geben Sie eine gültige Web-Adresse ein'.toLocaleString(),
-            '[max]'      : 'Bitte geben Sie maximal $1 Zeichen ein'.toLocaleString(),
-            '[min]'      : 'Bitte geben Sie mindestens $1 Zeichen ein'.toLocaleString(),
+            '[max]'      : 'Der eingegebene Wert darf nicht größer als $1 sein'.toLocaleString(),
+            '[min]'      : 'Der eingegebene Wert darf nicht kleiner als $1 sein'.toLocaleString(),
             '[required]' : 'Dies ist ein erforderliches Feld'.toLocaleString()
         });
 
@@ -1794,7 +1794,7 @@ STUDIP.Messaging = {
             [0].submit();
             return;
         }
-        if (!jQuery("select#del_receiver [value=" + username + "]").length) {
+        if (!jQuery('select#del_receiver [value="' + username + '"]').length) {
             jQuery("select#del_receiver")
                 .append(jQuery('<option value="' + username + '">' + name + '</option>'))
                 .attr("size", jQuery(this).attr("size") + 1);
@@ -1814,6 +1814,7 @@ STUDIP.Messaging = {
 
 STUDIP.RoomRequestDialog = {
     dialog: null,
+    reloadUrlOnClose: null,
     initialize: function (url) {
         if (STUDIP.RoomRequestDialog.dialog === null) {
             jQuery.ajax({
@@ -1825,8 +1826,9 @@ STUDIP.RoomRequestDialog = {
                             show: '',
                             hide: 'scale',
                             title: data.title,
-                            draggable: false,
+                            draggable: true,
                             modal: true,
+                            resizable: false,
                             width: Math.min(1000, jQuery(window).width() - 64),
                             height: 'auto',
                             maxHeight: jQuery(window).height(),
@@ -1864,10 +1866,17 @@ STUDIP.RoomRequestDialog = {
             data: data,
             success: function (data) {
                 if (STUDIP.RoomRequestDialog.dialog !== null) {
-                    STUDIP.RoomRequestDialog.dialog.dialog('option', 'title', data.title);
-                    jQuery('#RoomRequestDialogbox').html(data.content);
-                    jQuery('#RoomRequestDialogbox').parent().zIndex(zIndex);
-                    STUDIP.RoomRequestDialog.bindevents();
+                    if (data.auto_close === true) {
+                        STUDIP.RoomRequestDialog.dialog.dialog('close');
+                        if (data.auto_reload === true && STUDIP.RoomRequestDialog.reloadUrlOnClose !== null) {
+                            document.location.replace(STUDIP.RoomRequestDialog.reloadUrlOnClose);
+                        }
+                    } else {
+                        STUDIP.RoomRequestDialog.dialog.dialog('option', 'title', data.title);
+                        jQuery('#RoomRequestDialogbox').html(data.content);
+                        jQuery('#RoomRequestDialogbox').parent().zIndex(zIndex);
+                        STUDIP.RoomRequestDialog.bindevents();
+                    }
                 }
             }
         });
@@ -1917,5 +1926,51 @@ STUDIP.CalendarDialog = {
         window.clearTimeout(STUDIP.CalendarDialog.calendarTimeout);
         jQuery('#CalendarDialog').dialog('close');
         STUDIP.CalendarDialog.calendarTimeout = null;
+    }
+};
+
+STUDIP.OldUpload = {
+    upload: false,
+    msg_window: null,
+    upload_end: function () {
+        if (STUDIP.OldUpload.upload) {
+            STUDIP.OldUpload.msg_window.close();
+        }
+        return;
+    },
+    upload_start: function (form_name) {
+        var file_name = jQuery(form_name).find("input[type=file]").val();
+        var ende, file_only;
+        if (!file_name) {
+            alert(jQuery("#upload_select_file_message").text());
+            jQuery(form_name).find("input[type=file]").focus();
+            return false;
+        }
+        
+        if (file_name.charAt(file_name.length - 1) === "\"") {
+            ende = file_name.length - 1;
+        } else {
+            ende = file_name.length;
+        }
+        var ext = file_name.substring(file_name.lastIndexOf(".") + 1, ende).toLowerCase();
+        if (file_name.lastIndexOf("/") > 0) {
+            file_only = file_name.substring(file_name.lastIndexOf("/") + 1, ende);
+        }
+        if (file_name.lastIndexOf("\\") > 0) {
+            file_only = file_name.substring(file_name.lastIndexOf("\\") + 1, ende);
+        }
+        
+        var permission = jQuery.parseJSON(jQuery("#upload_file_types").html());
+        if ((permission.allow && jQuery.inArray(ext, permission.types)) || (!permission.allow && !jQuery.inArray(ext, permission.types))) {
+            alert(jQuery("#upload_error_message_wrong_type").text());
+            jQuery(form_name).find("input[type=file]").focus();
+            return false;
+        }
+        
+        STUDIP.OldUpload.msg_window = window.open("", "messagewindow", "height=250,width=200,left=20,top=20,scrollbars=no,resizable=no,toolbar=no");
+        STUDIP.OldUpload.msg_window.document.write(jQuery("#upload_window_template").text().replace(/\:file_only/, file_only));
+
+        STUDIP.OldUpload.upload = true;
+        return true;
     }
 };

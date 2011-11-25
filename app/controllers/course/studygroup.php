@@ -153,6 +153,14 @@ class Course_StudygroupController extends AuthenticatedController {
                     );
                 }
             }
+
+            if(is_array($results_founders)) {
+                $this->flash['success'] = sizeof($results_founders) == 1 ? sprintf(_("Es wurde %s Person gefunden:"),sizeof($results_founders)) : sprintf(_("Es wurden %s Personen gefunden:"),sizeof($results_founders));
+            }
+            else {
+                $this->flash['info'] = _("Es wurden kein Personen gefunden.");
+            }
+
             $this->flash['create']                  = true;
             $this->flash['results_choose_founders'] = $results_founders;
             $this->flash['request']                 = Request::getInstance();
@@ -585,7 +593,8 @@ class Course_StudygroupController extends AuthenticatedController {
                                     . "AND seminar_user.Seminar_id IS NULL "
                                     . "AND " . get_vis_query()
                                     . " AND (username LIKE :input OR Vorname LIKE :input "
-                                    . "OR Nachname LIKE :input OR {$GLOBALS['_fullname_sql']['full_rev']} LIKE :input)",
+                                    . "OR Nachname LIKE :input OR {$GLOBALS['_fullname_sql']['full_rev']} LIKE :input) "
+                                    . "ORDER BY fullname ASC",
                                     _("Nutzer suchen"), "user_id");
         $this->rechte           = $GLOBALS['perm']->have_studip_perm("tutor", $id);
     }

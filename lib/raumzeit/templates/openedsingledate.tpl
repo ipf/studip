@@ -4,11 +4,11 @@
 <? if (!$tpl['deleted']) : ?>
 <TR>
     <TD class="printcontent" colspan="9">
-        <a name="<?=$tpl['sd_id']?>" />
+        <a name="<?=$tpl['sd_id']?>"></a>
         <TABLE cellpadding="2" cellspacing="0" border="0" width="100%">
             <TR>
-                <TD style="min-width: 40px;" align="left" valign="top" class="<?=$tpl['class']?>">
-                    <A href="<?= URLHelper::getLink('?cmd=close&open_close_id='. $tpl['sd_id'] .'#'. $tpl['sd_id']) ?>">
+                <TD style="min-width: 40px;white-space:nowrap" align="left" valign="top" class="<?=$tpl['class']?>">
+                    <A name="<?=$tpl['sd_id']?>" href="<?= URLHelper::getLink('?cmd=close&open_close_id='. $tpl['sd_id'] .'#'. $tpl['sd_id']) ?>">
                         <?= Assets::img('icons/16/blue/arr_1down.png') ?>
                     </A>
                     <? if (!$_LOCKED) : ?>
@@ -34,8 +34,8 @@
                   <?=$tpl['room']?>
                 </FONT>
                     <? if ($tpl['ausruf']) { ?>
-                    <A href="javascript:;" onClick="alert('<?=$tpl['ausruf']?>')">
-                        <?= Assets::img($tpl['symbol'], array('alt' => $tpl['ausruf'], 'align' => 'absmiddle'))?>
+                    <A href="javascript:;" onClick="alert('<?=jsReady($tpl['ausruf'], 'inline-single')?>')">
+                        <?= Assets::img($tpl['symbol'], tooltip($tpl['ausruf']))?>
                     </A>
                     <? } ?>
                 </TD>
@@ -86,7 +86,7 @@
                     <?=$GLOBALS['RESOURCES_ENABLE'] ? _("(f&uuml;hrt <em>nicht</em> zu einer Raumbuchung)"): ''?><br>
                     <? if ($GLOBALS['RESOURCES_ENABLE'] && $GLOBALS['RESOURCES_ALLOW_ROOM_REQUESTS']) { ?>
                     <?=_("Raumanfrage")?>
-                    <A onClick="STUDIP.RoomRequestDialog.initialize(this.href.replace('edit','edit_dialog'));return false;" href="<?= URLHelper::getLink('dispatch.php/course/room_requests/edit/' .$tpl['seminar_id'], $tpl['room_request'] ? array('request_id' => RoomRequest::existsByDate($tpl['sd_id'])) : array('new_room_request_type' => 'date_' . $tpl['sd_id'])) ?>">
+                    <A onClick="STUDIP.RoomRequestDialog.initialize(this.href.replace('edit','edit_dialog'));return false;" href="<?= URLHelper::getLink('dispatch.php/course/room_requests/edit/' .$tpl['seminar_id'], $tpl['room_request'] ? array('request_id' => $tpl['room_request']->getId()) : array('new_room_request_type' => 'date_' . $tpl['sd_id'])) ?>">
                         <IMG <?=($tpl['room_request']) ? makebutton('bearbeiten', 'src') : makebutton('erstellen', 'src')?> border="0" align="absmiddle">
                     </A>
                     <? if ($tpl['room_request']) { ?>

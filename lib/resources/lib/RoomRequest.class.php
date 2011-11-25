@@ -2,12 +2,12 @@
 # Lifter010: TODO
 /**
  * RoomRequest.class.php - model class for table resources_requests
-*
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
-*
+ *
  * @author      Cornelis Kater <ckater@gwdg.de>
  * @author      Till Glöggler <tgloeggl@uos.de>
  * @author      André Noack <noack@data-quest.de>
@@ -51,6 +51,24 @@ class RoomRequest extends SimpleORMap
     static function findBySql($where)
     {
         return SimpleORMap::findBySql(__CLASS__, $where);
+    }
+
+    static function findByCourse($seminar_id)
+    {
+        $db = DbManager::get();
+        return array_shift(self::findBySql("termin_id = '' AND metadate_id = '' AND seminar_id = " . $db->quote($seminar_id)));
+    }
+
+    static function findByDate($termin_id)
+    {
+        $db = DbManager::get();
+        return array_shift(self::findBySql("termin_id = " . $db->quote($termin_id)));
+    }
+
+    static function findByCycle($metadate_id)
+    {
+        $db = DbManager::get();
+        return array_shift(self::findBySql("metadate_id = " . $db->quote($metadate_id)));
     }
 
     static function existsByCourse($seminar_id, $is_open = false)
@@ -150,12 +168,12 @@ class RoomRequest extends SimpleORMap
         if ($this->category_id) {
             $db = DBManager::get();
 
-            $st = $db->prepare("SELECT b.*
+            $st = $db->prepare("SELECT b.property_id as id, b.*
                                 FROM resources_categories_properties a
                                 LEFT JOIN resources_properties b USING (property_id)
                                 WHERE requestable = 1 AND category_id = ?");
             if ($st->execute(array($this->category_id))) {
-                $available_properties = $st->fetchAll(PDO::FETCH_ASSOC);
+                $available_properties = array_map('array_shift', $st->fetchAll(PDO::FETCH_ASSOC|PDO::FETCH_GROUP));
             }
         }
         return $available_properties;
@@ -172,8 +190,9 @@ class RoomRequest extends SimpleORMap
 
     function getSeats()
     {
-        foreach ($this->properties as $val) {
-            if ($val["system"] == 2) return $val["state"];
+        $available_properties = $this->getAvailableProperties();
+        foreach ($this->properties as $key => $val) {
+            if ($available_properties[$key]["system"] == 2) return $val["state"];
         }
         return false;
     }
@@ -320,6 +339,7 @@ class RoomRequest extends SimpleORMap
 
             $i=0;
             if ($setted_properties) {
+                $available_properties = $this->getAvailableProperties();
                 foreach ($this->properties as $key => $val) {
                     if ($val) {
                         //let's create some possible wildcards
@@ -335,7 +355,7 @@ class RoomRequest extends SimpleORMap
                         } elseif (preg_match("/>/", $val["state"])) {
                             $val["state"] = trim(substr($val["state"], strpos($val["state"], "<")+1, strlen($val["state"])));
                             $linking = ">";
-                        } elseif ($val["system"] == "2") {
+                        } elseif ($available_properties[$key]["system"] == "2") {
                             $linking = ">=";
                         } else $linking = "=";
 
@@ -463,7 +483,7 @@ class RoomRequest extends SimpleORMap
         if (!$this->user_id) {
             $this->user_id = $GLOBALS['user']->id;
         }
-
+        $this->closed = (int)$this->closed;
         if ($this->resource_id || $this->getSettedPropertiesCount()) {
             if ($this->isNew() && !$this->getId()) {
                 $this->setId($this->getNewId());
@@ -543,7 +563,10 @@ class RoomRequest extends SimpleORMap
                 $requestData[] = _('Die Raumanfrage ist neu.');
             }
             $requestData[] = '';
-
+        } else {
+            $requestData[] = sprintf(_('Erstellt von: %s'), get_fullname($this->user_id));
+            $requestData[] = sprintf(_('Erstellt am: %s'), strftime('%x %H:%M', $this->mkdate));
+            $requestData[] = sprintf(_('Letzte Änderung: %s'), strftime('%x %H:%M', $this->chdate));
         }
         if ($this->resource_id) {
             $resObject = ResourceObject::Factory($this->resource_id);
