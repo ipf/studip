@@ -56,6 +56,10 @@ class ToolsNavigation extends Navigation
             $this->addSubNavigation('evaluation', $navigation);
         }
 
+        // rss feeds
+        $navigation = new Navigation(_('RSS-Feeds'), 'edit_about.php', array('view' => 'rss'));
+        $this->addSubNavigation('rss', $navigation);
+
         // literature
         if (get_config('LITERATURE_ENABLE')) {
             $navigation = new Navigation(_('Literatur'), 'admin_lit_list.php', array('_range_id' => 'self'));

@@ -720,7 +720,7 @@ function form($refresh = FALSE) {
     else if (!$refresh)
         $print.="\n<br><br>" . _("Sie haben diesen Ordner zum Upload ausgew&auml;hlt:") . "<br><br><center><table width=\"90%\" style=\"border: 1px solid #000000;\" border=0 cellpadding=2 cellspacing=3 id=\"upload_form\">";
     else
-        $print="\n<br><br>" . _("Sie haben diese Datei zum Aktualisieren ausgew&auml;hlt. Sie <b>&uuml;berschreiben</b> damit die vorhandene Datei durch eine neue Version!") . "<br><br><center><table width=\"90%\" style=\"border: 1px solid #000000;\" border=0 cellpadding=2 cellspacing=3 id=\"upload_form\">";
+        $print .= "\n<br><br>" . _("Sie haben diese Datei zum Aktualisieren ausgew&auml;hlt. Sie <b>&uuml;berschreiben</b> damit die vorhandene Datei durch eine neue Version!") . "<br><br><center><table width=\"90%\" style=\"border: 1px solid #000000;\" border=0 cellpadding=2 cellspacing=3 id=\"upload_form\">";
     $print.="\n";
     $print.="\n<tr><td class=\"steel1\" width=\"20%\"><font size=-1><b>";
 
@@ -2533,7 +2533,7 @@ function get_flash_player ($document_id, $filename, $type) {
         $flash_config .= '&amp;autoload=1';
     }
     // we need the absolute url if the player is delivered from a different base
-    $movie_url = $GLOBALS['ABSOLUTE_URI_STUDIP'] . str_replace($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'], '', GetDownloadLink($document_id, $filename, $type, 'force'));
+    $movie_url = GetDownloadLink($document_id, $filename, $type, 'force');
     $flash_object  = "\n<object type=\"application/x-shockwave-flash\" id=\"FlashPlayer\" data=\"".Assets::url()."flash/player_flv.swf\" width=\"$width\" height=\"$height\">\n";
     $flash_object .= "<param name=\"movie\" value=\"".Assets::url()."flash/player_flv.swf\">\n";
     $flash_object .= "<param name=\"FlashVars\" value=\"flv=" . urlencode($movie_url) . $flash_config . "\">\n";

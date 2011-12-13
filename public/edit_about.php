@@ -523,8 +523,7 @@ switch($view) {
     case "rss":
         PageLayout::setHelpKeyword("Basis.MyStudIPRSS");
         PageLayout::setTitle(_("Einstellungen der RSS-Anzeige anpassen"));
-        Navigation::activateItem('/links/settings/rss');
-        PageLayout::setTabNavigation('/links/settings');
+        Navigation::activateItem('/tools/rss');
         SkipLinks::addIndex(_("Einstellungen der RSS-Anzeige anpassen"), 'main_content', 100);
         break;
     case "allgemein":
