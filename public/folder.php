@@ -1069,7 +1069,7 @@ div.droppable.hover {
             print "<td id=\"folder_1\">";
 
             foreach ($result2 as $datei) {
-                if ($folder_tree->isReadable($datei['range_id'], $user->id)) {
+                if ($folder_tree->isDownloadFolder($datei['range_id'], $user->id)) {
                     display_file_line($datei,
                         $range_id,
                         $folder_system_data["open"],
