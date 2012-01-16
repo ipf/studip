@@ -1478,17 +1478,19 @@ if ($save_state_x) {
             } elseif ($resources_data["requests_working_on"][$resources_data["requests_working_pos"]]["grouping"]) {
                 $i=0;
                 foreach ($result as $key=>$val) {
-                    $resObj = ResourceObject::Factory($val["resource_id"]);
-                    if (!$val["overlap_assigns"]) {
-                        $good_msg.="<br>".sprintf(_("%s, Belegungszeit: %s"), $resObj->getFormattedLink( $assignObjects[$result_termin_id[$i]]->getBegin() ), $assignObjects[$result_termin_id[$i]]->getFormattedShortInfo());
-                    } else {
-                        $req_added_msg.="<br>".sprintf(_("%s, Belegungszeit: %s"), $resObj->getFormattedLink( $assignObjects[$result_termin_id[$i]]->getBegin() ), $assignObjects[$result_termin_id[$i]]->getFormattedShortInfo());
-                        $copyReqObj = clone $reqObj;
-                        $copyReqObj->copy();
-                        $copyReqObj->setTerminId($val["termin_id"]);
-                        $copyReqObj->store();
+                    if($val["resource_id"]) {
+                        $resObj = ResourceObject::Factory($val["resource_id"]);
+                        if (!$val["overlap_assigns"]) {
+                            $good_msg.="<br>".sprintf(_("%s, Belegungszeit: %s"), $resObj->getFormattedLink( $assignObjects[$result_termin_id[$i]]->getBegin() ), $assignObjects[$result_termin_id[$i]]->getFormattedShortInfo());
+                        } else {
+                            $req_added_msg.="<br>".sprintf(_("%s, Belegungszeit: %s"), $resObj->getFormattedLink( $assignObjects[$result_termin_id[$i]]->getBegin() ), $assignObjects[$result_termin_id[$i]]->getFormattedShortInfo());
+                            $copyReqObj = clone $reqObj;
+                            $copyReqObj->copy();
+                            $copyReqObj->setTerminId($val["termin_id"]);
+                            $copyReqObj->store();
+                        }
+                        $i++;
                     }
-                    $i++;
                 }
 
         } else {

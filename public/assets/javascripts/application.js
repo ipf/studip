@@ -1012,7 +1012,7 @@ STUDIP.MultiSelect = {
       jQuery(id).css('height', '120px');
     }
     jQuery(id).multiselect({
-      sortable: true,
+      sortable: false,
       itemName: itemName,
       draggable: true
     });
@@ -1720,7 +1720,7 @@ STUDIP.Messaging = {
         [0].submit();
       return;
     }
-    if (!jQuery("select#del_receiver [value=" + username + "]").length) {
+    if (!jQuery('select#del_receiver [value="' + username + '"]').length) {
       jQuery("select#del_receiver")
         .append($('<option value="' + username + '">' + name + '</option>'))
         .attr("size", $(this).attr("size") + 1);
