@@ -37,6 +37,7 @@ class Navigation implements IteratorAggregate
     protected $enabled;
 
     protected $image;
+    protected $active_image;
     protected $params;
     protected $subnav;
     protected $title;
@@ -170,7 +171,11 @@ class Navigation implements IteratorAggregate
      */
     public function getImage()
     {
-        return $this->image;
+        if (isset($this->active_image) && $this->isActive()) {
+            return $this->active_image;
+        } else {
+            return $this->image;
+        }
     }
 
     /**
@@ -294,7 +299,26 @@ class Navigation implements IteratorAggregate
             $options['src'] = Assets::image_path($image);
             $this->image = $options;
         } else {
-            $this->image = null;
+            $this->image = NULL;
+        }
+    }
+
+    /**
+     * Set the image for the active state of this navigation item.
+     * If no active image is set, the normal image is used for the
+     * active state. Additional HTML attributes can be passed using
+     * the $options parameter (like 'title', 'style' or 'onclick').
+     *
+     * @param string $image    path to image file
+     * @param array  $options  additional image attributes
+     */
+    public function setActiveImage($image, $options = array())
+    {
+        if (isset($image)) {
+            $options['src'] = Assets::image_path($image);
+            $this->active_image = $options;
+        } else {
+            $this->active_image = NULL;
         }
     }
 
