@@ -1923,7 +1923,7 @@ function display_folder ($folder_id, $open, $change, $move, $upload, $refresh=FA
     if ($document_count > 0)
         print "<img src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/blue/folder-full.png\" border=0>&nbsp;";
     else
-        print "<img src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/blue/folder-full.png\" border=0>&nbsp;";
+        print "<img src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/blue/folder-empty.png\" border=0>&nbsp;";
 
     //Pfeile, wenn Datei bewegt werden soll
     if ($move && ($folder_id != $move) && $folder_tree->isWritable($folder_id, $user->id) && (!$folder_tree->isFolder($move) || ($folder_tree->checkCreateFolder($folder_id, $user->id) && !$folder_tree->isExerciseFolder($folder_id, $user->id)))){
@@ -2593,7 +2593,7 @@ function get_flash_player ($document_id, $filename, $type) {
         $flash_config .= '&amp;autoload=1';
     }
     // we need the absolute url if the player is delivered from a different base
-    $movie_url = $GLOBALS['ABSOLUTE_URI_STUDIP'] . str_replace($GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP'], '', GetDownloadLink($document_id, $filename, $type, 'force'));
+    $movie_url = GetDownloadLink($document_id, $filename, $type, 'force');
     $flash_object  = "\n<object type=\"application/x-shockwave-flash\" id=\"FlashPlayer\" data=\"".Assets::url()."flash/player_flv.swf\" width=\"$width\" height=\"$height\">\n";
     $flash_object .= "<param name=\"movie\" value=\"".Assets::url()."flash/player_flv.swf\">\n";
     $flash_object .= "<param name=\"FlashVars\" value=\"flv=" . urlencode($movie_url) . $flash_config . "\">\n";
