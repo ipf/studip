@@ -107,16 +107,13 @@ class Admin_SemesterController extends AuthenticatedController
             if (Request::submitted('speichern')) {
                 $semester = array(
                     'semester_id' => $id,
-                    'name' => Request::get('name'),
-                    'description' => Request::get('description'),
+                    'name' => Request::get('name', $this->semester['name']),
+                    'description' => Request::get('description', $this->semester['description']),
                     'semester_token' => $this->semester['semester_token'],
-                    'beginn' => $this->getTimeStamp(Request::get('beginn')),
-                    'ende' => $this->getTimeStamp(Request::get('ende')),
-                    'vorles_beginn' => $this->getTimeStamp(Request::get('vorles_beginn')),
-                    'vorles_ende' => $this->getTimeStamp(Request::get('vorles_ende')),
-                    'past' => $this->semester['past'],
-                    'first_sem_week' => $this->semester['first_sem_week'],
-                    'last_sem_week' => $this->semester['last_sem_week']
+                    'beginn' => Request::get('beginn') ? $this->getTimeStamp(Request::get('beginn')) : $this->semester['beginn'],
+                    'ende' => Request::get('ende') ? $this->getTimeStamp(Request::get('ende'), '23:59:59') : $this->semester['ende'],
+                    'vorles_beginn' => Request::get('vorles_beginn') ? $this->getTimeStamp(Request::get('vorles_beginn')) : $this->semester['vorles_beginn'],
+                    'vorles_ende' => Request::get('vorles_ende') ? $this->getTimeStamp(Request::get('vorles_ende'), '23:59:59') : $this->semester['vorles_ende']
                 );
 
                 //check parameters
@@ -126,8 +123,6 @@ class Admin_SemesterController extends AuthenticatedController
                     if (SemesterData::getInstance()->updateExistingSemester($semester)) {
                         PageLayout::postMessage(MessageBox::success(_("Das Semester wurde erfolgreich gespeichert.")));
                         $this->redirect('admin/semester');
-                    } else {
-                        PageLayout::postMessage(MessageBox::error(_("Fehler bei der Speicherung Ihrer Daten. Bitte überprüfen Sie Ihre Angaben.")));
                     }
                 } else {
                     PageLayout::postMessage(MessageBox::error(_("Bitte überprüfen Sie die Zeitangaben, da sie sich mit einem anderen Semester überlappen.")));
@@ -141,9 +136,9 @@ class Admin_SemesterController extends AuthenticatedController
                 'name' => Request::get('name'),
                 'description' => Request::get('description'),
                 'beginn' => $this->getTimeStamp(Request::get('beginn')),
-                'ende' => $this->getTimeStamp(Request::get('ende')),
+                'ende' => $this->getTimeStamp(Request::get('ende'), '23:59:59'),
                 'vorles_beginn' => $this->getTimeStamp(Request::get('vorles_beginn')),
-                'vorles_ende' => $this->getTimeStamp(Request::get('vorles_ende')),
+                'vorles_ende' => $this->getTimeStamp(Request::get('vorles_ende'), '23:59:59'),
             );
 
             //check parameters
@@ -181,7 +176,7 @@ class Admin_SemesterController extends AuthenticatedController
                     'name' => Request::get('name'),
                     'description' => Request::get('description'),
                     'beginn' => $this->getTimeStamp(Request::get('beginn')),
-                    'ende' => $this->getTimeStamp(Request::get('ende'))
+                    'ende' => $this->getTimeStamp(Request::get('ende'), '23:59:59')
                 );
 
                 if($holiday['beginn'] == false || $holiday['ende'] == false
@@ -198,11 +193,11 @@ class Admin_SemesterController extends AuthenticatedController
                         $details[] = _("Bitte geben Sie einen Namen ein.");
                     }
                     if ($holiday['beginn'] > $holiday['ende']) {
-                        $details[] = _("Das Ferienende leigt vor dem Beginn.");
+                        $details[] = _("Das Ferienende liegt vor dem Beginn.");
                     }
                     PageLayout::postMessage(MessageBox::error(_("Ihre eingegeben Daten sind ungültig."), $details));
                     $this->holiday = $holiday;
-                } elseif (HolidayData::getInstance()->updateExistingHoliday($holiday)) {
+                } elseif ($holiday != $this->holiday && HolidayData::getInstance()->updateExistingHoliday(array_map('addslashes', $holiday))) {
                     PageLayout::postMessage(MessageBox::success(_("Die Ferien wurden erfolgreich gespeichert.")));
                     $this->redirect('admin/semester');
                 }
@@ -215,7 +210,7 @@ class Admin_SemesterController extends AuthenticatedController
                 'name' => Request::get('name'),
                 'description' => Request::get('description'),
                 'beginn' => $this->getTimeStamp(Request::get('beginn')),
-                'ende' => $this->getTimeStamp(Request::get('ende'))
+                'ende' => $this->getTimeStamp(Request::get('ende'), '23:59:59')
             );
 
             if($this->holiday['beginn'] == false || $this->holiday['ende'] == false
@@ -235,7 +230,7 @@ class Admin_SemesterController extends AuthenticatedController
                     $details[] = _("Das Ferienende leigt vor dem Beginn.");
                 }
                 PageLayout::postMessage(MessageBox::error(_("Ihre eingegeben Daten sind ungültig."), $details));
-            } elseif (HolidayData::getInstance()->insertNewHoliday($this->holiday)) {
+            } elseif (HolidayData::getInstance()->insertNewHoliday(array_map('addslashes', $this->holiday))) {
                 PageLayout::postMessage(MessageBox::success(_("Die Ferien wurden erfolgreich gespeichert.")));
                 $this->redirect('admin/semester');
             }
@@ -292,12 +287,12 @@ class Admin_SemesterController extends AuthenticatedController
      * @param string $date
      * @return timestamp or false
      */
-    private function getTimeStamp($date)
+    private function getTimeStamp($date, $time = '')
     {
         if (!empty($date)) {
             $date_array = explode('.', $date);
             if (checkdate($date_array[1], $date_array[0], $date_array[2])) {
-                return strtotime($date);
+                return strtotime($date . ' ' . $time);
             }
         }
         return false;
@@ -329,6 +324,10 @@ class Admin_SemesterController extends AuthenticatedController
                     ),
                     array(
                         "text" => _("Die Daten müssen im Format tt.mm.jjjj eingegeben werden."),
+                        "icon" => "icons/16/black/info.png"
+                    ),
+                    array(
+                        "text" => _("Das Startdatum kann nur bei Semestern geändert werden, in denen keine Veranstaltungen liegen!"),
                         "icon" => "icons/16/black/info.png"
                     )
                 )
