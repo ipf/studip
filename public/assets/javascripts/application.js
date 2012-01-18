@@ -1953,6 +1953,7 @@ STUDIP.OldUpload = {
             ende = file_name.length;
         }
         var ext = file_name.substring(file_name.lastIndexOf(".") + 1, ende).toLowerCase();
+        file_only = file_name;
         if (file_name.lastIndexOf("/") > 0) {
             file_only = file_name.substring(file_name.lastIndexOf("/") + 1, ende);
         }
@@ -1961,7 +1962,7 @@ STUDIP.OldUpload = {
         }
         
         var permission = jQuery.parseJSON(jQuery("#upload_file_types").html());
-        if ((permission.allow && jQuery.inArray(ext, permission.types)) || (!permission.allow && !jQuery.inArray(ext, permission.types))) {
+        if ((permission.allow && jQuery.inArray(ext, permission.types) === -1) || (!permission.allow && jQuery.inArray(ext, permission.types) !== -1)) {
             alert(jQuery("#upload_error_message_wrong_type").text());
             jQuery(form_name).find("input[type=file]").focus();
             return false;
