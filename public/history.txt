@@ -2,7 +2,6 @@ __17.01.2012 v 2.2__
 - Raumanfragen für einzelne regelmäßige Zeiten
 - Adminseiten um Möglichkeit zum Blättern durch Veranstaltungen erweitern
 - Labels für Dozenten und Tutoren einer Veranstaltung
-- Mehrsprachige u. mehrere Veranstalltungstitel
 - Verwendung von underscore.js
 - Teilnehmeransicht in Veranstaltungen für Dozent/-innen
 - Erweiterung des Kalenders um optionale Gruppenkalender-Funktionen
