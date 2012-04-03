@@ -121,7 +121,7 @@ function PrintAktualStatusgruppen ($roles) {
         echo '</font></td><td width="10%" class="steel" valign="bottom" align="right" nowrap>';
 
         if ((CheckUserStatusgruppe($role_id, $user->id) || $rechte) && ($folder_id = CheckStatusgruppeFolder($role_id)) ){
-            echo "<a href=\"".URLHelper::getLink("folder.php?cmd=tree&open=$folder_id#anker")."\"><img border=\"0\" src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/black/files.png\" ".tooltip(_("Dateiordner vorhanden"))."></a>&nbsp;";
+            echo "<a href=\"".URLHelper::getLink("folder.php?cmd=tree&open=$folder_id#anker")."\"><img border=\"0\" src=\"".$GLOBALS['ASSETS_URL']."images/icons/16/blue/files.png\" ".tooltip(_("Dateiordner vorhanden"))."></a>&nbsp;";
         }
 
         if ($rechte || CheckUserStatusgruppe($role_id, $user->id)) {  // nicht alle duerfen Gruppenmails/Gruppensms verschicken
@@ -192,8 +192,8 @@ function PrintNonMembers ($range_id)
     $db=new DB_Seminar;
     $query = "SELECT seminar_user.user_id, username, " . $_fullname_sql['full'] ." AS fullname, perms, seminar_user.visible FROM seminar_user  LEFT JOIN auth_user_md5 USING(user_id) LEFT JOIN user_info USING (user_id) WHERE Seminar_id = '$range_id' ORDER BY Nachname ASC";
     $db->query ($query);
-    $nicht_zugeordnet = ($db->num_rows() - sizeof($bereitszugeordnet) - 1);
-    if ($db->num_rows() >sizeof($bereitszugeordnet)-1) { // there are non-grouped members
+    $nicht_zugeordnet = ($db->num_rows() - sizeof($bereitszugeordnet));
+    if ($db->num_rows() > sizeof($bereitszugeordnet)) { // there are non-grouped members
         echo "<table width=\"99%\" cellpadding=\"0\" cellspacing=\"0\" align=\"center\" border=\"0\"><tr>";
         echo "<td width=\"100%\" colspan=\"2\" class=\"steel\" style=\"height: 25px\"><font size=\"-1\">";
         if (Request::option('toggle_group') == 'non_members') {
@@ -335,14 +335,6 @@ if ($rechte) {
     #$link_mail_all = $adr_all ? "<a href=\"mailto:".$adr_all."?subject=".rawurlencode($SessSemName[0])."\">" : NULL;
     #$link_mail_prelim = $adr_prelim ?  "<a href=\"mailto:".$adr_prelim."?subject=".rawurlencode($SessSemName[0])."\">" : NULL;
     #$link_mail_waiting = $adr_waiting ? "<a href=\"mailto:".$adr_waiting."?subject=".rawurlencode($SessSemName[0])."\">" : NULL;
-    $infobox[1]["eintrag"][] = array (  "icon" => "icons/16/black/admin.png",
-        "text"  => sprintf(_("Um Gruppen anzulegen und ihnen Personen zuzuordnen nutzen Sie %sFunktionen / Gruppen verwalten%s."), "<a href=\"".URLHelper::getLink("admin_statusgruppe.php?view=statusgruppe_sem&new_sem=TRUE&range_id=$SessSemName[1]")."\">", "</a>")
-        );
-    if ($anzahltext > 0) {
-        $infobox[1]["eintrag"][] = array (  "icon" => "icons/16/blue/move_right/mail.png" ,
-            "text"  => _("Mit dem erweiterten Briefsymbol können Sie eine E-Mail an alle Gruppenmitglieder verschicken.")
-            );
-    }
     if ($link_mail_all) {
         $infobox[1]["eintrag"][] = array (  "icon" => "icons/16/black/mail.png" ,
             "text"  => sprintf(_("Um eine E-Mail an alle TeilnehmerInnen der Veranstaltung zu versenden, klicken Sie %shier%s."), $link_mail_all, "</a>")
@@ -360,10 +352,10 @@ if ($rechte) {
     }
     if (get_config('EXPORT_ENABLE') && $perm->have_studip_perm("tutor", $SessSemName[1])) {
         include_once($PATH_EXPORT . "/export_linking_func.inc.php");
-        $infobox[1]["eintrag"][] = array (  "icon" => "icons/16/blue/file-text.png" ,
+        $infobox[1]["eintrag"][] = array (  "icon" => "icons/16/black/file-text.png" ,
             "text"  => export_link($SessSemName[1], "person", _("Gruppenliste") .' ' . $SessSemName[0], "rtf", "rtf-gruppen", "status",  _("Gruppen exportieren als rtf Dokument"), 'passthrough')
             );
-        $infobox[1]["eintrag"][] = array (  "icon" => "icons/16/blue/file-xls.png" ,
+        $infobox[1]["eintrag"][] = array (  "icon" => "icons/16/black/file-xls.png" ,
             "text"  => export_link($SessSemName[1], "person", _("Gruppenliste") .' ' . $SessSemName[0], "csv", "csv-gruppen", "status",  _("Gruppen exportieren als csv Dokument"), 'passthrough')
             );
     }
