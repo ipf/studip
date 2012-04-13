@@ -402,18 +402,6 @@ if (($seminar_id) && (!$uebernehmen_x) &&(!$adm_null_x) &&(!$adm_los_x) &&(!$adm
             }
         }
 
-        //Datum fuer Ende der Anmeldung umwandeln. Checken muessen wir es auch leider direkt hier, da wir es sonst nicht umwandeln duerfen
-        if (!$commit_no_admission_data) { //wenn Ansicht gesperrt ist (Dozentenview) hier keine Ubernahmen
-
-            if (!check_and_set_date($adm_tag, $adm_monat, $adm_jahr, $adm_stunde, $adm_minute, $admin_admission_data, "admission_endtime")) {
-                if ($admin_admission_data["admission_type"] == 1) {
-                    $errormsg=$errormsg."error§"._("Bitte geben Sie g&uuml;ltige Zeiten f&uuml;r das Losdatum ein!")."§";
-                } else {
-                    $errormsg=$errormsg."error§"._("Bitte geben Sie g&uuml;ltige Zeiten f&uuml;r das Enddatum der Kontingentierung ein!")."§";
-                }
-            }
-        }
-
     }
 
     //Studiengang hinzufuegen
@@ -505,7 +493,15 @@ if (($seminar_id) && (!$uebernehmen_x) &&(!$adm_null_x) &&(!$adm_los_x) &&(!$adm
         }
 
         //Ende der Anmeldung checken
-        if ($uebernehmen_x && (!$admin_admission_data["admission_type_org"] || $perm->have_perm("admin")) )
+        if ($uebernehmen_x && (!in_array($admin_admission_data["admission_type_org"], array(1,2)) || $perm->have_perm("admin")) ) {
+            if (!check_and_set_date($adm_tag, $adm_monat, $adm_jahr, $adm_stunde, $adm_minute, $admin_admission_data, "admission_endtime") || !$admin_admission_data["admission_endtime"]) {
+                $admin_admission_data["admission_endtime"] = -1;
+                if ($admin_admission_data["admission_type"] == 1) {
+                    $errormsg=$errormsg."error§"._("Bitte geben Sie g&uuml;ltige Zeiten f&uuml;r das Losdatum ein!")."§";
+                } else {
+                    $errormsg=$errormsg."error§"._("Bitte geben Sie g&uuml;ltige Zeiten f&uuml;r das Enddatum der Kontingentierung ein!")."§";
+                }
+            }
             if (($admin_admission_data["admission_type"]) && ($admin_admission_data["admission_endtime"]) && ($admin_admission_data["admission_type"]!=3)) {
                 if ($admin_admission_data["admission_type"] == 1)
                     $end_date_name=_("Losdatum");
@@ -541,6 +537,7 @@ if (($seminar_id) && (!$uebernehmen_x) &&(!$adm_null_x) &&(!$adm_los_x) &&(!$adm
                     }
                 }
             }
+    }
     }
 
     //Meldung beim Wechseln des Modis
@@ -827,8 +824,8 @@ if (is_array($admin_admission_data["studg"]) && $admin_admission_data["admission
             </td>
             <td class="<? echo $cssSw->getClass() ?>"  colspan=2 align="left">
                 <font size=-1><b><?=_("Anmeldeverfahren:")?></b><br></font>
-                
-                <? 
+
+                <?
                     $admission_type_name = get_admission_description('admission_type', $admin_admission_data["admission_type_org"]);
 
                     if (($admin_admission_data["admission_type_org"] && $admin_admission_data["admission_type_org"] != 3) && (!$perm->have_perm("admin"))) {
@@ -1166,7 +1163,7 @@ if (is_array($admin_admission_data["studg"]) && $admin_admission_data["admission
                             </td>
                         </tr>
                         <tr>
-                        <?if (!LockRules::Check($seminar_id, 'admission_studiengang') && !$admin_admission_data['admission_selection_take_place'] && (!$admin_admission_data["admission_type_org"] || $perm->have_perm("admin"))){
+                        <?if (!LockRules::Check($seminar_id, 'admission_studiengang') && !$admin_admission_data['admission_selection_take_place'] && (!in_array($admin_admission_data["admission_type_org"], array(1,2)) || $perm->have_perm("admin"))){
                             ?><td class="<? echo $cssSw->getClass() ?>" colspan="2" >
                             <input style="vertical-align:middle;" type="checkbox" name="admission_enable_quota" <?=($admin_admission_data["admission_enable_quota"] ? 'checked' : '')?> value="1">
                                 <font size=-1><?=_("Prozentuale Kontingentierung aktivieren.")?></font>
@@ -1202,7 +1199,7 @@ if (is_array($admin_admission_data["studg"]) && $admin_admission_data["admission
                                 foreach ($admin_admission_data["studg"] as $key=>$val) {
                             ?>
                             <tr>
-                                <td class="<? echo $cssSw->getClass() ?>" >
+                                <td class="<? echo $cssSw->getClass() ?>" nowrap>
                                 <font size=-1>
                                 <?
                                 echo (htmlReady(my_substr($val["name"], 0, 40)));
@@ -1214,7 +1211,7 @@ if (is_array($admin_admission_data["studg"]) && $admin_admission_data["admission
                                 <input type="hidden" name="studg_name[]" value="<? echo $val["name"] ?>">
                                 <?
                                 if($admin_admission_data["admission_enable_quota"]){
-                                    if (LockRules::Check($seminar_id, 'admission_studiengang') || $val['count'] > 0 || ($admin_admission_data["admission_type_org"] && !$perm->have_perm("admin"))) {
+                                    if (LockRules::Check($seminar_id, 'admission_studiengang') || $val['count'] > 0 || (in_array($admin_admission_data["admission_type_org"], array(1,2)) && !$perm->have_perm("admin"))) {
                                         printf ("&nbsp; &nbsp; <font size=-1>%s %% (%s Teilnehmer)</font>", $val["ratio"], $num_stg[$key]);
                                         if ($val['count'] > 0) {
                                             echo ' <font size=-1>'.sprintf(_("(%s Einträge vorhanden)"), $val['count']) . '</font>';
@@ -1224,7 +1221,7 @@ if (is_array($admin_admission_data["studg"]) && $admin_admission_data["admission
                                         printf ("<input type=\"TEXT\" name=\"studg_ratio[]\" size=5 maxlength=5 value=\"%s\"><font size=-1> %% (%s Teilnehmer)</font>", $val["ratio"], $num_stg[$key]);
                                         echo '<input type="image" name="delete_studg['. $key .']" src="'. Assets::image_path('icons/16/blue/trash.png') .'" '. tooltip(_("Den Studiengang aus der Liste löschen")) .'>';
                                     }
-                                } elseif (!LockRules::Check($seminar_id, 'admission_studiengang') && (!($admin_admission_data["admission_type_org"] && !$perm->have_perm("admin")))) {
+                                } elseif (!LockRules::Check($seminar_id, 'admission_studiengang') && (!(in_array($admin_admission_data["admission_type_org"], array(1,2)) && !$perm->have_perm("admin")))) {
                                     if ($val['count'] == 0) {
                                         echo '<input type="image" name="delete_studg['. $key .']" src="'. Assets::image_path('icons/16/blue/trash.png') .'" '. tooltip(_("Den Studiengang aus der Liste löschen")) .'>';
                                     } else {
@@ -1245,7 +1242,7 @@ if (is_array($admin_admission_data["studg"]) && $admin_admission_data["admission
                             while($db->next_record()){
                                 $stg[] = $db->Record;
                             }
-                            if (count($stg) && !LockRules::Check($seminar_id, 'admission_studiengang') && (!$admin_admission_data["admission_type_org"] || $perm->have_perm("admin"))) {
+                            if (count($stg) && !LockRules::Check($seminar_id, 'admission_studiengang') && (!in_array($admin_admission_data["admission_type_org"], array(1,2)) || $perm->have_perm("admin"))) {
                                 ?>
                             <tr>
                                 <td class="<? echo $cssSw->getClass() ?>" >
@@ -1254,7 +1251,7 @@ if (is_array($admin_admission_data["studg"]) && $admin_admission_data["admission
                                 <option value="">-- <?=_("bitte ausw&auml;hlen")?> --</option>
                                 <?
                                 foreach($stg as $s) {
-                                    printf ("<option value=%s>%s</option>", $s["studiengang_id"], htmlReady(my_substr($s["name"], 0, 40)));
+                                    printf ("<option value=%s>%s</option>", $s["studiengang_id"], htmlReady(my_substr($s["name"], 0, 100)));
                                 }
                                 ?>
                                 </select>
@@ -1297,7 +1294,7 @@ if (is_array($admin_admission_data["studg"]) && $admin_admission_data["admission
                             <?
                         }
                         ?>
-                        <? if (LockRules::Check($seminar_id, 'admission_endtime') || $admin_admission_data['admission_selection_take_place'] || ($admin_admission_data["admission_type_org"] && !$perm->have_perm("admin"))) {
+                        <? if (LockRules::Check($seminar_id, 'admission_endtime') || $admin_admission_data['admission_selection_take_place'] || (in_array($admin_admission_data["admission_type_org"], array(1,2)) && !$perm->have_perm("admin"))) {
                             printf ("<font size=-1>%s um %s Uhr </font>", date("d.m.Y",$admin_admission_data["admission_endtime"]), date("H:i",$admin_admission_data["admission_endtime"]));
                             if($admin_admission_data['admission_selection_take_place']) {
                                 echo '<br>';
