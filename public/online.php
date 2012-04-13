@@ -121,18 +121,14 @@ if($page < 1 || $page > ceil($user_count/25)) $page = 1;
 //Slice the array to limit data
 $other_users = array_slice($others,($page-1) * 25, 25);
 
-if ($sms_msg) {
-    $msg = $sms_msg;
-    $sms_msg = '';
-    $sess->unregister('sms_msg');
-}
-
 if (GetNumberOfBuddies()) {
 
-    if ($_REQUEST['show_only_buddys']){
-		$my_messaging_settings["show_only_buddys"] = true;
-    }else{
-		$my_messaging_settings["show_only_buddys"] = false;
+    if ($_REQUEST['newmsgset'] == '' && $_REQUEST['messaging_cmd'] == 'change_view_insert'){
+		if ($_REQUEST['show_only_buddys'] == 1){
+			$my_messaging_settings["show_only_buddys"] = true;
+		}else{
+			$my_messaging_settings["show_only_buddys"] = false;
+		}
 	}
     if ($my_messaging_settings["show_only_buddys"])
         $checked = " checked";
@@ -140,8 +136,8 @@ if (GetNumberOfBuddies()) {
     $newInfoboxPart = array("kategorie" => _("Einstellung:"),
         "eintrag" => array(
             array(
-                  "text" => _("<form action=\"".$PHP_SELF."?messaging_cmd=change_view_insert\" method=\"post\"><input type=\"checkbox\" id=\"show_only_buddys\" name=\"show_only_buddys\" $checked >
-                  Nur Buddies in der &Uuml;bersicht der aktiven Benutzer anzeigen.<input type=\"hidden\" name=\"view\" value=\"Messaging\">".Button::create(_("Übernehmen"), 'newmsgset', array('messaging_cmd' => 'change_view_insert', 'titel' => _("Änderungen übernehmen")))."</form>")
+                  "text" => _("<form action=\"".$PHP_SELF."?messaging_cmd=change_view_insert\" method=\"post\"><input type=\"checkbox\" id=\"show_only_buddys\" name=\"show_only_buddys\" $checked value=\"1\">
+                  Nur Buddies in der &Uuml;bersicht der aktiven Benutzer anzeigen.".Button::create(_("Übernehmen"), 'newmsgset', array('messaging_cmd' => 'change_view_insert', 'titel' => _("Änderungen übernehmen")))."</form>")
             )
         )
     );
