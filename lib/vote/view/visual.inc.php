@@ -133,15 +133,14 @@ function createBoxFooter () {
 }
 
 function createBoxLineHeader () {
-   $html = "";
-   $html .= "<table role=\"article\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\">\n";
+   $html = '<div class="evaluation_item">' . "\n";
+   $html .= "<table width=\"100%\" role=\"article\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
    return $html;
 }
 
 function createBoxLineFooter () {
-   $html = "";
-   $html .=
-      "</table>\n";
+   $html = "</table>\n";
+   $html .= '</div>' . "\n";
    return $html;
 }
 
@@ -240,7 +239,7 @@ function createErrorReport (&$object, $errortitle = "") {
         $errors[] = $error["string"];
     }
     $html = MessageBox::error($errortitle, $errors);
-   
+
    return $html;
 }
 # ===================================================== end: public functions #
