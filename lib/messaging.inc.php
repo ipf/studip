@@ -336,7 +336,8 @@ class messaging
         $db4 = new DB_Seminar;
         $db5 = new DB_Seminar;
         $url = URLHelper::getURL();
-       if ( strpos($url,'sms_send.php')>= 0) {
+
+        if (strpos($url, 'sms_send.php') !== false) {
             $sms_data = $_SESSION['sms_data'];
         } else {
             $sms_data["tmpsavesnd"] = $my_messaging_settings["save_snd"];
@@ -367,9 +368,8 @@ class messaging
         if ($user_id != "____%system%____")  { // real-user message
 
             $snd_user_id = $user_id;
-            if ($sms_data["tmpsavesnd"] != "1") { // don't save sms in outbox
-                $set_deleted = "1";
-            }
+
+            $set_deleted = $set_deleted ?: ($sms_data['tmpsavesnd'] != '1'); // don't save sms in outbox
 
             // personal-signatur
             if ($sms_data["sig"] == "1") {
