@@ -436,21 +436,20 @@ if (($archiv_assi_data["sems"]) && (sizeof($archiv_assi_data["sem_check"]) > 0))
                         $inc_possible = TRUE;
                 }
                 if ($inc_possible) {
-                    printf("&nbsp;<a href=\"%s\">%s</a>", URLHelper::getLink("?dec=TRUE"), Button::create(_('<< Vorherige')));
+                    echo LinkButton::create(_('<< Vorherige'), URLHelper::getURL("?dec=TRUE"));
                 }
-                printf("&nbsp;<a href=\"%s\">%s</a>", URLHelper::getLink("?archive_kill=TRUE"), Button::create(_('Archivieren')));
+                echo LinkButton::create(_('Archivieren'), URLHelper::getURL("?archive_kill=TRUE"));
                 if (!$links_admin_data["sem_id"]) {
-                    echo '&nbsp;<a href="';
 
                     if ($perm->have_perm('admin')) {
-                        echo URLHelper::getLink((($SessSemName[1])
+                        $cancel_url = URLHelper::getURL((($SessSemName[1])
                             ? 'dispatch.php/course/basicdata/view/'. $SessSemName[1] .'?list=TRUE'
                             : '?list=TRUE&new_session=TRUE'));
                     } else {
-                        echo URLHelper::getLink('dispatch.php/course/management');
+                        $cancel_url = URLHelper::getURL('dispatch.php/course/management');
                     }
 
-                    echo '">' . Button::createCancel(_('Abbrechen')) . '</a>';
+                    echo LinkButton::createCancel(_('Abbrechen'), $cancel_url);
                 }
                 // can we inc?
                 if ($archiv_assi_data["pos"] < sizeof($archiv_assi_data["sems"])-1) {
@@ -460,8 +459,8 @@ if (($archiv_assi_data["sems"]) && (sizeof($archiv_assi_data["sem_check"]) > 0))
                     if ((sizeof($archiv_assi_data["sem_check"]) > 1) && ($archiv_assi_data["sem_check"][$archiv_assi_data["sems"][$archiv_assi_data["pos"] + $i]["id"]]))
                         $dec_possible = TRUE;
                 }
-                if ($dec_possible) {
-                    printf("&nbsp;<a href=\"%s\">%s</a>", URLHelper::getLink("?inc=TRUE"), Button::create(_('Nächster >>')));
+                if (!$dec_possible) {
+                    echo LinkButton::create(_('Nächster >>'), URLHelper::getURL("?inc=TRUE"));
                 }
                 if (sizeof($archiv_assi_data["sems"]) > 1)
                     printf ("<br><font size=\"-1\">" . _("noch <b>%s</b> von <b>%s</b> Veranstaltungen zum Archivieren ausgew&auml;hlt.") . "</font>", sizeof($archiv_assi_data["sem_check"]), sizeof($archiv_assi_data["sems"]));
