@@ -42,17 +42,45 @@ require_once 'lib/deputies_functions.inc.php';
 
 include 'lib/seminar_open.php'; // initialise Stud.IP-Session
 
+$sem_id = Request::option('sem_id');
 //wenn kein Seminar gesetzt und auch kein externer Aufruf raus....
-if (!isset($sem_id)) {
-    checkObject();
+if (empty($sem_id)) {
+    checkObject(); //wirft Exception, wenn $SessionSeminar leer ist
+    $sem_id = $SessionSeminar;
 }
+//Inits
+$cssSw=new cssClassSwitcher;
+$db=new DB_Seminar;
+$db2=new DB_Seminar;
+$db3=new DB_Seminar;
+$db4=new DB_Seminar;
+$info_msg = $abo_msg = $delete_msg = $back_msg = '';
+$send_from_search = Request::quoted('send_from_search');
+$send_from_search_page = Request::quoted('send_from_search_page');
+if (!preg_match('/^('.preg_quote($CANONICAL_RELATIVE_PATH_STUDIP,'/').')?([a-zA-Z0-9_-]+\.php)([a-zA-Z0-9_?&=-]*)$/', $send_from_search_page)) $send_from_search_page = '';
 
+$sem = new Seminar($sem_id);
+$modules = new Modules();
+$deputies_enabled = get_config('DEPUTIES_ENABLE');
+
+if ($SessionSeminar != $sem_id && !$sem->isVisible() && !$perm->have_perm(get_config('SEM_VISIBILITY_PERM'))) {
+    throw new AccessDeniedException(_('Diese Veranstaltung ist versteckt. Hier gibt es nichts zu sehen.'));
+}
+// redirect, if sem is a studygroup
+if ( $sem->isStudygroup() ) {
+    if ($perm->have_studip_perm('autor', $sem_id)) {    // participants may see seminar_main
+        $link = UrlHelper::getUrl('seminar_main.php?auswahl='. $sem_id);
+    } else {   // all other get a special details-page
+        $link = UrlHelper::getUrl('dispatch.php/course/studygroup/details/'. $sem_id, array('send_from_search_page' => $send_from_search_page));
+    }
+    header('Location: '. $link);
+    die;
+}
 PageLayout::setHelpKeyword("Basis.InVeranstaltungDetails");
-if ($SessSemName[1] && !isset($sem_id)) $header_object_id = $SessSemName[1];
-else $header_object_id = $sem_id;
-PageLayout::setTitle(getHeaderLine($header_object_id). " - " . _("Details"));
 
-if (($SessSemName[1] != "") && (!isset($sem_id) || $SessSemName[1] == $sem_id)) {
+PageLayout::setTitle(getHeaderLine($sem_id). " - " . _("Details"));
+
+if ($SessionSeminar == $sem_id) {
     Navigation::activateItem('/course/main/details');
     // add skip link
     SkipLinks::addIndex(Navigation::getItem('/course/main/details')->getTitle(), 'main_content', 100);
@@ -62,43 +90,6 @@ ob_start();
 // Start of Output
 include ('lib/include/html_head.inc.php'); // Output of html head
 include ('lib/include/header.php');  // Output of Stud.IP head
-
-//Inits
-$cssSw=new cssClassSwitcher;
-$db=new DB_Seminar;
-$db2=new DB_Seminar;
-$db3=new DB_Seminar;
-$db4=new DB_Seminar;
-$info_msg = $abo_msg = $delete_msg = $back_msg = '';
-$send_from_search = (int)isset($send_from_search);
-if (!preg_match('/^('.preg_quote($CANONICAL_RELATIVE_PATH_STUDIP,'/').')?([a-zA-Z0-9_-]+\.php)([a-zA-Z0-9_?&=-]*)$/', $send_from_search_page)) $send_from_search_page = '';
-
-//wenn Seminar gesetzt und kein externer Aufruf uebernahme der SessionVariable
-if (($SessSemName[1] != "") && (!isset($sem_id) || $SessSemName[1] == $sem_id)) {
-    $sem_id = $SessSemName[1];
-}
-
-$sem = new Seminar($sem_id);
-$modules = new Modules();
-#$DataFields = new DataFields($sem_id);
-
-if ($SessSemName[1] != $sem_id && !$sem->isVisible() && !$perm->have_perm(get_config('SEM_VISIBILITY_PERM'))) {
-    throw new AccessDeniedException(_('Diese Veranstaltung ist versteckt. Hier gibt es nichts zu sehen.'));
-}
-
-$deputies_enabled = get_config('DEPUTIES_ENABLE');
-
-// redirect, if sem is a studygroup
-if ( $SEM_CLASS[$SEM_TYPE[$sem->status]["class"]]["studygroup_mode"] ) {
-    ob_end_clean();
-    if ($perm->have_studip_perm('autor', $sem_id)) {    // participants may see seminar_main
-        $link = UrlHelper::getUrl('seminar_main.php?auswahl='. $sem_id);
-    } else {   // all other get a special details-page
-        $link = UrlHelper::getUrl('dispatch.php/course/studygroup/details/'. $sem_id, array('send_from_search_page' => $send_from_search_page));
-    }
-    header('Location: '. $link);
-    die;
-}
 
 //load all the data
 $db2->query("SELECT * FROM seminare WHERE Seminar_id = '$sem_id'");
@@ -406,7 +397,7 @@ echo $template_factory->render(
                                 'link' => 'about.php?username=' . $entry['username']
                             );
                         }
-                        
+
                         // set config-defined title for this status
                         $title = get_title_for_status($status, sizeof($data), $sem->getStatus()) . ':';
 
@@ -612,7 +603,7 @@ echo $template_factory->render(
                 if (is_array($sem_path) && count($sem_path)){
                     // set pluralized title if necessary
                     $title = ngettext('Studienbereich:', 'Studienbereiche:', count($sem_path));
-    
+
                     // fill data for template
                     $data = array();
                     foreach ($sem_path as $sem_tree_id => $path_name) {
@@ -657,7 +648,7 @@ echo $template_factory->render(
                     foreach ($entries as $entry) {
                         $data[] = array(
                             'name' => $entry['Name'],
-                            'link' => 'institut_main.php?auswahl=' . $entry['Institut_id'] 
+                            'link' => 'institut_main.php?auswahl=' . $entry['Institut_id']
                         );
                     }
 
