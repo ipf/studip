@@ -49,8 +49,11 @@ class Ilias3ConnectedUser extends ConnectedUser
         if($this->is_connected){
             $db = new DB_Seminar();
             $user_id = $connected_cms[$this->cms_type]->soap_client->lookupUser($this->login);
-            if($user_id == false){
-                $db->query("DELETE FROM auth_extern WHERE studip_user_id = '" . $this->studip_id . "' LIMIT 1");
+            if (!$user_id) {
+                //do not delete in case of error
+                if($user_id !== false) {
+                    $db->query("DELETE FROM auth_extern WHERE studip_user_id = '" . $this->studip_id . "' LIMIT 1");
+                }
                 $this->id = '';
                 $this->login = '';
                 $this->external_password = '';
