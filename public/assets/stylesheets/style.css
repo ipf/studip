@@ -954,13 +954,21 @@ button.button {
     border-bottom-left-radius: 0;
 }
 
-fieldset.selectbox {
-    background-color:#FFFFFF;
-    border: 1px solid;
-    padding: 5px;
-    margin: 5px;
-    max-height: 200px;
-    overflow: auto;
+/* --- StudipForm selectbox control------------------------------------------ */
+div.selectbox {
+    background-color:#ffffff;
+    border:1px solid;
+    margin-top:5px;
+    margin-bottom:5px;
+    padding:5px;
+    max-height:200px;
+    overflow:auto;
+}
+
+div.selectbox fieldset {
+    border:none;
+    margin:0px;
+    padding:0px;
 }
 
 .minor {
