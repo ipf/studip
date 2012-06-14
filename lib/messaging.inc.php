@@ -238,7 +238,7 @@ class messaging
 
         if ($snd_user_id != "____%system%____") {
             $snd_fullname = get_fullname($snd_user_id);
-            $db4->query("SELECT Email FROM auth_user_md5 WHERE user_id = '$user->id'");
+            $db4->query("SELECT Email FROM auth_user_md5 WHERE user_id = '$snd_user_id'");
             $db4->next_record();
             $reply_to = $db4->f("Email");
         }
