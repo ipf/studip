@@ -578,10 +578,10 @@ if (get_config('VOTE_ENABLE') && is_element_visible_for_user($user->id, $user_id
 // show Guestbook
 $guest = new Guestbook($user_id,$admin_darf, Request::int('guestpage', 0));
 
-if ($_REQUEST['guestbook'] && $perm->have_perm('autor'))
-    $guest->actionsGuestbook($_REQUEST['guestbook'],$_REQUEST['post'],$_REQUEST['deletepost'],$_REQUEST['studipticket']);
-
-if ($guest->active == TRUE || $guest->rights == TRUE && is_element_visible_for_user($user->id, $user_id, $visibilities['guestbook'])) {
+if (($guest->active == TRUE || $guest->rights == TRUE) && is_element_visible_for_user($user->id, $user_id, $visibilities['guestbook'])) {
+    if ($_REQUEST['guestbook'] && $perm->have_perm('autor')) {
+        $guest->actionsGuestbook($_REQUEST['guestbook'],$_REQUEST['post'],$_REQUEST['deletepost'],$_REQUEST['studipticket']);
+    }
     $guest->showGuestbook();
 }
 
