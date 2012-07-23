@@ -235,7 +235,7 @@ class EvaluationExportManagerCSV extends EvaluationExportManager {
                     WHERE parent_id = ?");
       foreach ($this->evalquestions as $evalquestion) {
           $stmt->execute(array($evalquestion->getObjectID()));
-          $answers[$evalquestion->getObjectID()] = $stmt->fetchGrouped();
+          $answers[$evalquestion->getObjectID()] = array_map('current', $stmt->fetchAll(PDO::FETCH_ASSOC|PDO::FETCH_GROUP));
       }
 
       /* One row for each user --------------------------------------------- */
