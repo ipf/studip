@@ -293,13 +293,15 @@
             <select name="new_student_inst">
                 <option selected="selected" value="none"><?= _('-- Bitte Einrichtung auswählen --') ?></option>
                 <? foreach ($available_institutes as $i) : ?>
-                <option value="<?= $i['Institut_id'] ?>"><?= htmlReady(my_substr($i['Name'], 0, 50)) ?></option>
+                    <? if (!isset($institutes[$i['Institut_id']])) : ?>
+                    <option style="<?= $i['is_fak'] ? 'font-weight:bold;' : 'padding-left:10px;' ?>" value="<?= $i['Institut_id'] ?>"><?= htmlReady(my_substr($i['Name'], 0, 70)) ?></option>
+                    <? endif ?>
                 <? endforeach ?>
             </select>
         </td>
     </tr>
     <? if (count($student_institutes) > 0) : ?>
-    <? foreach ($student_institutes as $i => $institute) : ?>
+    <? foreach (array_values($student_institutes) as $i => $institute) : ?>
     <tr class="<?= TextHelper::cycle('cycle_odd', 'cycle_even') ?>">
         <td>
             <?= $i+1 ?>. <?= _('Einrichtung')?>
@@ -308,9 +310,11 @@
             <?= htmlReady($institute['Name']) ?>
         </td>
         <td align="right">
+            <? if ($GLOBALS['perm']->have_studip_perm("admin", $institute['Institut_id'])) : ?>
             <a href="<?= $controller->url_for('admin/user/delete_institute/' . $user['user_id'] . '/' . $institute['Institut_id']) ?>">
                 <?= Assets::img('icons/16/blue/trash.png', array('class' => 'text-top', 'title' => _('Diese Einrichtung löschen'))) ?>
             </a>
+            <? endif ?>
         </td>
     </tr>
     <? endforeach ?>
@@ -333,13 +337,18 @@
             <select name="new_inst">
                 <option selected="selected" value="none"><?= _('-- Bitte Einrichtung auswählen --') ?></option>
                 <? foreach ($available_institutes as $i) : ?>
-                <option value="<?= $i['Institut_id'] ?>"><?= htmlReady(my_substr($i['Name'], 0, 50)) ?></option>
+                    <? if (!isset($institutes[$i['Institut_id']])
+                     && (!($i['is_fak'] && $user['perms'] == 'admin') || $GLOBALS['perm']->have_perm('root'))) : ?>
+                    <option style="<?= $i['is_fak'] ? 'font-weight:bold;' : 'padding-left:10px;' ?>" value="<?= $i['Institut_id'] ?>"><?= htmlReady(my_substr($i['Name'], 0, 70)) ?></option>
+                    <? else : ?>
+                    <option style="text-decoration: line-through; <?= $i['is_fak'] ? 'font-weight:bold;' : 'padding-left:10px;' ?>" value="none"><?= htmlReady(my_substr($i['Name'], 0, 70)) ?></option>
+                    <? endif ?>
                 <? endforeach ?>
             </select>
         </td>
     </tr>
     <? if (count($institutes) > 0) : ?>
-    <? foreach ($institutes as $i => $institute) : ?>
+    <? foreach (array_values($institutes) as $i => $institute) : ?>
     <tr class="<?= TextHelper::cycle('cycle_odd', 'cycle_even') ?>">
         <td>
             <?= $i+1 ?>. <?= _('Einrichtung')?>
@@ -348,12 +357,14 @@
             <?= htmlReady($institute['Name']) ?>
         </td>
         <td align="right">
+            <? if ($GLOBALS['perm']->have_studip_perm("admin", $institute['Institut_id'])) : ?>
             <a class="load-in-new-row" href="<?= $controller->url_for('admin/user/edit_institute/' . $user['user_id'] . '/' . $institute['Institut_id']) ?>">
                 <?= Assets::img('icons/16/blue/edit.png', array('class' => 'text-top', 'title' => _('Diese Einrichtung bearbeiten'))) ?>
             </a>
             <a href="<?= $controller->url_for('admin/user/delete_institute/' . $user['user_id'] . '/' . $institute['Institut_id']) ?>">
                 <?= Assets::img('icons/16/blue/trash.png', array('class' => 'text-top', 'title' => _('Diese Einrichtung löschen'))) ?>
             </a>
+            <? endif ?>
         </td>
     </tr>
     <? endforeach ?>
@@ -473,26 +484,29 @@ $paktionen[] = array(
 $paktionen[] = array(
     "text" => '<a href="' .URLHelper::getLink('sms_send.php?rec_uname=' . $user['username']) .'">' . _('Nachricht an Benutzer verschicken') .'</a>',
     "icon" => "icons/16/black/mail.png");
-$paktionen[] = array(
-    "text" => '<a href="' .URLHelper::getLink('user_activities.php?username=' . $user['username']) . '">' . _('Datei- und Aktivitätsübersicht') .'</a>',
-    "icon" => "icons/16/black/vcard.png");
-if ($GLOBALS['LOG_ENABLE']) {
+if ($GLOBALS['perm']->have_perm('root')) {
     $paktionen[] = array(
+        "text" => '<a href="' .URLHelper::getLink('user_activities.php?username=' . $user['username']) . '">' . _('Datei- und Aktivitätsübersicht') .'</a>',
+        "icon" => "icons/16/black/vcard.png");
+    if ($GLOBALS['LOG_ENABLE']) {
+        $paktionen[] = array(
         "text" => '<a href="' . URLHelper::getLink('dispatch.php/event_log/show?search=' . $user['username'] .'&type=user&object_id=' .$user['user_id']) . '">' . _('Benutzereinträge im Log') . '</a>',
         "icon" => "icons/16/black/log.png");
+    }
 }
 if ($user['locked']) {
     $paktionen[] = array(
         "text" => '<a href="' . $controller->url_for('admin/user/unlock/' . $user['user_id'] . '') . '">' . _('Benutzer entsperren') . '</a>',
         "icon" => "icons/16/black/lock-unlocked.png");
 }
-$paktionen[] = array(
-    "text" => '<a href="' . $controller->url_for('admin/user/change_password/' . $user['user_id'] . '') . '">' . _('Neues Passwort setzen') . '</a>',
-    "icon" => "icons/16/black/lock-locked.png");
-$paktionen[] = array(
-    "text" => '<a href="' . $controller->url_for('admin/user/delete/' . $user['user_id'] . '/edit') . '">' . _('Benutzer löschen') . '</a>',
-    "icon" => "icons/16/black/trash.png");
-
+if ($GLOBALS['perm']->have_perm('root') || $GLOBALS['perm']->is_fak_admin() || !in_array($user['perms'], words('root admin'))) {
+    $paktionen[] = array(
+        "text" => '<a href="' . $controller->url_for('admin/user/change_password/' . $user['user_id'] . '') . '">' . _('Neues Passwort setzen') . '</a>',
+        "icon" => "icons/16/black/lock-locked.png");
+    $paktionen[] = array(
+        "text" => '<a href="' . $controller->url_for('admin/user/delete/' . $user['user_id'] . '/edit') . '">' . _('Benutzer löschen') . '</a>',
+        "icon" => "icons/16/black/trash.png");
+}
 $infobox = array(
     'picture' => 'infobox/board1.jpg',
     'content' => array(

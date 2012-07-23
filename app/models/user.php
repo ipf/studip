@@ -89,7 +89,7 @@ class UserModel
      */
     public static function getUserInstitute($user_id, $as_student = false)
     {
-        $sql = "SELECT ui.*, i.Name FROM Institute AS i "
+        $sql = "SELECT i.Institut_id, i.Name, ui.* FROM Institute AS i "
              . "LEFT JOIN user_inst AS ui ON i.Institut_id = ui.Institut_id "
              . "WHERE user_id=?";
         if ($as_student) {
@@ -97,10 +97,10 @@ class UserModel
         } else {
              $sql .= " AND inst_perms <> 'user'";
         }
-
+        $sql .= " ORDER BY Name";
         $db = DBManager::get()->prepare($sql);
         $db->execute(array($user_id));
-        return $db->fetchAll(PDO::FETCH_ASSOC);
+        return array_map('current', $db->fetchAll(PDO::FETCH_ASSOC|PDO::FETCH_GROUP));
     }
 
     /**
@@ -455,11 +455,13 @@ class UserModel
      */
     public static function getAvailableInstitutes($user_id)
     {
-        $sql = "SELECT a.Institut_id, a.Name FROM Institute AS a LEFT JOIN user_inst "
-             . "AS b ON (b.user_id=? AND a.Institut_id=b.Institut_id) "
-             . "WHERE b.Institut_id IS NULL ORDER BY a.Name";
+        $sql = "SELECT a.Institut_id, a.Name " .
+               "FROM Institute AS a " .
+                   "LEFT JOIN user_inst AS b ON (b.user_id=? AND a.Institut_id=b.Institut_id) " .
+                   (!$GLOBALS['perm']->have_perm("root") ? "INNER JOIN user_inst AS p ON (p.Institut_id = a.Institut_id AND p.user_id = ? AND p.inst_perms = 'admin') " : "") .
+               "WHERE b.Institut_id IS NULL ORDER BY a.Name ";
         $db = DBManager::get()->prepare($sql);
-        $db->execute(array($user_id));
+        $db->execute(array($user_id, ($GLOBALS['perm']->have_perm("root") ? null : $GLOBALS['user']->id)));
         return $db->fetchAll(PDO::FETCH_ASSOC);
     }
 
