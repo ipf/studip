@@ -616,7 +616,7 @@ class UserManagement
                 $this->msg .= "error§" . _("Sie haben keine Berechtigung <em>Root-Accounts</em> zu l&ouml;schen.") . "§";
                 return FALSE;
             }
-            if ($perm->is_fak_admin() && $this->user_data['auth_user_md5.perms'] == "admin"){
+            if ($this->user_data['auth_user_md5.perms'] == "admin") {
                 $this->db->query("SELECT IF(count(a.Institut_id) - count(c.inst_perms),0,1) AS admin_ok FROM user_inst AS a
                             LEFT JOIN Institute b ON (a.Institut_id=b.Institut_id AND b.Institut_id!=b.fakultaets_id)
                             LEFT JOIN user_inst AS c ON(b.fakultaets_id=c.Institut_id AND c.user_id = '" . $auth->auth["uid"] . "' AND c.inst_perms='admin')
