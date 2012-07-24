@@ -518,19 +518,16 @@ if ($form == 3)
         }
         //Alle eingegebenen Turnus-Daten in Sessionvariable uebernehmen
         for ($i=0; $i<$sem_create_data["turnus_count"]; $i++) {
-            $sem_create_data["term_turnus_date"][$i]=$term_turnus_date[$i];
-            $sem_create_data["term_turnus_start_stunde"][$i] = (strlen($term_turnus_start_stunde[$i]))? intval($term_turnus_start_stunde[$i]) : '';
-            $sem_create_data["term_turnus_start_minute"][$i] = (strlen($term_turnus_start_minute[$i]))? intval($term_turnus_start_minute[$i]) : '';
-            $sem_create_data["term_turnus_end_stunde"][$i] = (strlen($term_turnus_end_stunde[$i]))? intval($term_turnus_end_stunde[$i]) : '';
-            $sem_create_data["term_turnus_end_minute"][$i] = (strlen($term_turnus_end_minute[$i]))? intval($term_turnus_end_minute[$i]) : '';
+            $sem_create_data["term_turnus_date"][$i]=(int)$term_turnus_date[$i];
+            $sem_create_data["term_turnus_start_stunde"][$i] = intval($term_turnus_start_stunde[$i]);
+            $sem_create_data["term_turnus_start_minute"][$i] = intval($term_turnus_start_minute[$i]);
+            $sem_create_data["term_turnus_end_stunde"][$i] = intval($term_turnus_end_stunde[$i]);
+            $sem_create_data["term_turnus_end_minute"][$i] = intval($term_turnus_end_minute[$i]);
             $sem_create_data["term_turnus_desc"][$i]=($term_turnus_desc[$i] ? $term_turnus_desc[$i] : $term_turnus_desc_chooser[$i]);
             $sem_create_data["term_turnus_week_offset"][$i] = (int)$_REQUEST['term_turnus_week_offset'][$i];
             $sem_create_data["term_turnus_cycle"][$i] = (int)$_REQUEST['term_turnus_cycle'][$i];
             $sem_create_data["term_turnus_sws"][$i] = round(str_replace(',','.',$_REQUEST['term_turnus_sws'][$i]),1);
         }
-
-        //Turnus-Metadaten-Array erzeugen
-        $sem_create_data["metadata_termin"]='';
 
         //indizierte (=sortierbares Temporaeres Array erzeugen)
         if ($sem_create_data["term_art"] == 0)
@@ -545,15 +542,14 @@ if ($form == 3)
                     if ($sem_create_data["term_turnus_start_minute"][$i] < 10)
                         $tmp_idx.="0";
                     $tmp_idx.=$sem_create_data["term_turnus_start_minute"][$i];
+                    $tmp_idx.=$sem_create_data["term_turnus_desc"][$i];
                     $tmp_metadata_termin["turnus_data"][]=array("idx"=>$tmp_idx,
                                                                 "day" => $sem_create_data["term_turnus_date"][$i],
                                                                 "start_stunde" => $sem_create_data["term_turnus_start_stunde"][$i],
                                                                 "start_minute" => $sem_create_data["term_turnus_start_minute"][$i],
                                                                 "end_stunde" => $sem_create_data["term_turnus_end_stunde"][$i],
                                                                 "end_minute" => $sem_create_data["term_turnus_end_minute"][$i],
-                                                                // they are not needed anymore, but who knows...
-                                                                "room"=>$sem_create_data["term_turnus_room"][$i],
-                                                                //"resource_id"=>$sem_create_data["term_turnus_resource_id"][$i],
+                                                                "room"=> is_array($sem_create_data["metadata_termin"]["turnus_data"]) ? $sem_create_data["metadata_termin"]["turnus_data"][$i]['room'] : '',
                                                                 "desc"=>$sem_create_data["term_turnus_desc"][$i],
                                                                 "week_offset"=>$sem_create_data["term_turnus_week_offset"][$i],
                                                                 "cycle"=>$sem_create_data["term_turnus_cycle"][$i],
@@ -561,14 +557,16 @@ if ($form == 3)
                                                                 );
                 }
 
+            $sem_create_data["metadata_termin"] = array();
             if (is_array($tmp_metadata_termin["turnus_data"])) {
                 //sortieren
-                sort ($tmp_metadata_termin["turnus_data"]);
-
-                foreach ($tmp_metadata_termin["turnus_data"] as $tmp_array)
-                    {
-                    $sem_create_data["metadata_termin"]["turnus_data"][]=$tmp_array;
-                    }
+                uasort ($tmp_metadata_termin["turnus_data"], create_function('$a,$b', 'return strcmp($a["idx"],$b["idx"]);'));
+                foreach(words('term_turnus_date term_turnus_start_stunde term_turnus_start_minute term_turnus_end_stunde term_turnus_end_minute term_turnus_desc term_turnus_week_offset term_turnus_cycle term_turnus_sws') as $k) {
+                    $sorter = array_flip(array_keys($tmp_metadata_termin["turnus_data"]));
+                    ksort($sorter);
+                    array_multisort($sorter,$sem_create_data[$k]);
+                }
+                $sem_create_data["metadata_termin"]["turnus_data"]=$tmp_metadata_termin["turnus_data"];
                 }
             }
         }
@@ -629,6 +627,7 @@ if ($form == 3)
 }
 
 if ($form == 4) {
+
     $sem_create_data["sem_room"]=$sem_room;
     //The room for the prelimary discussion
     $sem_create_data["sem_vor_raum"]=$vor_raum;
@@ -667,7 +666,7 @@ if ($form == 4) {
                 }
             }
         }
-
+    }
     if ($sem_create_data["term_art"]==0) {
         //get incoming room-data
         if (is_array($sem_create_data["metadata_termin"]["turnus_data"]))
@@ -693,7 +692,6 @@ if ($form == 4) {
                 $sem_create_data["term_room"][$i]=$resObject->getName();
             }*/
         }
-    }
     }
 }
 
@@ -1359,7 +1357,7 @@ if ($level == 4 && $RESOURCES_ENABLE && $RESOURCES_ALLOW_ROOM_REQUESTS) {
             if ($sem_create_data["term_art"] == 0) {
                 foreach ($sem_create_data['metadata_termin']['turnus_data'] as $key => $value) {
                     $cycle = new SeminarCycleDate();
-                    $cycle->weekday = $value['day'];
+                    $cycle->weekday = $value['day'] == 7 ? 0 : $value['day'];
                     $cycle->week_offset = $value['week_offset'];
                     $cycle->cycle = $value['cycle'];
                     $cycle->start_hour = $value['start_stunde'];
@@ -1679,6 +1677,9 @@ if (($form == 6) && ($jump_next_x))
                 foreach ($sem_create_data["metadata_termin"]["turnus_data"] as $key=>$val) {
                     $sem_create_data["metadata_termin"]["turnus_data"][$key]["room"] = stripslashes($sem_create_data["metadata_termin"]["turnus_data"][$key]["room"]);
                     $sem_create_data["metadata_termin"]["turnus_data"][$key]["description"] = stripslashes($sem_create_data["metadata_termin"]["turnus_data"][$key]["desc"]);
+                    if ($sem_create_data["metadata_termin"]["turnus_data"][$key]["day"] == 7) {
+                        $sem_create_data["metadata_termin"]["turnus_data"][$key]["day"] = 0;
+                    }
                     $metadate_id = $sem->metadate->addCycle($sem_create_data["metadata_termin"]["turnus_data"][$key]);
                     $temp_rooms[$metadate_id] = $sem_create_data["metadata_termin"]["turnus_data"][$key]["room"];
                     $temp_resources[$metadate_id] = $sem_create_data["metadata_termin"]["turnus_data"][$key]["resource_id"];
@@ -3081,7 +3082,7 @@ if ($level == 3) {
                                         if ($i>0) echo "<hr>\n";
                                         echo '&nbsp; <font size=-1><select name="term_turnus_date[', $i, ']">';
                                         $ttd = (empty($sem_create_data["term_turnus_date"][$i]))? 1 : $sem_create_data["term_turnus_date"][$i];
-                                        for($kk = 0; $kk <= 6; $kk++ ){
+                                        for($kk = 1; $kk <= 7; $kk++ ){
                                             echo '<option ', (($kk == $ttd)? 'selected ':'');
                                             echo 'value="',$kk,'">';
                                             switch ($kk){
@@ -3090,7 +3091,7 @@ if ($level == 3) {
                                                 case 4: echo _("Donnerstag"); break;
                                                 case 5: echo _("Freitag"); break;
                                                 case 6: echo _("Samstag"); break;
-                                                case 0: echo _("Sonntag"); break;
+                                                case 7: echo _("Sonntag"); break;
                                                 case 1:
                                                 default: echo _("Montag");
                                             }
