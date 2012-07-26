@@ -520,10 +520,10 @@ if ($form == 3)
         //Alle eingegebenen Turnus-Daten in Sessionvariable uebernehmen
         for ($i=0; $i<$sem_create_data["turnus_count"]; $i++) {
             $sem_create_data["term_turnus_date"][$i]=(int)$term_turnus_date[$i];
-            $sem_create_data["term_turnus_start_stunde"][$i] = intval($term_turnus_start_stunde[$i]);
-            $sem_create_data["term_turnus_start_minute"][$i] = intval($term_turnus_start_minute[$i]);
-            $sem_create_data["term_turnus_end_stunde"][$i] = intval($term_turnus_end_stunde[$i]);
-            $sem_create_data["term_turnus_end_minute"][$i] = intval($term_turnus_end_minute[$i]);
+            $sem_create_data["term_turnus_start_stunde"][$i] = (strlen($term_turnus_start_stunde[$i]))? intval($term_turnus_start_stunde[$i]) : '';
+            $sem_create_data["term_turnus_start_minute"][$i] = (strlen($term_turnus_start_minute[$i]))? intval($term_turnus_start_minute[$i]) : '';
+            $sem_create_data["term_turnus_end_stunde"][$i] = (strlen($term_turnus_end_stunde[$i]))? intval($term_turnus_end_stunde[$i]) : '';
+            $sem_create_data["term_turnus_end_minute"][$i] = (strlen($term_turnus_end_minute[$i]))? intval($term_turnus_end_minute[$i]) : '';
             $sem_create_data["term_turnus_desc"][$i]=($term_turnus_desc[$i] ? $term_turnus_desc[$i] : $term_turnus_desc_chooser[$i]);
             $sem_create_data["term_turnus_week_offset"][$i] = (int)$_REQUEST['term_turnus_week_offset'][$i];
             $sem_create_data["term_turnus_cycle"][$i] = (int)$_REQUEST['term_turnus_cycle'][$i];
