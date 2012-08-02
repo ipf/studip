@@ -27,7 +27,7 @@
 
 
 namespace Studip {
-    const ENV = 'development';
+    const ENV = 'production';
 }
 
 // use default namespace for the remaining lines
