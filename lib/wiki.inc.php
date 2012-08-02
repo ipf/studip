@@ -11,12 +11,9 @@ use Studip\Button, Studip\LinkButton;
 // Make sure to change routines below if this changes
 //
 global $wiki_keyword_regex, $wiki_link_regex, $wiki_extended_link_regex;
-$wiki_keyword_regex = "(^|\s|\A|\>)(([A-Z]|&[AOU]uml;)([a-z0-9]|&[aou]uml;|&szlig;)+([A-Z]|&[AOU]uml;)([a-zA-Z0-9]|&[aouAOU]uml;|&szlig;)+)";
+$wiki_keyword_regex = "(^|\s|\A|\>)(([A-ZÄÖÜ]|&[AOU]uml;)([a-z0-9äöüß]|&[aou]uml;|&szlig;)+([A-ZÄÖÜ]|&[AOU]uml;)([a-zA-Z0-9äöüÄÖÜß]|&[aouAOU]uml;|&szlig;)+)";
 $wiki_link_regex = "\[\[(([\w\.\-\:\(\)_§\/@# ]|&[AOUaou]uml;|&szlig;)+)\]\]";
 $wiki_extended_link_regex = "\[\[(([\w\.\-\:\(\)_§\/@# ]|&[AOUaou]uml;|&szlig;)+)\|([^\]]+)\]\]";
-
-// protect $wiki_directives from register_globals
-$GLOBALS['wiki_directives'] = array();
 
 /**
 * Retrieve a WikiPage version from current seminar's WikiWikiWeb.
@@ -338,73 +335,6 @@ function releasePageLocks($keyword, $user_id) {
 
 
 /**
-* Register Wiki directive markup
-*
-* @param    string  pattern
-* @param    string  replace
-*
-**/
-function wikiMarkup($pattern, $replace, $needed_perm='autor') {
-    global $wiki_directives;
-    $wiki_directives[]=array($pattern, $replace, $needed_perm);
-}
-
-/**
-* Process registered wiki-directives
-*
-* @param    string  text, all other markup conversions applied
-*
-**/
-function wikiDirectives($str) {
-    global $wiki_directives; // array of pattern-replace-arrays
-    $failure_message = _("Sie haben keine Berechtigung diese Wiki Direktive auszuführen.");
-    if (is_array($wiki_directives)){
-        foreach ($wiki_directives as $direct) {
-            if ($GLOBALS['perm']->have_studip_perm($direct[2], $GLOBALS['SessSemName'][1])){
-                $str = preg_replace($direct[0],$direct[1],$str);
-            } else {
-                $str = preg_replace($direct[0], "sprintf('<i>%s' . \$failure_message . '</i>', '\$0');", $str);
-            }
-        }
-    }
-    return $str;
-}
-
-/**
-* Replace WikiWords with appropriate links in given string
-* and process registered wiki-directives
-*
-* @param    string  str
-* @param    string  page
-* @param    string  "wiki"=link to wiki, "inline"=link to same page
-*
-**/
-function wikiLinks($str, $page, $format="wiki", $sem_id=NULL) {
-    global $wiki_keyword_regex, $wiki_link_regex, $wiki_extended_link_regex;
-    // regex adapted from RoboWiki
-    // added > as possible start of WikiWord
-    // because htmlFormat converts newlines to <br>
-
-    // in [nop] und [code] Bereichen werden keine wikiLinks gesetzt
-    if (preg_match_all("'\<nowikilink\>(.+)\</nowikilink\>'isU", $str, $matches)) {
-        $str = preg_replace("'\<nowikilink\>.+\</nowikilink\>'isU", 'ö', $str);
-        $str = preg_replace("/$wiki_keyword_regex/e", "'\\1'.isKeyword('\\2', '$page', '$format','$sem_id')", $str);
-        $str = preg_replace("/$wiki_link_regex/e", "isKeyword('\\1', '$page', '$format','$sem_id')", $str);
-        $str = preg_replace("/$wiki_extended_link_regex/e", "isKeyword('\\1', '$page', '$format','$sem_id','\\3')", $str);
-        $str=wikiDirectives($str);
-        $str = explode('ö', $str);
-        $i = 0; $all = '';
-        foreach ($str as $w) $all .= $w .  $matches[1][$i++];
-        return $all;
-    }
-
-    $str = preg_replace("/$wiki_keyword_regex/e", "'\\1'.isKeyword('\\2', '$page', '$format','$sem_id')", $str);
-    $str = preg_replace("/$wiki_link_regex/e", "isKeyword('\\1', '$page', '$format','$sem_id')", $str);
-    $str = preg_replace("/$wiki_extended_link_regex/e", "isKeyword('\\1', '$page', '$format','$sem_id','\\3')", $str);
-    return wikiDirectives($str);
-}
-
-/**
 * Return list of WikiWord in given page body ($str)
 *
 * @param    string  str
@@ -412,9 +342,8 @@ function wikiLinks($str, $page, $format="wiki", $sem_id=NULL) {
 **/
 function getWikiLinks($str) {
     global $wiki_keyword_regex, $wiki_link_regex, $wiki_extended_link_regex;
-    $str = wikiReady($str,TRUE,FALSE,"none"); // ohne Kommentare
-    // [nop] und [code] Bereiche ausblenden ...
-    $str = preg_replace("'\<nowikilink\>.+\</nowikilink\>'isU", ' ', $str);
+    $str = preg_replace('/\[nop\].*\[\/nop\]/', '', $str);
+    $str = preg_replace('/\[code\].*\[\/code\]/', '', $str);
     preg_match_all("/$wiki_keyword_regex/", $str, $out_wikiwords, PREG_PATTERN_ORDER);
     preg_match_all("/$wiki_link_regex/", $str, $out_wikilinks, PREG_PATTERN_ORDER);
     preg_match_all("/$wiki_extended_link_regex/", $str, $out_wikiextlinks, PREG_PATTERN_ORDER);
@@ -1000,7 +929,7 @@ function printWikiPage($keyword, $version) {
     echo sprintf(_("Version %s, letzte Änderung %s von %s."), $wikiData['version'], date("d.m.Y, H:i", $wikiData['chdate']), get_fullname($wikiData['user_id'],'full',1));
     echo "</em></p>";
     echo "<hr>";
-    echo wikiDirectives(wikiReady($wikiData['body'],TRUE,FALSE,"none"));
+    echo wikiReady($wikiData['body'], TRUE, FALSE, "none");
     echo "<hr><p><font size=-1>created by Stud.IP Wiki-Module ";
     echo date("d.m.Y, H:i", time());
     echo " </font></p>";
@@ -1010,7 +939,7 @@ function printWikiPage($keyword, $version) {
 function exportWikiPagePDF($keyword, $version) {
     global $SessSemName;
     $wikiData=getWikiPage($keyword,$version);
-    
+
     $document = new ExportPDF();
     $document->SetTitle(_('Wiki: ').htmlReady($keyword));
     $document->setHeaderTitle(sprintf(_("Wiki von \"%s\""), $SessSemName[0]));
@@ -1089,7 +1018,7 @@ function getAllWikiPages($range_id, $header, $fullhtml=TRUE) {
                 $out[] = sprintf(_("Version %s, letzte Änderung %s von %s."), $pagedata['version'], date("d.m.Y, H:i", $pagedata['chdate']), get_fullname($pagedata['user_id'], 'full', 1));
                 $out[] = "</em></p></font>";
                 // output is html without comments
-                $out[]=wikiLinks(wikiReady($pagedata['body'],TRUE,FALSE,"none"),$pagename,"inline",$range_id);
+                $out[]=wikiReady($pagedata['body'],TRUE,FALSE,"none");
                 $out[] = '<p><font size=-1>(<a href="#top">' . _("nach oben") . '</a>)</font></p>';
             }
         }
@@ -1335,7 +1264,7 @@ function get_toc_content() {
     if ($toc) {
         $toccont.="<div class='wikitoc'>";
         $toccont.="<div id='00toc'>";
-        $toccont.= wikiLinks(wikiReady($toc["body"],TRUE,FALSE,$show_comments), "toc", "wiki");
+        $toccont.= wikiReady($toc["body"],TRUE,FALSE,$show_comments);
         $toccont.="</div>";
         $toccont.="</div>\n";
     }
@@ -1418,7 +1347,8 @@ function showWikiPage($keyword, $version, $special="", $show_comments="icon", $h
     echo "<tr>\n";
     $cont="";
 
-    $cont .= wikiLinks(wikiReady($wikiData["body"],TRUE,FALSE,$show_comments), $keyword, "wiki");
+    $content = wikiReady($wikiData["body"],TRUE,FALSE,$show_comments);
+    $cont .= $content;
     if ($hilight) {
         // Highlighting must only take place outside HTML tags, so
         // 1. save all html tags in array $founds[0]

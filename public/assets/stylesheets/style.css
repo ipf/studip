@@ -67,7 +67,11 @@ h1.content, h2.content, h3.content {
 }
 
 hr.content {
-    margin: 0em 1em;
+    margin: 0 1em;
+    background-color: #555555;
+    border-radius: 5px;
+    height: 1px;
+    border: none;
 }
 
 table.content {

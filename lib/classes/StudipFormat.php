@@ -29,7 +29,7 @@ class StudipFormat extends TextFormat
 
         // horizontal rule
         'hrule' => array(
-            'start'    => '^--+$',
+            'start'    => '^--(\d?)$',
             'callback' => 'StudipFormat::markupHorizontalRule'
         ),
 
@@ -154,6 +154,18 @@ class StudipFormat extends TextFormat
             'start'    => '\[code\](.*?)\[\/code\]',
             'callback' => 'StudipFormat::markupCode'
         ),
+        'media' => array(
+            'start'    => '\[(img|flash|audio|video)(.*?)\](.*?)(?=\s|$)',
+            'callback' => 'StudipFormat::markupMedia'
+        ),
+        'emails' => array(
+            'start'    => '(?<=\s|^|\>)(?:\[([^\n\f]+?)\])?([\w.!#%+-]+@([[:alnum:].-]+))(?=\s|$)',
+            'callback' => 'StudipFormat::markupEmails'
+        ),
+        'links' => array(
+            'start'    => '(?<=\s|^|\>)(?:(?:\[([^\n\f]+?)\])?)(\w+?:\/\/.+?)(?=\s|$)',
+            'callback' => 'StudipFormat::markupLinks'
+        ),
     );
 
     /**
@@ -178,17 +190,43 @@ class StudipFormat extends TextFormat
      * - $markup    the markup parser object
      * - $matches   match results of preg_match for $start
      * - $contents  (parsed) contents of this markup rule
+     * 
+     * Sometimes you may want your rule to apply before another specific rule
+     * will apply. For this case the parameter $before defines a rulename of
+     * existing markup, before which your rule should apply.
      *
      * @param string $name      name of this rule
      * @param string $start     start regular expression
      * @param string $end       end regular expression (optional)
      * @param callback $callback function generating output of this rule
+     * @param string $before mark before which rule this rule should be appended
      */
-    public static function addStudipMarkup($name, $start, $end, $callback)
+    public static function addStudipMarkup($name, $start, $end, $callback, $before = null)
     {
-        self::$studip_rules[$name] = compact('start', 'end', 'callback');
+        $inserted = false;
+        foreach (self::$studip_rules as $rule_name => $rule) {
+            if ($rule_name === $before) {
+                self::$studip_rules[$name] = compact('start', 'end', 'callback');
+                $inserted = true;
+            }
+            if ($inserted) {
+                unset(self::$studip_rules[$rule_name]);
+                self::$studip_rules[$rule_name] = $rule;
+            }
+        }
+        if (!$inserted) {
+            self::$studip_rules[$name] = compact('start', 'end', 'callback');
+        }
     }
-
+    
+    /**
+     * Returns a single markup-rule if it exists.
+     * @return array: array('start' => "...", 'end' => "...", 'callback' => "...")
+     */
+    public static function getStudipMarkup($name) {
+        return self::$studip_rules[$name];
+    }
+    
     /**
      * Removes a markup rule from the global Stud.IP markup set.
      *
@@ -223,7 +261,9 @@ class StudipFormat extends TextFormat
      */
     protected static function markupHorizontalRule($markup, $matches)
     {
-        return '<hr class="content">';
+        return sprintf('<hr class="content"%s>',
+            $matches[1] ? ' style="height: '.((int) $matches[1]).'px"' : ""
+        );
     }
 
     /**
@@ -381,4 +421,109 @@ class StudipFormat extends TextFormat
     {
         return highlight_string(html_entity_decode(trim($matches[1]), ENT_QUOTES), true);
     }
+    
+    /**
+     * Stud.IP markup for email-adresses
+     */
+    protected static function markupEmails($markup, $matches)
+    {
+        $link_text = $matches[1] ?: $matches[2];
+        $email = $matches[2];
+        $domain = $matches[3];
+        
+        $intern = $domain === $_SERVER['HTTP_HOST'];
+        
+        return sprintf('<a class="%s" href="mailto:%s">%s</a>',
+            $intern ? "link-intern" : "link-extern",
+            $email,
+            $link_text
+        );
+    }
+    
+    /**
+     * Stud.IP markup for images, audio, video and flash-films
+     */
+    protected static function markupMedia($markup, $matches) 
+    {
+        $tag = $matches[1];
+        $params = explode(":",$matches[2]);
+        $url = $matches[3];
+        $whitespace = $matches[4];
+        
+        foreach ($params as $key => $param) {
+            if ($param) {
+                if (is_numeric($param)) {
+                    $width = $param;
+                } elseif(in_array($param, words("left center right"))) {
+                    $position = $param;
+                } elseif($key === 0 && $param[0] === "=") {
+                    $title = substr($param, 1);
+                } elseif($key < count($params) - 1) {
+                    $virtual_url = $param.":".$params[$key + 1];
+                    if (isURL($virtual_url)) {
+                        $link = $virtual_url;
+                    }
+                }
+            }
+        }
+        
+        $format_strings = array(
+            'img' => '<img src="%s" style="%s" title="%s" alt="%s">',
+            'audio' => '<audio src="%s" style="%s" title="%s" alt="%s" controls></audio>',
+            'video' => '<video src="%s" style="%s" title="%s" alt="%s" controls></video>'
+        );
+        
+        if ($tag === "flash") {
+            $width = $width ? $width : 200;
+            $height = round($width * 0.75);
+            $flash_config = $width > 200 ? $GLOBALS['FLASHPLAYER_DEFAULT_CONFIG_MAX'] : $GLOBALS['FLASHPLAYER_DEFAULT_CONFIG_MIN'];
+            $media = '<object type="application/x-shockwave-flash" id="FlashPlayer" data="'.Assets::url().'flash/player_flv.swf" width="'.$width.'" height="'.$height.'">
+                        <param name="movie" value="'.Assets::url().'flash/player_flv.swf">
+                        <param name="allowFullScreen" value="true">
+                        <param name="FlashVars" value="flv='.urlencode(idna_link($url)).'&amp;startimage='.$link.$flash_config.'">
+                        <embed src="'.Assets::url().'flash/player_flv.swf" movie="$media_url" type="application/x-shockwave-flash" FlashVars="flv='.urlencode(idna_link($url)).'&amp;startimage='.$link.$flash_config.'">
+                        </object>';
+        } else {
+            $media = sprintf($format_strings[$tag],
+                idna_link($url),
+                isset($width) ? "width: ".$width."px;" : "",
+                $title,
+                $title
+            );
+        }
+        if ($link && $tag === "img") {
+            $media = sprintf('<a href="%s"%s>%s</a>',
+                idna_link($link),
+                !isLinkIntern($link) ? ' target="_blank"' : "",
+                $media
+            );
+        }
+        if ($position) {
+            $media = '<div style="text-align: '.$position.'">'.$media.'</div>';
+        }
+        $media .= $whitespace;
+        return $media;
+    }
+    
+    /**
+     * Stud.IP markup for hyperlinks (intern, extern).
+     * Has lower priority than [code], [img], etc
+     */
+    protected static function markupLinks($markup, $matches) 
+    {
+        $url = $matches[2];
+        $title = $matches[1] ? $matches[1] : $url;
+        
+        $intern = isLinkIntern($url);
+        
+        $url = TransformInternalLinks($url);
+        
+        return sprintf('<a class="%s" href="%s"%s>%s</a>',
+            $intern ? "link-intern" : "link-extern",
+            $url,
+            $intern ? "" : ' target="_blank"',
+            $title
+        );
+    }
+    
 }
