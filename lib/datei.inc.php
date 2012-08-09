@@ -639,43 +639,53 @@ function copy_folder($folder_id, $new_range, $seed = false){
     }
 }
 
-function edit_item ($item_id, $type, $name, $description, $protected=0, $url = "", $filesize="") {
+function edit_item($item_id, $type, $name, $description, $protected = 0, $url = '', $filesize = '')
+{
     global $SessionSeminar;
 
-    $db=new DB_Seminar;
     $folder_tree = TreeAbstract::GetInstance('StudipDocumentTree', array('range_id' => $SessionSeminar));
 
-    if ($url != ""){
+    if ($url != '') {
         $url_parts = parse_url($url);
         $the_file_name = basename($url_parts['path']);
     }
 
     if ($type){
-        $db->query("UPDATE folder SET  description='$description' " . (strlen($name) ? ", name='$name'" : "" ). " WHERE folder_id ='$item_id'");
+        $query = "UPDATE folder
+                  SET description = ?, name = IFNULL(?, name)
+                  WHERE folder_id = ?";
+        $statement = DBManager::get()->prepare($query);
+        $statement->execute(array(
+            $description,
+            strlen($name) ? $name : null,
+            $item_id,
+        ));
+
         if($GLOBALS['perm']->have_studip_perm('tutor', $SessionSeminar)){
             if ($folder_tree->permissions_activated) {
                 foreach(array('r'=>'read','w'=>'write','x'=>'exec') as $p => $v){
-                    if ($_REQUEST["perm_$v"]) $folder_tree->setPermission($item_id, $p);
-                    else $folder_tree->unsetPermission($item_id, $p);
+                    if (Request::get('perm_' . $v)) {
+                        $folder_tree->setPermission($item_id, $p);
+                    } else {
+                        $folder_tree->unsetPermission($item_id, $p);
                 }
             }
-            if ($_REQUEST["perm_folder"]) $folder_tree->setPermission($item_id, 'f');
-            else $folder_tree->unsetPermission($item_id, 'f');
+            }
+            if (Request::get('perm_folder')) {
+                $folder_tree->setPermission($item_id, 'f');
+            } else {
+                $folder_tree->unsetPermission($item_id, 'f');
+            }
         }
-        return !!$db->affected_rows();
+        return $statement->rowCount() > 0;
     } else {
 
         $doc = new StudipDocument($item_id);
-        $doc->setData(
-            array(
-                'name'        => $name,
-                'description' => $description,
-                'protected'   => $protected
-            ));
+        $doc->setData(compact(words('name description protected')));
 
-        if ($url != "") {
-            $doc["url"] = $url;
-            $doc["filename"] = $the_file_name;
+        if ($url != '') {
+            $doc['url'] = $url;
+            $doc['filename'] = $the_file_name;
         }
 
         return !!$doc->store();
