@@ -206,8 +206,7 @@ if (Request::get('export') && $rechte) {
     }
 
 
-    $template = $GLOBALS['template_factory']->open('dates');
-    echo $template->render(compact('dates', 'sem', 'rechte', 'openAll', 'issue_open', 'raumzeitFilter'));
+    echo $GLOBALS['template_factory']->open('dates')->render(compact('dates', 'sem', 'rechte', 'openAll', 'issue_open', 'raumzeitFilter'));
 
 }
 include ('lib/include/html_end.inc.php');
