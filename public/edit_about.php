@@ -567,7 +567,6 @@ switch($view) {
 // Start of Output
 include ('lib/include/html_head.inc.php'); // Output of html head
 
-if ($auth->auth["jscript"]) { // nur wenn JS aktiv
 if ($view == 'Daten') {
     $validator=new email_validation_class;
 ?>
@@ -691,7 +690,6 @@ function update_pw_fields() {
 
 <?
 } // end if view == Daten
-} // Ende nur wenn JS aktiv
 
 include ('lib/include/header.php');   // Output of Stud.IP head
 
