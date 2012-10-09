@@ -492,7 +492,7 @@ function print_rec_message($prm) {
 
 function print_messages() {
     global $user,$_fullname_sql, $my_messaging_settings, $PHP_SELF ,$sms_data, $sms_show, $query_showfolder, $query_time_sort, $query_movetofolder, $query_time, $srch_result, $no_message_text, $n, $count, $count_timefilter, $cmd, $cmd_show;
-    
+
     $db = new DB_Seminar();
     $db2 = new DB_Seminar();
     if ($query_time) $count = $count_timefilter;
@@ -824,15 +824,15 @@ function show_msgform() {
 
     global $PHP_SELF, $sms_data, $user, $tmp_sms_content, $messagesubject, $message, $quote_username, $quote, $cmd ;
 
-    
-     
+
+
     $tmp = "&nbsp;<font size=\"-1\"><b>"._("Betreff:")."</b></font>";
-    $tmp .= "<div align=\"center\"><input type=\"text\" ". ($cmd == "write_chatinv" ? "disabled" : "") ." name=\"messagesubject\" value=\"".trim(htmlready($messagesubject))."\"style=\"width: 99%\"></div>";
+    $tmp .= "<div align=\"center\"><input type=\"text\" ". ($cmd == "write_chatinv" ? "disabled" : "") ." name=\"messagesubject\" value=\"".trim(htmlready(stripslashes($messagesubject)))."\"style=\"width: 99%\"></div>";
 
     $tmp .= "<br>&nbsp;<font size=\"-1\"><b>"._("Nachricht:")."</b></font>";
     $tmp .= "<div align=\"center\"><textarea name=\"message\" style=\"width: 99%\" cols=80 rows=10 wrap=\"virtual\">\n";
     if ($quote) { $tmp .= quotes_encode(htmlReady($tmp_sms_content), get_fullname_from_uname($quote_username)); }
-    if ($message) { $tmp .= htmlReady($message); }
+    if ($message) { $tmp .= htmlReady(stripslashes($message)); }
     $tmp .= '</textarea><br><br><div class="button-group">';
     // send/ break-button
     if (sizeof($sms_data["p_rec"]) > "0") {
@@ -840,7 +840,7 @@ function show_msgform() {
     }
 
     // cancel redirects to inbox or source-page if set
-    $tmp .= LinkButton::createCancel(_('Abbrechen'), Request::get('sms_source_page') 
+    $tmp .= LinkButton::createCancel(_('Abbrechen'), Request::get('sms_source_page')
         ? URLHelper::getURL(Request::get('sms_source_page'))
         : URLHelper::getURL('sms_box.php'));
 
@@ -854,11 +854,11 @@ function show_msgform() {
 function show_previewform()
 {
     global $sms_data, $my_messaging_settings, $signature, $cmd, $messagesubject, $message;
-    
+
     $tmp = "<input type=\"image\" name=\"refresh_message\" class=\"text-top\" src=\"" . Assets::image_path('icons/16/blue/refresh.png') . "\" ".tooltip(_("aktualisiert die Vorschau der aktuellen Nachricht."))."> "._("Vorschau erneuern.")."<br><br>";
-    $tmp .= "<b>"._("Betreff:")."</b><br>".htmlready($messagesubject);
+    $tmp .= "<b>"._("Betreff:")."</b><br>".htmlready(stripslashes($messagesubject));
     $tmp .= "<br><br><b>"._("Nachricht:")."</b><br>";
-    $tmp .= formatReady($message);
+    $tmp .= formatReady(stripslashes($message));
     if ($sms_data["sig"] == "1") {
         $tmp .= "<br><br>-- <br>";
         if ($signature) {
@@ -874,7 +874,7 @@ function show_previewform()
 function show_sigform()
 {
     global $sms_data, $my_messaging_settings, $signature, $cmd;
-        
+
     if ($sms_data["sig"] == "1") {
             $tmp =  "<font size=\"-1\">";
             $tmp .= _("Dieser Nachricht wird eine Signatur angehängt");
