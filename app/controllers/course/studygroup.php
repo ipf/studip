@@ -868,7 +868,7 @@ class Course_StudygroupController extends AuthenticatedController {
     function message_action($id)
     {
         $sem         = Seminar::GetInstance($id);
-        $source      = 'dispatch.php/course/studygroup/member/' . $id;
+        $source      = 'dispatch.php/course/studygroup/members/' . $id;
         if (studip_strlen($sem->getName()) > 32) //cut subject if to long
             $subject = sprintf(_("[Studiengruppe: %s...]"),studip_substr($sem->getName(), 0, 30));
         else
