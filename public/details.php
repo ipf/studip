@@ -110,6 +110,7 @@ if ($sem_id) {
     } elseif ($perm->have_perm("user") && !$perm->have_perm("admin") && $same_domain) { //Add lecture only if logged in
         $db->query("SELECT status FROM seminar_user WHERE user_id ='$user->id' AND Seminar_id = '$sem_id'");
         $db->next_record();
+        $status = $db->f("status");
         if (($db2->f("admission_starttime") > time()) && (($db2->f("admission_endtime_sem") == "-1"))) {
             $abo_msg = sprintf ("</a>"._("Tragen Sie sich hier ab %s um %s ein.")."<a>",date("d.m. Y",$db2->f("admission_starttime")),date("G:i",$db2->f("admission_starttime")));
         } elseif (($db2->f("admission_starttime") > time()) && (($db2->f("admission_endtime_sem") != "-1"))) {
@@ -126,15 +127,14 @@ if ($sem_id) {
                 if ($db->f("status") == "user") $abo_msg = _("Schreibrechte aktivieren");
             }
         }
-
-        $sem_user_schedule = DBManager::get()->query("SELECT COUNT(*) FROM schedule_seminare
-            WHERE seminar_id = '$sem_id' AND user_id = '". $GLOBALS['user']->id ."'")->fetchColumn();
-
-        $db->query("SELECT * FROM seminar_user WHERE Seminar_id = '$sem_id' AND user_id = '".$auth->auth['uid']."'");
-        $sem_user = $db->num_rows();
-
-        if (!$sem_user && !$sem_user_schedule && get_config('SCHEDULE_ENABLE')) {
-            $plan_msg = "<a href=\"".URLHelper::getLink("dispatch.php/calendar/schedule/addvirtual/$sem_id")."\">"._("Nur im Stundenplan vormerken")."</a>";
+        if (get_config('SCHEDULE_ENABLE') && !$status && Seminar::getInstance($sem_id)->getMetaDateCount()) {
+            $query = "SELECT COUNT(*) FROM schedule_seminare WHERE seminar_id = ? AND user_id = ?";
+            $statement = DBManager::Get()->prepare($query);
+            $statement->execute(array($sem_id, $GLOBALS['user']->id));
+            $sem_user_schedule = $statement->fetchColumn();
+            if (!$sem_user_schedule) {
+                $plan_msg = "<a href=\"".URLHelper::getLink("dispatch.php/calendar/schedule/addvirtual/$sem_id")."\">"._("Nur im Stundenplan vormerken")."</a>";
+            }
         }
 
     }
