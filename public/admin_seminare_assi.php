@@ -741,15 +741,6 @@ if ($form == 5 && Request::isPost()) {
         }
     }
 
-    //check if required datafield was not filled out
-    $dataFieldStructures = DataFieldStructure::getDataFieldStructures('sem', $_SESSION['sem_create_data']['sem_class'], true);
-    foreach ((array)$dataFieldStructures as $id=>$struct) {
-        if ($struct->accessAllowed($perm) && $perm->have_perm($struct->getEditPerms()) && $struct->getIsRequired() ) {
-           if (! trim($_REQUEST['sem_datafields'][$id]))
-               $errormsg = $errormsg."error§".sprintf(_("Das Feld %s wurde nicht ausgefüllt"), htmlReady($struct->getName()))."§";
-        }
-    }
-
     //Studienbereiche entgegennehmen
     if (is_array($sem_studg_id)) {
         foreach ($sem_studg_id as $key=>$val)
