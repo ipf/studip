@@ -197,9 +197,11 @@ if ($auth->is_authenticated() && $user->id != 'nobody') {
     $db->query("SELECT count(*) from auth_user_md5");
     $db->next_record();
     $index_nobody_template->set_attribute('num_registered_users', $db->f(0));
-    $index_nobody_template->set_attribute('num_online_users', get_users_online_count(10));
 
-    if ($_REQUEST['logout'])
+    $num_online_users = get_users_online_count(10); // Should be the same value as in lib/navigation/CommunityNavigation.php
+    $index_nobody_template->set_attribute('num_online_users', $num_online_users);
+
+    if (Request::get('logout'))
     {
         $index_nobody_template->set_attribute('logout', true);
     }

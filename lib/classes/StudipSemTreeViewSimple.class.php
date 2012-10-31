@@ -197,6 +197,9 @@ class StudipSemTreeViewSimple {
         return $ret;
     }
 
+    /**
+     * @return string url NOT escaped 
+     */
     function getSelf($param = "", $with_start_item = true){
         $url_params = (($with_start_item) ? "start_item_id=" . $this->start_item_id . "&" : "") . $param ;
         return URLHelper::getURL('?' . $url_params);

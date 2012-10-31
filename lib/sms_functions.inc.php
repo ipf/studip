@@ -535,7 +535,7 @@ function print_messages() {
     } else if ($sms_data['view'] == "out") { // postbox out
         $db->query("SELECT message. * , message_user.folder,message_user.dont_delete , auth_user_md5.user_id AS rec_uid,
                     auth_user_md5.vorname AS rec_vorname, auth_user_md5.nachname AS rec_nachname,
-                    auth_user_md5.username AS rec_uname, count( mu.message_id )  AS num_rec,
+                    auth_user_md5.username AS rec_uname, count( DISTINCT mu.user_id )  AS num_rec,
                     count(dokument_id) as num_attachments
                     FROM message_user
                     LEFT  JOIN message_user AS mu ON ( message_user.message_id = mu.message_id AND mu.snd_rec =  'rec'  )

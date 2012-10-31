@@ -78,7 +78,7 @@ class Ilias3Soap extends StudipSoapClient
         {
             if ($this->user_sid == false)
                 $this->login();
-            echo "u";
+//            echo "u";
             return $this->user_sid;
         }
         return false;

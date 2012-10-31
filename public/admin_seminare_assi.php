@@ -389,7 +389,7 @@ if ($start_level) { //create defaults
     }
 }
 
-if ($form == 1)
+if ($form == 1 && Request::isPost())
     {
     $sem_create_data["sem_name"]=$sem_name;
     $sem_create_data["sem_untert"]=$sem_untert;
@@ -454,7 +454,7 @@ if ($form == 1)
     $sem_create_data["sem_art"]=$sem_art;
     }
 
-if ($form == 2) {
+if ($form == 2 && Request::isPost()) {
 
     # evaluate study area selection
     # action: add
@@ -494,7 +494,7 @@ if ($form == 2) {
     }
     }
 
-if ($form == 3)
+if ($form == 3 && Request::isPost())
     {
     if ($sem_create_data["term_art"] == 0)
         {
@@ -627,7 +627,7 @@ if ($form == 3)
     }
 }
 
-if ($form == 4) {
+if ($form == 4 && Request::isPost()) {
 
     $sem_create_data["sem_room"]=$sem_room;
     //The room for the prelimary discussion
@@ -696,7 +696,7 @@ if ($form == 4) {
     }
     }
 
-if ($form == 5) {
+if ($form == 5 && Request::isPost()) {
 
     if(Request::submitted('toggle_admission_quota')){
         $sem_create_data["admission_enable_quota"] = (int)($_REQUEST["admission_enable_quota"]);
@@ -738,6 +738,15 @@ if ($form == 5) {
             $entry  = DataFieldEntry::createDataFieldEntry($struct);
             $entry->setValueFromSubmit($df_values);
             $sem_create_data['sem_datafields'][$id] = array('name'=>$entry->getName(), 'type'=>$entry->getType(), 'value'=> $entry->getValue());
+        }
+    }
+
+    //check if required datafield was not filled out
+    $dataFieldStructures = DataFieldStructure::getDataFieldStructures('sem', $_SESSION['sem_create_data']['sem_class'], true);
+    foreach ((array)$dataFieldStructures as $id=>$struct) {
+        if ($struct->accessAllowed($perm) && $perm->have_perm($struct->getEditPerms()) && $struct->getIsRequired() ) {
+           if (! trim($_REQUEST['sem_datafields'][$id]))
+               $errormsg = $errormsg."error§".sprintf(_("Das Feld %s wurde nicht ausgefüllt"), htmlReady($struct->getName()))."§";
         }
     }
 
@@ -785,7 +794,7 @@ if ($form == 5) {
     }
 }
 
-if ($form == 8)
+if ($form == 8 && Request::isPost())
     {
     $sem_create_data["sem_scm_content"]=$sem_scm_content;
     if (!$sem_scm_name) {
@@ -812,42 +821,6 @@ if (Request::submitted('jump_back')) {
             $level = $form - 1;
         }
     }
-}
-
-//not pressed any button? Send user to next page and checks...
-if (!Request::submitted('jump_back')
-    && !Request::submitted('jump_next')
-    && !$add_doz
-    && !$add_dep
-    && !$add_tut
-    && !$delete_doz
-    && !$delete_dep
-    && !$delete_tut
-    && !Request::submitted('add_turnus_field')
-    && !$delete_turnus_field_x
-    && !$send_doz_x
-    && !$send_tut_x
-    && !$send_dep_x
-    && !$reset_search_x
-    && !Request::submitted('add_term_field')
-    && !$delete_term_field_x
-    && !Request::submitted('add_studg')
-    && !$delete_studg_x
-    && !$search_doz_x
-    && !$search_dep_x
-    && !$search_tut_x
-    && !$search_room_x
-    && !$reset_room_search_x
-    && !$send_room_x
-    && !$search_properties_x
-    && !$send_room_type_x
-    && !$reset_room_type_x
-    && !$reset_resource_id_x
-    && !Request::submitted('room_request_choose')
-    && !Request::submitted('room_request_save')
-    && !Request::submitted('reset_admission_time')
-    && !Request::submitted('toggle_admission_quota')) {
-    Request::set('jump_next', true);
 }
 
 //Check auf korrekte Eingabe und Sprung in naechste Level, hier auf Schritt 2
@@ -2593,7 +2566,7 @@ if ($level == 2)
                             &nbsp;
                         </td>
                         <td class="<? echo $cssSw->getClass() ?>" width="90%" align="center" colspan=3>
-                            &nbsp; <?= Button::create('<< '._('Zurück'), 'jump_back') .'&nbsp;'. Button::create(_('Weiter').' >>', 'jump_next') ?>
+                            &nbsp; <?= LinkButton::create('<< '._('Zurück'), UrlHelper::getUrl('?jump_back=1&form=' . $level)) .'&nbsp;'. Button::create(_('Weiter').' >>', 'jump_next') ?>
                         </td>
                     </tr>
                     <tr <? $cssSw->switchClass() ?>>
@@ -3002,7 +2975,7 @@ if ($level == 2)
                             &nbsp;
                         </td>
                         <td class="<? echo $cssSw->getClass() ?>" width="90%" align="center" colspan=3>
-                            &nbsp; <?= Button::create('<< '._('Zurück'), 'jump_back') ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
+                            &nbsp; <?= LinkButton::create('<< '._('Zurück'), UrlHelper::getUrl('?jump_back=1&form=' . $level)) ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
                         </td>
                     </tr>
                 </table>
@@ -3060,7 +3033,7 @@ if ($level == 3) {
                             &nbsp;
                         </td>
                         <td class="<? echo $cssSw->getClass() ?>" width="90%" align="center" colspan=3>
-                            &nbsp; <?= Button::create('<< '._('Zurück'), 'jump_back') ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
+                            &nbsp; <?= LinkButton::create('<< '._('Zurück'), UrlHelper::getUrl('?jump_back=1&form=' . $level)) ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
                         </td>
                     </tr>
                     <?
@@ -3276,7 +3249,7 @@ if ($level == 3) {
                             &nbsp;
                         </td>
                         <td class="<? echo $cssSw->getClass() ?>" width="90%" align="center" colspan=3>
-                            &nbsp; <?= Button::create('<< '._('Zurück'), 'jump_back') ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
+                            &nbsp; <?= LinkButton::create('<< '._('Zurück'), UrlHelper::getUrl('?jump_back=1&form=' . $level)) ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
                         </td>
                     </tr>
                 </table>
@@ -3332,7 +3305,7 @@ if ($level == 4) {
                             &nbsp;
                         </td>
                         <td class="<? echo $cssSw->getClass() ?>" width="96%" align="center" colspan=3>
-                            &nbsp; <?= Button::create('<< '._('Zurück'), 'jump_back') ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
+                            &nbsp; <?= LinkButton::create('<< '._('Zurück'), UrlHelper::getUrl('?jump_back=1&form=' . $level)) ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
                         </td>
                     </tr>
                     <?
@@ -3554,7 +3527,7 @@ if ($level == 4) {
                             &nbsp;
                         </td>
                         <td class="<? echo $cssSw->getClass() ?>" width="96%" align="center" colspan=3>
-                            &nbsp; <?= Button::create('<< '._('Zurück'), 'jump_back') ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
+                            &nbsp; <?= LinkButton::create('<< '._('Zurück'), UrlHelper::getUrl('?jump_back=1&form=' . $level)) ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
                         </td>
                     </tr>
                 </table>
@@ -3602,7 +3575,7 @@ if ($level == 5)
                             &nbsp;
                         </td>
                         <td class="<? echo $cssSw->getClass() ?>" width="90%" align="center" colspan=3>
-                            &nbsp; <?= Button::create('<< '._('Zurück'), 'jump_back') ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
+                            &nbsp; <?= LinkButton::create('<< '._('Zurück'), UrlHelper::getUrl('?jump_back=1&form=' . $level)) ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
                         </td>
                     </tr>
                     <? if ($sem_create_data["sem_admission"] != 3) { ?>
@@ -3973,7 +3946,7 @@ if ($level == 5)
                             &nbsp;
                         </td>
                         <td class="<? echo $cssSw->getClass() ?>" width="90%" align="center" colspan=3>
-                            &nbsp; <?= Button::create('<< '._('Zurück'), 'jump_back') ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
+                            &nbsp; <?= LinkButton::create('<< '._('Zurück'), UrlHelper::getUrl('?jump_back=1&form=' . $level)) ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
                         </td>
                     </tr>
                 </table>
@@ -4004,7 +3977,7 @@ if ($level == 6)
                 <form method="POST" action="<? echo URLHelper::getLink() ?>">
                     <?= CSRFProtection::tokenTag() ?>
                     <input type="hidden" name="form" value=6>
-                    <?= Button::create('<< '._('Zurück'), 'jump_back') ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
+                    <?= LinkButton::create('<< '._('Zurück'), UrlHelper::getUrl('?jump_back=1&form=' . $level)) ?>&nbsp;<?= Button::create(_('Weiter').' >>', 'jump_next') ?>
                 </form>
                 </div>
             </td>
@@ -4039,7 +4012,7 @@ if ($level == 7)
                     <form method="POST" action="<? echo URLHelper::getLink() ?>">
                         <?= CSRFProtection::tokenTag() ?>
                         <input type="hidden" name="form" value=7>
-                        <?= Button::create('<< '._('Zurück'), 'jump_back') ?>
+                        <?= LinkButton::create('<< '._('Zurück'), UrlHelper::getUrl('?jump_back=1&form=' . $level)) ?>
                     </form>
                     </div>
                 </td>
