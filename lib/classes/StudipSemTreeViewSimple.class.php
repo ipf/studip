@@ -83,7 +83,6 @@ class StudipSemTreeViewSimple {
         }
         echo "</td></tr>";
         echo "\n<tr><td class=\"steel1\" colspan=\"2\" align=\"center\" valign=\"center\">";
-        echo "jhg";
         $this->showKids($this->start_item_id);
         echo "\n</td></tr><tr><td class=\"steelgraulight\" colspan=\"2\" align=\"left\" valign=\"center\">";
         $this->showContent($this->start_item_id);
