@@ -368,7 +368,7 @@ if (isset($_REQUEST['rec_uname'])  || isset($_REQUEST['filter']))
     unset($sms_data['tmp_save_snd_folder']);
     unset($sms_data['tmpreadsnd']);
     unset($sms_data['tmpemailsnd']);
-    
+
     $course_id = Request::option('course_id');
     $cid = Request::option('cid');
     // predefine subject
@@ -398,7 +398,7 @@ if (isset($_REQUEST['rec_uname'])  || isset($_REQUEST['filter']))
                 $db->query("SELECT b.username FROM user_inst a, auth_user_md5 b WHERE a.Institut_id = '".$cid."' AND a.user_id = b.user_id AND a.inst_perms = '$who' ORDER BY Nachname, Vorname");
                 break;
         }
-        
+
         //Ergebnis der Query als Empfänger setzen
         while ($db->next_record())
         {
@@ -488,8 +488,8 @@ if (Request::submitted('del_allreceiver_button_x')) { unset($sms_data["p_rec"]);
 
 
 // aus empfaengerliste loeschen
-if (Request::submitted('del_receiver_button_x') && Request::optionArray('del_receiver')) {
-    foreach (Request::optionArray('del_receiver') as $a) {
+if (Request::submitted('del_receiver_button_x') && Request::getArray('del_receiver')) {
+    foreach (Request::getArray('del_receiver') as $a) {
         $sms_data["p_rec"] = array_delete_value($sms_data["p_rec"], $a);
     }
 }
