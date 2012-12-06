@@ -98,7 +98,7 @@ class Ilias3ConnectedCMS extends ConnectedCMS
     function getPreferences()
     {
         global $connected_cms, $submit, $role_template_name, $cat_name, $style_setting, $encrypt_passwords;
-    
+
         $this->soap_client->setCachingStatus(false);
 
         if ($cat_name != "")
@@ -211,7 +211,7 @@ class Ilias3ConnectedCMS extends ConnectedCMS
 
         echo "</td></tr>";
         echo "</table>";
-        echo "<center>" . Buttton::create(_('übernehmen'), 'submit') . "</center><br>";
+        echo "<center>" . Button::create(_('übernehmen'), 'submit') . "</center><br>";
         echo "<br>\n";
 
         parent::getPreferences();
@@ -367,7 +367,7 @@ class Ilias3ConnectedCMS extends ConnectedCMS
 //      $this->soap_client->logout();
         $this->soap_client->saveCacheData();
     }
-    
+
     //we have to delete the course only
     function deleteConnectedModules($object_id){
         global $connected_cms;
