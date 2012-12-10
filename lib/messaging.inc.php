@@ -335,9 +335,8 @@ class messaging
         $db3 = new DB_Seminar;
         $db4 = new DB_Seminar;
         $db5 = new DB_Seminar;
-        $url = URLHelper::getURL();
 
-        if (strpos($url, 'sms_send.php') !== false) {
+        if (basename($_SERVER['PHP_SELF']) == 'sms_send.php') {
             $sms_data = $_SESSION['sms_data'];
         } else {
             $sms_data["tmpsavesnd"] = $my_messaging_settings["save_snd"];
