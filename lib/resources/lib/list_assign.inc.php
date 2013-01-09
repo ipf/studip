@@ -132,7 +132,9 @@ function create_assigns($assign_object, &$assEvtLst, $begin=0, $end=0, $filter =
                 $assEvtLst->events[] = $assEvt;
         }
         //in between days
-        for ($d=date("j",$ao_begin)+1; $d < date("j",$ao_begin) + date("z",$ao_r_end) - date("z",$ao_begin); $d++) {
+        $date_ao_r_end = new DateTime("@$ao_r_end");
+        $num_days = $date_ao_r_end->diff(new DateTime("@$ao_begin"))->days;
+        for ($d=date("j",$ao_begin)+1; $d < date("j",$ao_begin) + $num_days; $d++) {
             $temp_ts=mktime(0, 0, 0,
                     date("n",$ao_begin),
                     $d,
@@ -284,7 +286,7 @@ function createNormalizedAssigns($resource_id, $begin, $end, $explain_user_name 
                 $sem_obj = Seminar::GetInstance($seminar_id);
                 $r_dozenten = $db->query("SELECT trp.user_id FROM seminar_cycle_dates scd
                                         INNER JOIN termine t USING(metadate_id)
-                                        INNER JOIN termin_related_persons trp ON trp.range_id = t.termin_id 
+                                        INNER JOIN termin_related_persons trp ON trp.range_id = t.termin_id
                                         WHERE scd.metadate_id=" . $db->quote($metadate->getId()))
                             ->fetchAll(PDO::FETCH_COLUMN);
                 if (count($r_dozenten)) {
