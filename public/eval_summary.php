@@ -57,9 +57,6 @@ if (EvaluationObjectDB::getEvalUserRangesWithNoPermission($eval) == YES || count
     throw new Exception(_("Diese Evaluation ist nicht vorhanden oder Sie haben nicht ausreichend Rechte!"));
 }
 
-// Gehoert die benutzende Person zum Seminar-Stab (Dozenten, Tutoren) oder ist es ein ROOT?
-$staff_member = $perm->have_studip_perm("tutor", $SessSemName[1]);
-
 // Template vorhanden?
 $has_template = 0;
 $db_template = new DB_Seminar();
@@ -80,10 +77,7 @@ if (isset($cmd)) {
             } else
                 $db->query(sprintf("UPDATE eval_group_template SET group_type='%s' WHERE evalgroup_id='%s' AND user_id='%s'",$group_type,$evalgroup_id,$auth->auth["uid"]));
         } else { // Datensatz nicht vorhanden --> INSERT
-            // Ist der Benutzer auch wirklich der Eigentuemer der Eval?
-            $db->query(sprintf("SELECT * FROM eval WHERE eval_id='%s'",$eval_id));
-            if ($db->next_record() && ($db->f("author_id")==$auth->auth["uid"] || $staff_member))
-                $db->query(sprintf("INSERT INTO eval_group_template (evalgroup_id, user_id, group_type) VALUES ('%s','%s','%s')",$evalgroup_id,$auth->auth["uid"],$group_type));
+            $db->query(sprintf("INSERT INTO eval_group_template (evalgroup_id, user_id, group_type) VALUES ('%s','%s','%s')",$evalgroup_id,$auth->auth["uid"],$group_type));
         }
     }
 }
@@ -458,10 +452,7 @@ function groups($parent_id)
 
 $db = new DB_Seminar();
 
-if ($staff_member)
-    $db->query(sprintf("SELECT * FROM eval WHERE eval_id='%s'",$eval_id));
-else
-    $db->query(sprintf("SELECT * FROM eval WHERE eval_id='%s' AND author_id='%s'",$eval_id,$auth->auth["uid"]));
+$db->query(sprintf("SELECT * FROM eval WHERE eval_id='%s'",$eval_id));
 
 if ($db->next_record()) {
   $db_template->query(sprintf("SELECT t.* FROM eval_templates t, eval_templates_eval te WHERE te.eval_id='%s' AND t.template_id=te.template_id",$eval_id));

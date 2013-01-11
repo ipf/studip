@@ -57,10 +57,12 @@ PageLayout::setHelpKeyword('Basis.Evaluationen');
 Navigation::activateItem('/tools/evaluation');
 
 $eval = new Evaluation($eval_id);
-$no_permissons = EvaluationObjectDB::getEvalUserRangesWithNoPermission ($eval);
-
-// Gehoert die benutzende Person zum Seminar-Stab (Dozenten, Tutoren) oder ist es ein ROOT?
-$staff_member = $perm->have_studip_perm("tutor",$SessSemName[1]);;
+// Überprüfen, ob die Evaluation existiert oder der Benutzer genügend Rechte hat
+$eval = new Evaluation($eval_id);
+$eval->check();
+if (EvaluationObjectDB::getEvalUserRangesWithNoPermission($eval) == YES || count($eval->errorArray) > 0) {
+    throw new Exception(_("Diese Evaluation ist nicht vorhanden oder Sie haben nicht ausreichend Rechte!"));
+};
 
 include ('lib/include/html_head.inc.php'); // Output of html head
 include ('lib/include/header.php');    //hier wird der "Kopf" nachgeladen
@@ -91,11 +93,7 @@ $graphtypes_likertscale = array("bars"=>"Balken",
 
 $db = new DB_Seminar();
 $can_change = FALSE;
-// Pruefen, ob die Person wirklich berechtigt ist, hier etwas zu aendern...
-if ($staff_member)
-        $db->query(sprintf("SELECT * FROM eval WHERE eval_id='%s'",$eval_id));
-else
-        $db->query(sprintf("SELECT * FROM eval WHERE eval_id='%s' AND author_id='%s'",$eval_id,$auth->auth["uid"]));
+$db->query(sprintf("SELECT * FROM eval WHERE eval_id='%s'",$eval_id));
 
 if ($db->next_record()) $can_change = TRUE; // Person darf etwas aendern....
 

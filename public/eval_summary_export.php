@@ -58,17 +58,13 @@ require_once 'lib/classes/Institute.class.php';
 // Start of Output
 $eval_id = Request::option('eval_id');
 
-$no_permission = YES;
+// Überprüfen, ob die Evaluation existiert oder der Benutzer genügend Rechte hat
 $eval = new Evaluation($eval_id);
-$no_permissons = EvaluationObjectDB::getEvalUserRangesWithNoPermission ($eval);
-if ($no_permissons == YES) {
-  // Evaluation existiert nicht...
-  echo "&nbsp;"._("Evaluation NICHT vorhanden oder keine Rechte vorhanden!");
-  die();
+$eval->check();
+if (EvaluationObjectDB::getEvalUserRangesWithNoPermission($eval) == YES || count($eval->errorArray) > 0) {
+    throw new Exception(_("Diese Evaluation ist nicht vorhanden oder Sie haben nicht ausreichend Rechte!"));
 }
 
-// Gehoert die benutzende Person zum Seminar-Stab (Dozenten, Tutoren) oder ist es ein ROOT?
-$staff_member = $perm->have_studip_perm("tutor",$SessSemName[1]);
 $db5 = new DB_Seminar;
 
 $tmp_path_export = $GLOBALS['TMP_PATH']. '/export/';
@@ -441,8 +437,7 @@ function groups ($parent_id) {
 
 $db = new DB_Seminar();
 
-if ($staff_member) $db->query(sprintf("SELECT * FROM eval WHERE eval_id='%s'",$eval_id));
-else $db->query(sprintf("SELECT * FROM eval WHERE eval_id='%s' AND author_id='%s'",$eval_id,$auth->auth["uid"]));
+$db->query(sprintf("SELECT * FROM eval WHERE eval_id='%s'",$eval_id));
 
 if ($db->next_record()) {
     // Evaluation existiert auch...
