@@ -881,27 +881,24 @@ function validate_upload($the_file, $real_file_name='') {
     $the_file_size = $the_file['size'];
     $the_file_name = $the_file['name'];
 
-    if ($i_page == "sms_send.php") {
-        if (!$GLOBALS["ENABLE_EMAIL_ATTACHMENTS"] == true)
-                $emsg.= "error§" . _("Dateianhänge für Nachrichten sind in dieser Installation nicht erlaubt!") . "§";
-        $active_upload_type = "attachments";
-        $sem_status = $GLOBALS['perm']->get_perm();
-    } else {
-        $sem_status = $GLOBALS['perm']->get_studip_perm($SessSemName[1]);
-        $active_upload_type = $SessSemName["art_num"];
-    }
-
-    //erlaubte Dateigroesse aus Regelliste der Config.inc.php auslesen
-    if ($UPLOAD_TYPES[$active_upload_type]) {
-        $max_filesize=$UPLOAD_TYPES[$active_upload_type]["file_sizes"][$sem_status];
-    } else {
-        $max_filesize=$UPLOAD_TYPES["default"]["file_sizes"][$sem_status];
-    }
-
-    $error = FALSE;
     if (!$the_file) { # haben wir eine Datei?
         $emsg.= "error§" . _("Sie haben keine Datei zum Hochladen ausgew&auml;hlt!") . "§";
     } else { # pruefen, ob der Typ stimmt
+        if ($i_page == "sms_send.php") {
+            if (!$GLOBALS["ENABLE_EMAIL_ATTACHMENTS"] == true)
+                $emsg.= "error§" . _("Dateianhänge für Nachrichten sind in dieser Installation nicht erlaubt!") . "§";
+            $active_upload_type = "attachments";
+            $sem_status = $GLOBALS['perm']->get_perm();
+        } else {
+            $sem_status = $GLOBALS['perm']->get_studip_perm($SessSemName[1]);
+            $active_upload_type = $SessSemName["art_num"];
+            if (!isset($UPLOAD_TYPES[$active_upload_type])) {
+                $active_upload_type = 'default';
+            }
+        }
+
+        //erlaubte Dateigroesse aus Regelliste der Config.inc.php auslesen
+        $max_filesize = $UPLOAD_TYPES[$active_upload_type]["file_sizes"][$sem_status];
 
         //Die Dateierweiterung von dem Original erfragen
         $pext = strtolower(getFileExtension($real_file_name ? $real_file_name : $the_file_name));
@@ -909,11 +906,10 @@ function validate_upload($the_file, $real_file_name='') {
             $doc=TRUE;
 
         //Erweiterung mit Regelliste in config.inc.php vergleichen
-        if ($UPLOAD_TYPES[$SessSemName[$active_upload_type]]) {
-            if ($UPLOAD_TYPES[$SessSemName[$active_upload_type]]["type"] == "allow") {
+        if ($UPLOAD_TYPES[$active_upload_type]["type"] == "allow") {
                 $t=TRUE;
                 $i=1;
-                foreach ($UPLOAD_TYPES[$SessSemName[$active_upload_type]]["file_types"] as $ft) {
+            foreach ($UPLOAD_TYPES[$active_upload_type]["file_types"] as $ft) {
                     if ($pext == $ft)
                         $t=FALSE;
                     if ($i !=1)
@@ -934,7 +930,7 @@ function validate_upload($the_file, $real_file_name='') {
             } else {
                 $t=FALSE;
                 $i=1;
-                foreach ($UPLOAD_TYPES[$SessSemName["art_num"]]["file_types"] as $ft) {
+            foreach ($UPLOAD_TYPES[$active_upload_type]["file_types"] as $ft) {
                     if ($pext == $ft)
                         $t=TRUE;
                     if ($i !=1)
@@ -953,53 +949,6 @@ function validate_upload($the_file, $real_file_name='') {
                     }
                     }
                 }
-            }
-        else {
-            if ($UPLOAD_TYPES["default"]["type"] == "allow") {
-                $t=TRUE;
-                $i=1;
-                foreach ($UPLOAD_TYPES["default"]["file_types"] as $ft) {
-                    if ($pext == $ft)
-                        $t=FALSE;
-                    if ($i !=1)
-                        $exts.=",";
-                    $exts.=" ".strtoupper($ft);
-                    $i++;
-                    }
-                if (!$t) {
-                    if ($i==2)
-                        $emsg.= "error§" . sprintf(_("Die Datei konnte nicht &uuml;bertragen werden: Sie d&uuml;rfen den Dateityp %s nicht hochladen!"), trim($exts)) . "§";
-                    else
-                        $emsg.= "error§" . sprintf(_("Die Datei konnte nicht &uuml;bertragen werden: Sie d&uuml;rfen die Dateitypen %s nicht hochladen!"), trim($exts)) . "§";
-                    if ($doc) {
-                        $help_url = format_help_url("Basis.DateienUpload");
-                        $emsg.= "info§" . sprintf(_("%sHier%s bekommen Sie Hilfe zum Upload von Word-Dokumenten."), "<a target=\"_blank\" href=\"".$help_url."\">", "</a>") . "§";
-                    }
-                    }
-                }
-            else {
-                $t=FALSE;
-                $i=1;
-                foreach ($UPLOAD_TYPES["default"]["file_types"] as $ft) {
-                    if ($pext == $ft)
-                        $t=TRUE;
-                    if ($i !=1)
-                        $exts.=",";
-                    $exts.=" ".strtoupper($ft);
-                    $i++;
-                    }
-                if (!$t) {
-                    if ($i==2)
-                        $emsg.= "error§" . sprintf(_("Die Datei konnte nicht &uuml;bertragen werden: Sie d&uuml;rfen nur den Dateityp %s hochladen!"), trim($exts)) . "§";
-                    else
-                        $emsg.= "error§" . sprintf(_("Die Datei konnte nicht &uuml;bertragen werden: Sie d&uuml;rfen nur die Dateitypen %s hochladen!"), trim($exts)) . "§";
-                    if ($doc) {
-                        $help_url = format_help_url("Basis.DateienUpload");
-                        $emsg.= "info§" . sprintf(_("%sHier%s bekommen Sie Hilfe zum Upload von Word-Dokumenten."), "<a target=\"_blank\" href=\"".$help_url."\">", "</a>") . "§";
-                    }
-                    }
-                }
-            }
 
         //pruefen ob die Groesse stimmt.
         if ($the_file_size == 0) {
@@ -1008,13 +957,15 @@ function validate_upload($the_file, $real_file_name='') {
             $emsg.= "error§" . sprintf(_("Die Datei konnte nicht &uuml;bertragen werden: Die maximale Gr&ouml;sse f&uuml;r einen Upload (%s Megabyte) wurde &uuml;berschritten!"), $max_filesize / 1048576);
         }
     }
+
     if ($emsg) {
         $msg.=$emsg;
-        return FALSE;
+        return false;
+    } else {
+        return true;
         }
-    else
-        return TRUE;
 }
+
 
 //der eigentliche Upload
 function upload($the_file, $refresh, $range_id)
