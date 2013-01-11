@@ -112,19 +112,12 @@ class NewsController extends StudipController
                 $show_admin = $GLOBALS['perm']->have_perm('root');
             }
 
-            else if ('sem' === $object_type) {
+            else if (in_array($object_type, words('sem inst fak'))) {
 
                 if ($_SESSION['SessionSeminar'] === (string)$range) {
                     $permitted = TRUE;
                     $show_admin = $GLOBALS['perm']->have_studip_perm('tutor', $range);
                 }
-            }
-
-            // NW-FVA
-            // alle Einrichtungsnews auf Startseite
-            else if (in_array($object_type, words('inst fak'))) {
-                $permitted = TRUE;
-                $show_admin = $GLOBALS['perm']->have_studip_perm('tutor', $range);
             }
 
             else if ('user' === $object_type) {
