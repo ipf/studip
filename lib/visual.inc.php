@@ -316,9 +316,10 @@ function formatReady ($what, $trim = TRUE, $extern = FALSE, $wiki = FALSE, $show
 /**
  * simplified version of formatReady that handles only link formatting
  *
- * @param        string $what        what to format
+ * @param    string $what   what to format
+ * @param    bool $nl2br    convert newlines to <br>
  */
-function formatLinks($what)
+function formatLinks($what, $nl2br = true)
 {
     $link_markup_rule = StudipFormat::getStudipMarkup("links");
     $markup = new TextFormat();
@@ -328,7 +329,7 @@ function formatLinks($what)
         $link_markup_rule['end'],
         $link_markup_rule['callback']
     );
-    return $markup->format(htmlReady($what));
+    return $markup->format(htmlReady($what, true, $nl2br));
 }
 
 /**

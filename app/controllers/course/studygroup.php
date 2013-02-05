@@ -606,8 +606,8 @@ class Course_StudygroupController extends AuthenticatedController {
                                     . "AND seminar_user.Seminar_id IS NULL "
                                     . "AND " . get_vis_query()
                                     . " AND (username LIKE :input OR Vorname LIKE :input "
-                                    . "OR CONCAT(Vorname,' ',Nachname) LIKE :input " 
-                                    . "OR CONCAT(Nachname,' ',Vorname) LIKE :input " 
+                                    . "OR CONCAT(Vorname,' ',Nachname) LIKE :input "
+                                    . "OR CONCAT(Nachname,' ',Vorname) LIKE :input "
                                     . "OR Nachname LIKE :input OR {$GLOBALS['_fullname_sql']['full_rev']} LIKE :input) "
                                     . "ORDER BY fullname ASC",
                                     _("Nutzer suchen"), "user_id");
@@ -651,10 +651,12 @@ class Course_StudygroupController extends AuthenticatedController {
                     $msg->insert_message(addslashes($message), get_username($receiver),'', '', '', '', '', addslashes($subject));
                     $this->flash['success'] = sprintf(_("%s wurde in die Studiengruppe eingeladen."), get_fullname($receiver, 'full', true));
                 }
-            }
-            elseif ($perm->have_studip_perm('dozent', $id)) {
+            } elseif ($perm->have_studip_perm('tutor', $id)) {
                 if(!$perm->have_studip_perm('dozent',$id,get_userid($user))) {
-                    if ($action == 'promote' && $status != 'dozent') {
+                    if ($action == 'promote' && $status != 'dozent' && $perm->have_studip_perm('dozent',$id)) {
+                        StudygroupModel::promote_user($user,$id,$status);
+                        $this->flash['success'] = sprintf(_("Der Status des Nutzers %s wurde geändert."), get_fullname_from_uname($user, 'full', true));
+                    } elseif ($action == 'promote' && $status == 'autor' && $perm->have_studip_perm('tutor',$id) && $GLOBALS['auth']->auth['uname'] == $user) {
                         StudygroupModel::promote_user($user,$id,$status);
                         $this->flash['success'] = sprintf(_("Der Status des Nutzers %s wurde geändert."), get_fullname_from_uname($user, 'full', true));
                     } elseif ($action == 'remove') {
