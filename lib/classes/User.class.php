@@ -127,14 +127,6 @@ class User extends SimpleORMap
     }
 
     /**
-     * @see SimpleORMap::setId()
-     */
-    function setId($id)
-    {
-        return $this->auth_user_md5->setId($id);
-    }
-
-    /**
      * @see SimpleORMap::getNewId()
      */
     function getNewId()
@@ -147,6 +139,7 @@ class User extends SimpleORMap
      */
     function getWhereQuery()
     {
+        $this->auth_user_md5->setId($this->getId());
         return $this->auth_user_md5->getWhereQuery();
     }
 
@@ -166,7 +159,6 @@ class User extends SimpleORMap
     function restore()
     {
         $where_query = $this->getWhereQuery();
-
         if ($where_query) {
             $query = "SELECT *, user_info.user_id as user_info_set FROM auth_user_md5 LEFT JOIN user_info USING (user_id) WHERE "
                     . join(" AND ", $where_query);
@@ -175,16 +167,16 @@ class User extends SimpleORMap
                 if ($this->setData($rs[0], true)){
                     $this->setNew(false);
                     return true;
-                } else {
-                    $this->setNew(true);
-                    return false;
                 }
             }
-        } else {
-            $this->setNew(true);
-            $this->initializeContent();
-            return FALSE;
+            $id = $this->getId();
         }
+        $this->initializeContent();
+        $this->setNew(true);
+        if (isset($id)) {
+            $this->setId($id);
+        }
+        return false;
     }
 
     /**
@@ -192,6 +184,9 @@ class User extends SimpleORMap
      */
     function store()
     {
+        if ($this->isNew() && !$this->getId()) {
+            $this->setId($this->getNewId());
+        }
         $data = $this->toArray();
         $this->auth_user_md5->setData($data, true);
         $this->auth_user_md5->setNew($this->isNew());
@@ -218,7 +213,12 @@ class User extends SimpleORMap
      */
     function triggerChdate()
     {
-       return $this->user_info->triggerChdate();
+        $this->user_info->setId($this->getId());
+        $this->user_info->setNew($this->isNew() || !$this->user_info_exists);
+        if ($ret = $this->user_info->triggerChdate()) {
+            $this->content['chdate'] = $this->content_db['chdate'] = $this->user_info->chdate;
+        }
+        return $ret;
     }
 
     /**
@@ -226,10 +226,16 @@ class User extends SimpleORMap
      */
     function delete()
     {
+        $this->auth_user_md5->setId($this->getId());
+        $this->auth_user_md5->setNew($this->isNew());
+        $this->user_info->setId($this->getId());
+        $this->user_info->setNew($this->isNew() || !$this->user_info_exists);
         $ret = $this->auth_user_md5->delete();
         if ($ret) {
             $this->user_info->delete();
         }
+        $this->setNew(true);
+        $this->setData(array(), true);
         return $ret;
     }
 

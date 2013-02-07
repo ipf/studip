@@ -212,10 +212,10 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
         if (!$this->db_fields){
             $this->getTableScheme();
         }
-        if ($id){
+        if ($id) {
             $this->setId($id);
-            $this->restore();
         }
+        $this->restore();
     }
 
     protected function getTableScheme()
@@ -516,7 +516,6 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
     function restore()
     {
         $where_query = $this->getWhereQuery();
-
         if ($where_query) {
             $query = "SELECT * FROM `{$this->db_table}` WHERE "
                     . join(" AND ", $where_query);
@@ -525,16 +524,16 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                 if ($this->setData($rs[0], true)){
                     $this->setNew(false);
                     return true;
-                } else {
-                    $this->setNew(true);
-                    return false;
                 }
             }
-        } else {
-            $this->setNew(true);
-            $this->initializeContent();
-            return FALSE;
+            $id = $this->getId();
         }
+        $this->initializeContent();
+        $this->setNew(true);
+        if (isset($id)) {
+            $this->setId($id);
+        }
+        return false;
     }
 
     /**
@@ -558,8 +557,10 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
                     $value = time();
                 }
                 if ($field == 'mkdate') {
-                    if($this->isNew()) {
-                        $value = time();
+                    if ($this->isNew()) {
+                        if (!$this->isFieldDirty($field)) {
+                            $value = time();
+                        }
                     } else {
                         continue;
                     }
@@ -608,6 +609,7 @@ class SimpleORMap implements ArrayAccess, Countable, IteratorAggregate
             if ($where_query = $this->getWhereQuery()){
                 DBManager::get()->exec("UPDATE `{$this->db_table}` SET chdate={$this->content['chdate']}
                             WHERE ". join(" AND ", $where_query));
+                $this->content_db['chdate'] = $this->content['chdate'];
                 return true;
             }
         } else {
