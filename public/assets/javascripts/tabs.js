@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 
   if (window.STUDIP == null) window.STUDIP = {};
 
@@ -86,4 +86,4 @@
     return tabs.compress();
   });
 
-}).call(this);
+}).call(this, jQuery);
