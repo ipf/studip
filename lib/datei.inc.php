@@ -83,9 +83,13 @@ function parse_link($link, $level=0) {
         return FALSE;
     if ($link == "***" && $link_update)
         $link = getLinkPath($link_update);
+
+    $url_parts = @parse_url( $link );
+    if (strtolower($url_parts["host"]) === 'localhost' || strpos($url_parts["host"],'127') === 0) {
+        return array('response' => 'HTTP/1.0 400 Bad Request', 'response_code' => 400);
+    }
     if (substr($link,0,6) == "ftp://") {
         // Parsing an FTF-Adress
-        $url_parts = @parse_url( $link );
         $documentpath = $url_parts["path"];
 
         if (strpos($url_parts["host"],"@")) {
@@ -103,10 +107,8 @@ function parse_link($link, $level=0) {
 
         if (!$url_parts["user"]) $url_parts["user"] = "anonymous";
         if (!$url_parts["pass"]) {
-            $mailclass = new studip_smtp_class;
-            $mailtmp = $mailclass->localhost;
-            if ($mailtmp == "127.0.0.1") $mailtmp = "localhost.de";
-            $url_parts["pass"] = "wwwrun%40".$mailtmp;
+            $mailclass = new StudipMail();
+            $url_parts["pass"] = $mailclass->getSenderEmail();
         }
         if (!@ftp_login($ftp,$url_parts["user"],$url_parts["pass"])) {
             ftp_quit($ftp);
@@ -114,16 +116,17 @@ function parse_link($link, $level=0) {
         }
         $parsed_link["Content-Length"] = ftp_size($ftp, $documentpath);
         ftp_quit($ftp);
-        if ($parsed_link["Content-Length"] != "-1")
+        if ($parsed_link["Content-Length"] != "-1") {
             $parsed_link["HTTP/1.0 200 OK"] = "HTTP/1.0 200 OK";
-        else
+            $parsed_link["response_code"] = 200;
+        } else {
             $parsed_link = FALSE;
+        }
         $url_parts["pass"] = preg_replace("!@!","%40",$url_parts["pass"]);
         $the_link = "ftp://".$url_parts["user"].":".$url_parts["pass"]."@".$url_parts["host"].$documentpath;
         return $parsed_link;
 
     } else {
-        $url_parts = @parse_url( $link );
         if (!empty( $url_parts["path"])){
             $documentpath = $url_parts["path"];
         } else {
@@ -134,8 +137,11 @@ function parse_link($link, $level=0) {
         }
         $host = $url_parts["host"];
         $port = $url_parts["port"];
-
-        if (substr($link,0,8) == "https://") {
+        $scheme = strtolower($url_parts['scheme']);
+        if (!in_array($scheme , words('http https'))) {
+            return array('response' => 'HTTP/1.0 400 Bad Request', 'response_code' => 400);
+        }
+        if ($scheme == "https") {
             $ssl = TRUE;
             if (empty($port)) $port = 443;
         } else {
