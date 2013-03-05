@@ -36,4 +36,5 @@ $ilias_status =
 $ilias_systemgroup =
 $_fullname_sql =
 $SEM_TREE_TYPES =
+$STUDIP_AUTH_CONFIG_STANDARD =
 array();
