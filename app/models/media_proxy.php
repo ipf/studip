@@ -174,7 +174,8 @@ class MediaProxy
         if ($response['response_code'] != 200) {
             throw new MediaProxyException($response['response']);
         } else if (!isset($response['content-type'])
-            || !in_array(array_shift(explode('/', $response['content-type'])), words('image audio video')) ) {
+            || !in_array(array_shift(explode('/', $response['content-type'])), words('image audio video'))
+            || stripos($response['content-type'], 'svg') !== false) {
             throw new MediaProxyException('HTTP/1.1 415 Unsupported Media Type');
         }
 
