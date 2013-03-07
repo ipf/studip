@@ -1043,9 +1043,9 @@ while (list ($key, $val) = each ($gruppe)) {
                 $users[] = $db_mail->f("Email");
             }
             $all_user = implode(',', $users);
-
-            echo '<a href="mailto:'.$all_user.'">';
-            echo Assets::img('icons/16/blue/move_right/mail.png', array('title' => sprintf(_('E-Mail an alle %s schicken'), $val), 'align' => 'absmiddle'));
+            $text = sprintf(_('E-Mail an alle %s schicken'), $val);
+            echo '<a href="mailto:'.$all_user.'" title="'.$text.'">';
+            echo Assets::img('icons/16/blue/move_right/mail.png', array('alt'=>$text, 'align' => 'absmiddle'));
             echo '</a>&nbsp;';
         }
 
@@ -1054,8 +1054,9 @@ while (list ($key, $val) = each ($gruppe)) {
         } else {
             $msg_params = array('filter' => 'send_sms_to_all', 'who' => $key, 'sms_source_page' => 'teilnehmer.php?cid=' . $_SESSION['SessionSeminar'], 'course_id' => $SessSemName[1], 'subject' => $subject);
         }
-        echo '<a href="'.URLHelper::getLink('sms_send.php', $msg_params).'">';
-        echo Assets::img('icons/16/blue/mail.png', array('title' => sprintf(_('Nachricht an alle %s schicken'), $val), 'align' => 'absmiddle'));
+        $text =  sprintf(_('Nachricht an alle %s schicken'), $val);
+        echo '<a href="'.URLHelper::getLink('sms_send.php', $msg_params).'" title="'.$text.'">';
+        echo Assets::img('icons/16/blue/mail.png', array('alt'=>$text ,'align' => 'absmiddle'));
         echo '</a>';
         echo '</td>';
     } else {
