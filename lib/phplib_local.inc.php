@@ -118,7 +118,7 @@ require_once 'lib/navigation/AutoNavigation.php';
 require_once 'lib/classes/PageLayout.php';
 
 //software version - please leave it as it is!
-$SOFTWARE_VERSION = '2.3';
+$SOFTWARE_VERSION = '2.3.1';
 
 // set dummy navigation until db is ready
 Navigation::setRootNavigation(new Navigation(''));
