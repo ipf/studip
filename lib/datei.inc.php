@@ -1045,8 +1045,10 @@ function validate_upload($the_file, $real_file_name='') {
             $active_upload_type = "attachments";
             $sem_status = $GLOBALS['perm']->get_perm();
         } else {
-            $sem_status = $GLOBALS['perm']->get_studip_perm($SessSemName[1]);
-            $active_upload_type = $SessSemName["art_num"];
+            if (Request::option('cid')) {
+                $sem_status = $GLOBALS['perm']->get_studip_perm($SessSemName[1]);
+                $active_upload_type = $SessSemName["art_num"];
+            }
             if (!isset($UPLOAD_TYPES[$active_upload_type])) {
                 $active_upload_type = 'default';
             }
@@ -1627,7 +1629,7 @@ function display_file_line ($datei, $folder_id, $open, $change, $move, $upload, 
         $type = ($datei['url'] != '')? 6 : 0;
         // LUH Spezerei:
         if (check_protected_download($datei["dokument_id"])) {
-            print "<a href=\"".GetDownloadLink( $datei["dokument_id"], $datei["filename"], $type, "normal")."\" class=\"extern\"><img src=\"".$GLOBALS['ASSETS_URL']."images/".GetFileIcon(getFileExtension($datei['filename']))."\"></a>";
+            print "<a href=\"".GetDownloadLink( $datei["dokument_id"], $datei["filename"], $type, "normal")."\" class=\"extern\">".GetFileIcon(getFileExtension($datei['filename']), true)."</a>";
         } else {
             print Assets::img('icons/16/grey/info-circle.png');
         }
