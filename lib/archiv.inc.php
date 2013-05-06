@@ -536,6 +536,9 @@ function in_archiv ($sem_id)
         if (is_array($sem_path)) {
             $studienbereiche = join(', ', $sem_path);
         }
+    } else { 
+        // hier studienbereiche auf leerstring setzen, da die DB kein NULL für dieses attribut akzeptiert.
+        $studienbereiche = "";
     }
 
     // das Heimatinstitut als erstes
