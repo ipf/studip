@@ -280,7 +280,11 @@ class ModulesNotification extends Modules {
                     } else if ($r_data['newparticipants'] > 0) {
                         $text = _("1 neuer TeilnehmerIn:");
                     }
-                    $redirect = '&redirect_to=teilnehmer.php';
+                    if (SeminarCategories::getByTypeId($r_data['sem_status'])->studygroup_mode) {
+                        $redirect = '&redirect_to=dispatch.php/course/studygroup/members/';
+                    } else {
+                        $redirect = '&redirect_to=teilnehmer.php';
+                    }
                     $icon = "icons/16/blue/persons.png";
                 }
                 break;
