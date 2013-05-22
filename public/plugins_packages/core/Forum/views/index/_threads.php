@@ -1,28 +1,17 @@
 <br>
 
+<? if (trim($constraint['content'])) : ?>
 <div class="posting">
     <span class="corners-top"><span></span></span>
     <div class="postbody">
         <div class="content"><?= formatReady(ForumEntry::killEdit($constraint['content'])) ?></div>
     </div>
-    <dl class="postprofile" style="min-height: 20px">
-        <dt>
-            <? if ($constraint['user_id'] != 'nobody' && $constraint['user_id']) : ?>
-            <a href="<?= URLHelper::getLink('about.php?username='. get_username($constraint['user_id'])) ?>">
-                <?= Avatar::getAvatar($constraint['user_id'])->getImageTag(Avatar::SMALL,
-                    array('title' => get_username($constraint['user_id']))) ?>
-                    <?= get_fullname($constraint['user_id']) ?>
-            </a>
-            <? elseif (!$constraint['user_id']) : ?>
-                <?= _('von Stud.IP erstellt') ?>
-            <? endif ?>
-        </dt>
-    </dl>
     <span class="corners-bottom"><span></span></span>
 </div>
+<? endif ?>
 
 <div id="sortable_areas">
-<? foreach ($list as $category_id => $entries) : ?>
+<? if (!empty($list)) foreach ($list as $category_id => $entries) : ?>
 <table class="forum" data-category-id="<?= $category_id ?>">
     <thead>
     <tr>
