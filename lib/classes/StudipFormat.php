@@ -541,7 +541,9 @@ class StudipFormat extends TextFormat
 
         $linkmarkup = clone $markup;
         $linkmarkup->removeMarkup("links");
-        
+        $linkmarkup->removeMarkup("wiki-links");
+        $linkmarkup->removeMarkup("wiki-links-short");
+
         return sprintf('<a class="%s" href="%s"%s>%s</a>',
             $intern ? "link-intern" : "link-extern",
             $url,
