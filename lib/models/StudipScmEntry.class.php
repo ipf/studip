@@ -35,8 +35,10 @@
 class StudipScmEntry extends SimpleORMap
 {
 
-    public static function GetSCMEntriesForRange($range_id, $as_objects = false){
-        return SimpleORMapCollection::createFromArray(self::findByRange_id($range_id))->toGroupedArray();
+    public static function GetSCMEntriesForRange($range_id, $as_objects = false)
+    {
+        $scms = self::findByRange_id($range_id, 'ORDER BY mkdate ASC');
+        return SimpleORMapCollection::createFromArray($scms)->toGroupedArray();
     }
 
     public static function GetNumSCMEntriesForRange($range_id)
