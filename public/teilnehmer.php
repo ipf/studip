@@ -476,9 +476,9 @@ if (Seminar_Session::check_ticket(Request::option('studipticket')) && !LockRules
             $query = "DELETE FROM admission_seminar_user WHERE seminar_id = ? AND user_id = ?";
             $admission_raus_statement = DBManager::get()->prepare($query);
 
-            foreach ($adm_delete as $username) {
-                $data_statement->execute(array($username));
-                $data = $data_statement->execute(array($username));
+            foreach ($adm_delete as $one) {
+                $data_statement->execute(array($one));
+                $data = $data_statement->fetch(PDO::FETCH_ASSOC);
                 $data_statement->closeCursor();
 
                 $userchange = $data['user_id'];
@@ -494,7 +494,7 @@ if (Seminar_Session::check_ticket(Request::option('studipticket')) && !LockRules
                     }
                     restoreLanguage();
 
-                    $messaging->insert_message(mysql_escape_string($message), $username, "____%system%____", FALSE, FALSE, "1", FALSE, _("Systemnachricht:")." "._("nicht zugelassen in Veranstaltung"), TRUE);
+                    $messaging->insert_message(mysql_escape_string($message), $one, "____%system%____", FALSE, FALSE, "1", FALSE, _("Systemnachricht:")." "._("nicht zugelassen in Veranstaltung"), TRUE);
 
                     $msgs[] = $fullname;
 
@@ -515,7 +515,7 @@ if (Seminar_Session::check_ticket(Request::option('studipticket')) && !LockRules
         $cmd = 'admission_rein';
         $username = key($admission_rein);
     }
-    $admission_insert == Request::getArray('admission_insert');
+    $admission_insert = Request::getArray('admission_insert');
     //aus der Anmelde- oder Warteliste in die Veranstaltung hochstufen / aus der freien Suche als Tutoren oder Autoren eintragen
     if ((Request::submitted('do_admission_insert') && !empty($admission_insert)) || (($cmd ==  "admission_rein" || $cmd == "add_user") && $username)){
         //erst mal sehen, ob er hier wirklich Dozent ist...
