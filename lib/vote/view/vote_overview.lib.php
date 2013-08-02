@@ -14,7 +14,7 @@
  * @package     vote
  * @modulegroup vote_modules
  */
- 
+
 use Studip\Button, Studip\LinkButton;
 
 include_once("lib/vote/view/vote_show.lib.php");
@@ -613,7 +613,7 @@ function makeTableDataCellForm( $displayclass = "table_row_even",
         $button = LinkButton::create(decodeHTML($button_tooltip), URLHelper::getURL(VOTE_FILE_ADMIN, $linkparams), array('title' => decodeHTML($button_tooltip)));
     }
     else{
-        $button .= "<a href=\"".URLHelper::getLink($link)."\">";
+        $button .= "<a href=\"".URLHelper::getLink(VOTE_FILE_ADMIN, $linkparams)."\">";
         $button .= "<img src=\"" . Assets::image_path('icons/16/blue/visibility-' . $button_name . '.png') . "\" alt=\"".$button_name."\" title=\"".$button_tooltip."\" class=\"middle\"></a>";
     }
 
@@ -675,7 +675,7 @@ function makeNewVoteSelectForm($action){
         $html .= "<font size=\"-1\">".$range[0][1]."</font>\n"
               . "      <input type=\"hidden\" name=\"rangeID\" value=\"".$range[0][0]."\">\n";
     }
-          
+
     $html   .=      Button::create(decodeHTML($label["selections_tooltip"]), 'new', array('title' => decodeHTML($label["selections_tooltip"])))
             . "     <br>&nbsp;</form>\n"
             . "   </td>\n";
@@ -793,3 +793,4 @@ function makeArrow($timestmp ,$open, $displayclass, $mode, $voteID = NULL)
          .  "    </td>\n";
     return $html;
 }
+

@@ -2,7 +2,7 @@
 
 /*
  *  Copyright (c) 2012  Rasmus Fuhse <fuhse@data-quest.de>
- * 
+ *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License as
  *  published by the Free Software Foundation; either version 2 of
@@ -12,7 +12,7 @@
 require_once 'lib/modules/StudipModule.class.php';
 
 class CoreScm implements StudipModule {
-    
+
     function getIconNavigation($course_id, $last_visit, $user_id) {
         if (get_config('SCM_ENABLE')) {
             $navigation = new Navigation(_('Ablaufplan'), "seminar_main.php?auswahl=$course_id&redirect_to=dates.php&date_type=all");
@@ -22,12 +22,12 @@ class CoreScm implements StudipModule {
             return null;
         }
     }
-    
+
     function getTabNavigation($course_id) {
         if (get_config('SCM_ENABLE')) {
             $scms = array_values(StudipScmEntry::GetSCMEntriesForRange($course_id));
 
-            $navigation = new Navigation($scms[0]['tab_name']);
+            $navigation = new Navigation($scms[0]['tab_name'] ?: _('Informationen'));
             $navigation->setImage('icons/16/white/infopage.png');
             $navigation->setActiveImage('icons/16/black/infopage.png');
 
@@ -44,12 +44,12 @@ class CoreScm implements StudipModule {
             return null;
         }
     }
- 
+
     function getNotificationObjects($course_id, $since, $user_id)
     {
         $items = array();
         $type = get_object_type($course_id, array('sem', 'inst', 'fak'));
-        
+
         if ($type == 'sem') {
             $query = 'SELECT scm.*, seminare.Name, '. $GLOBALS['_fullname_sql']['full'] .' as fullname
                 FROM scm
@@ -57,7 +57,7 @@ class CoreScm implements StudipModule {
                 JOIN user_info USING (user_id)
                 JOIN seminar_user ON (range_id = Seminar_id)
                 JOIN seminare USING (Seminar_id)
-                WHERE seminar_user.user_id = ? AND Seminar_id = ? 
+                WHERE seminar_user.user_id = ? AND Seminar_id = ?
                     AND scm.chdate > ?';
         } else {
             $query = 'SELECT scm.*, Institute.Name, '. $GLOBALS['_fullname_sql']['full'] .' as fullname
@@ -66,13 +66,13 @@ class CoreScm implements StudipModule {
                 JOIN user_info USING (user_id)
                 JOIN user_inst ON (range_id = Institut_id)
                 JOIN Institute USING (Institut_id)
-                WHERE user_inst.user_id = ? AND Institut_id = ? 
+                WHERE user_inst.user_id = ? AND Institut_id = ?
                     AND scm.chdate > ?';
         }
-        
+
         $stmt = DBManager::get()->prepare($query);
         $stmt->execute(array($user_id, $course_id, $since));
-        
+
         while ($row = $stmt->fetch()) {
             // use correct text depending on type of object
             if ($type == 'sem') {
@@ -90,7 +90,7 @@ class CoreScm implements StudipModule {
                 $row['chdate']
             );
         }
-        
+
         return $items;
-    }   
+    }
 }
