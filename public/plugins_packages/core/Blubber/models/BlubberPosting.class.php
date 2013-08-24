@@ -111,18 +111,18 @@ class BlubberPosting extends SimpleORMap {
      * @return array of Seminar_ids
      */
     static public function getMyBlubberCourses() {
+        $blubber_plugin_info = PluginManager::getInstance()->getPluginInfo('Blubber');
+
         $statement = DBManager::get()->prepare(
             "SELECT seminar_user.Seminar_id " .
             "FROM seminar_user " .
                 "INNER JOIN seminare ON (seminare.Seminar_id = seminar_user.Seminar_id) " .
-                "INNER JOIN plugins_activated ON (plugins_activated.poiid = CONCAT('sem', seminar_user.Seminar_id)) " .
-                "INNER JOIN plugins ON (plugins_activated.pluginid = plugins.pluginid) " .
+                "INNER JOIN plugins_activated ON (pluginid = :blubber_id AND plugins_activated.poiid = CONCAT('sem', seminar_user.Seminar_id)) " .
             "WHERE seminar_user.user_id = :user_id " .
                 "AND plugins_activated.state = 'on' " .
-                "AND plugins.pluginclassname = 'Blubber' " .
             "ORDER BY seminare.start_time ASC, seminare.name ASC " .
         "");
-        $statement->execute(array('user_id' => $GLOBALS['user']->id));
+        $statement->execute(array('user_id' => $GLOBALS['user']->id, 'blubber_id' => $blubber_plugin_info['id']));
         return $statement->fetchAll(PDO::FETCH_COLUMN, 0);
     }
 
@@ -406,11 +406,34 @@ class BlubberPosting extends SimpleORMap {
      * false if this posting is a comment.
      * @return array|boolean : array of BlubberPosting or false if posting is a comment.
      */
-    public function getChildren() {
+    public function getChildren($offset = 0, $limit = null) {
         if ($this->isThread()) {
-            return self::findBySQL("root_id = ? AND parent_id != '0' ORDER BY mkdate ASC", array($this->getId()));
+            return self::findBySQL(
+                "root_id = ? AND parent_id != '0' ORDER BY mkdate DESC ".($limit > 0 ? "LIMIT ".(int) $offset .", ".(int) $limit : ""), 
+                array($this->getId())
+            );
         } else {
             return false;
+        }
+    }
+    
+    /**
+     * Returns the number of children/comments the thread has. Returns 0 if 
+     * posting is a comment on its own.
+     * @return integer: number of all children
+     */
+    public function getNumberOfChildren() {
+        if ($this->isThread()) {
+            $statement = DBManager::get()->prepare(
+                "SELECT COUNT(*) " .
+                "FROM blubber " .
+                "WHERE root_id = ? " .
+                    "AND parent_id != '0' " .
+            "");
+            $statement->execute(array($this->getId()));
+            return $statement->fetch(PDO::FETCH_COLUMN, 0);
+        } else {
+            return 0;
         }
     }
 
