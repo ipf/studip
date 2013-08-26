@@ -12,7 +12,7 @@
             </th>
             <th class="table_header_bold" style="text-align:right">
             <? if ($is_tutor) : ?>
-                <?=$controller->getEmailLinkByStatus('dozent')?>
+                <?=$controller->getEmailLinkByStatus('dozent', $dozenten)?>
                 <a href="<?= URLHelper::getLink('sms_send.php', array('filter' => 'send_sms_to_all', 'who' =>
                         'dozent', 'sms_source_page' => 'dispatch.php/course/members',
                         'course_id' => $course_id, 'subject' => $subject)) ?>">
@@ -37,7 +37,7 @@
     <tbody>
         <? $nr = 0?>
         <? foreach($dozenten as $dozent) : ?>
-        <? $fullname = $dozent->user->getFullName('full_rev');?>
+        <? $fullname = $dozent['fullname'];?>
         <tr>
             <td style="text-align: right"><?= (++$nr < 10) ? sprintf('%02d', $nr) : $nr ?></td>
             <td>

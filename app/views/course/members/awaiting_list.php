@@ -18,7 +18,7 @@
                     <?= $waitingTitle ?>
                 </th>
                 <th class="table_header_bold" style="text-align: right">
-                    <?=$controller->getEmailLinkByStatus('awaiting')?>
+                    <?=$controller->getEmailLinkByStatus('awaiting', $awaiting)?>
                     <a href="<?= URLHelper::getLink('sms_send.php',
                             array('sms_source_page' => 'dispatch.php/course/members?cid=' . $course_id,
                                 'course_id' => $course_id,
@@ -56,7 +56,7 @@
         <tbody>
         <? $nr = 0 ?>
         <? foreach($awaiting as $waiting) : ?>
-        <? $fullname = $waiting->user->getFullName('full_rev');?>
+        <? $fullname = $waiting['fullname'];?>
             <tr>
                 <td>
                 <? if (!$is_locked) : ?>

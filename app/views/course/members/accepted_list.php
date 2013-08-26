@@ -21,7 +21,7 @@
                     <?= _('Vorläufig akzeptierte TeilnehmerInnen') ?>
                 </th>
                 <th class="table_header_bold" style="text-align: right">
-                    <?=$controller->getEmailLinkByStatus('accepted')?>
+                    <?=$controller->getEmailLinkByStatus('accepted', $accepted)?>
                     <a href="<?= URLHelper::getLink('sms_send.php',
                             array('filter' => 'prelim',
                                 'sms_source_page' => 'dispatch.php/course/members?cid=' . $course_id,
@@ -61,7 +61,7 @@
         </thead>
         <tbody>
         <? $nr= 0; foreach($accepted as $accept) : ?>
-        <? $fullname = $accept->user->getFullName('full_rev');?>
+        <? $fullname = $accept['fullname'];?>
             <tr>
                 <? if (!$is_locked) : ?>
                 <td>
