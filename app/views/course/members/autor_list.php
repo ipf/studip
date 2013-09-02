@@ -117,7 +117,7 @@
                     </td>
                     <? if ($semAdmissionEnabled) : ?>
                         <td>
-                            <?= ($autor['admission_studiengang_id'] == 'all') ? _('alle Studiengänge') : '' ?>
+                            <?= ($autor['kontingent'] == 'all') ? _('alle Studiengänge') : htmlReady($autor['kontingent']) ?>
                         </td>
                     <? endif ?>
                 <? endif ?>
