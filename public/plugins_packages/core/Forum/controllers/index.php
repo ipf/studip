@@ -458,10 +458,10 @@ class IndexController extends StudipController
                     ForumEntry::delete($topic_id);
                     $this->flash['messages'] = array('success' => sprintf(_('Der Eintrag %s wurde gelöscht!'), $topic['name']));
                 } else {
-                    $this->flash['messages'] = array('info' => 
+                    $this->flash['messages'] = array('info_html' => 
                         sprintf(_('Sind sie sicher dass Sie den Eintrag %s löschen möchten?'), $topic['name'])
                         . '<br>'. \Studip\LinkButton::createAccept(_('Ja'), PluginEngine::getUrl('coreforum/index/delete_entry/'. $topic_id .'?approve_delete=1'))
-                        . \Studip\LinkButton::createCancel(_('Nein'), PluginEngine::getUrl('coreforum/index/index/'. $topic_id .'/'. $page))
+                        . \Studip\LinkButton::createCancel(_('Nein'), PluginEngine::getUrl('coreforum/index/index/'. ForumEntry::getParentTopicId($topic_id) .'/'. $page))
                     );
                 }
             } else {
@@ -785,6 +785,8 @@ class IndexController extends StudipController
         $layout = $GLOBALS['template_factory']->open('layouts/base');
         $this->set_layout($layout);
 
+        // Set help keyword for Stud.IP's user-documentation and page title
+        PageLayout::setHelpKeyword('Basis.Forum');
         PageLayout::setTitle(getHeaderLine($this->getId()) .' - '. _('Forum'));
 
         $this->AVAILABLE_DESIGNS = array('web20', 'studip');
