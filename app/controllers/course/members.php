@@ -109,6 +109,9 @@ class Course_MembersController extends AuthenticatedController
             'user' => get_title_for_status('user', 1)
         );
 
+        //check for admission / waiting list
+        update_admission($this->course_id);
+
         // Create new MembersModel, to get additionanl informations to a given Seminar
         $this->members = new MembersModel($this->course_id, $this->course_title);
         $this->members->checkUserVisibility();
@@ -171,6 +174,7 @@ class Course_MembersController extends AuthenticatedController
         // Check Seminar
         if ($this->is_tutor && $sem->isAdmissionEnabled()) {
             $this->semAdmissionEnabled = true;
+            $this->course = $sem;
             $this->count = $this->members->getCountedMembers();
         }
         // Set the infobox
@@ -534,10 +538,11 @@ class Course_MembersController extends AuthenticatedController
             // create a usable array
             foreach ($this->flash['users'] as $user => $val) {
                 if ($val) {
-                    $users[] = UserModel::getUser($user, 'username');
+                    $users[] = User::find($user)->username;
                 }
             }
-            $_SESSION['sms_data']['p_rec'] = $users;
+            $_SESSION['sms_data'] = array();
+            $_SESSION['sms_data']['p_rec'] = array_filter($users);
             $this->redirect(URLHelper::getURL('sms_send.php', array('sms_source_page' => 'dispatch.php/course/members/index', 'messagesubject' => $this->getSubject(), 'tmpsavesnd' => 1)));
         } else {
             $this->redirect('course/members/index');

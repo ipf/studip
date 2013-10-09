@@ -21,7 +21,7 @@ class MembersModel
 
         $query1 = "SELECT COUNT(user_id) AS members, SUM(admission_studiengang_id != '') AS members_contingent
                    FROM seminar_user
-                   WHERE Seminar_id = ? AND status IN ('user', 'autor')";
+                   WHERE Seminar_id = ? AND status IN ('user','autor','tutor')";
 
         $stm = DBManager::get()->prepare($query1);
         $stm->execute(array($this->course_id));
@@ -409,8 +409,6 @@ class MembersModel
             $filtered_members[$status] = $application_members->findBy('status', $status);
             if ($status == $sort_status) {
                 $filtered_members[$status]->orderBy($order_by, (strpos($order_by, 'nachname') === false ? SORT_NUMERIC : SORT_LOCALE_STRING));
-            } else {
-                $filtered_members[$status]->orderBy('nachname asc', SORT_LOCALE_STRING);
             }
         }
         return $filtered_members;

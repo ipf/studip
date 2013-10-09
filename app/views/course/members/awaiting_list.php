@@ -20,7 +20,8 @@
                 <th class="table_header_bold" style="text-align: right">
                     <?=$controller->getEmailLinkByStatus('awaiting', $awaiting)?>
                     <a href="<?= URLHelper::getLink('sms_send.php',
-                            array('sms_source_page' => 'dispatch.php/course/members?cid=' . $course_id,
+                            array('filter' => 'waiting',
+                                'sms_source_page' => 'dispatch.php/course/members?cid=' . $course_id,
                                 'course_id' => $course_id,
                                 'subject' => $subject))?>">
                         <?= Assets::img('icons/16/white/inbox.png', tooltip2( _('Nachricht an alle NutzerInnen versenden')))?>
