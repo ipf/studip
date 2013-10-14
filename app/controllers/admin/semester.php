@@ -239,7 +239,7 @@ class Admin_SemesterController extends AuthenticatedController
                     $details[] = _("Bitte geben Sie einen Namen ein.");
                 }
                 if ($holiday['beginn'] > $holiday['ende']) {
-                    $details[] = _("Das Ferienende leigt vor dem Beginn.");
+                    $details[] = _("Das Ferienende liegt vor dem Beginn.");
                 }
                 PageLayout::postMessage(MessageBox::error(_("Ihre eingegeben Daten sind ungültig."), $details));
             } elseif ($this->holiday->store()) {
