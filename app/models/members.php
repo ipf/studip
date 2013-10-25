@@ -137,9 +137,6 @@ class MembersModel
                 $messaging->insert_message($message, $temp_user['username'],
                                 '____%system%____', FALSE, FALSE, '1', FALSE, sprintf('%s %s', _('Systemnachricht:'),
                                         _("Abonnement aufgehoben")), TRUE);
-                RemovePersonStatusgruppeComplete($temp_user['username'], $this->course_id);
-                // logging
-                log_event('SEM_USER_DEL', $this->course_id, $user_id, 'Wurde aus der Veranstaltung rausgeworfen');
                 $msgs[] = $temp_user['Vorname'] . ' ' . $temp_user['Nachname'];
             }
         }
