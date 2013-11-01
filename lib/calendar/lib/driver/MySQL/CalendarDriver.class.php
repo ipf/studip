@@ -145,9 +145,9 @@ class CalendarDriver
             }
 
             $query = "SELECT $select_sem "
-                    . "FROM (SELECT termin_id,range_id,date,end_time,mkdate,chdate,date_typ,content,metadate_id, 0 as ex_termin
+                    . "FROM (SELECT termin_id,range_id,date,end_time,mkdate,chdate,date_typ,content,metadate_id, 0 as ex_termin, raum
                         FROM termine WHERE range_id IN (?) AND date BETWEEN ? AND ?
-                        UNION SELECT termin_id,range_id,date,end_time,mkdate,chdate,date_typ,content,metadate_id, 1 as ex_termin
+                        UNION SELECT termin_id,range_id,date,end_time,mkdate,chdate,date_typ,content,metadate_id, 1 as ex_termin, raum
                         FROM ex_termine WHERE content <> '' AND range_id IN (?) AND date BETWEEN ? AND ?) as t
                         LEFT JOIN themen_termine USING (termin_id) LEFT JOIN themen as th USING (issue_id)
                         LEFT JOIN seminar_user su ON su.Seminar_id=t.range_id "
@@ -350,9 +350,9 @@ class CalendarDriver
             $this->result['semcal'] = $db_semcal->fetchAll(PDO::FETCH_ASSOC);
         } elseif ($event_type == 'SEMINAR_EVENTS') {
             $db_sem = DBManager::get()->prepare("SELECT t.*, s.Name, su.status, resource_id, GROUP_CONCAT(th.title SEPARATOR '; ') as title, GROUP_CONCAT(th.description SEPARATOR '\n\n') as description "
-                    . "FROM (SELECT termin_id,range_id,date,end_time,mkdate,chdate,date_typ,content, 0 as ex_termin
+                    . "FROM (SELECT termin_id,range_id,date,end_time,mkdate,chdate,date_typ,content,raum, 0 as ex_termin
                         FROM termine WHERE termin_id = ?
-                        UNION SELECT termin_id,range_id,date,end_time,mkdate,chdate,date_typ,content, 1 as ex_termin
+                        UNION SELECT termin_id,range_id,date,end_time,mkdate,chdate,date_typ,content,raum, 1 as ex_termin
                         FROM ex_termine WHERE content <> '' AND termin_id = ?) as t
                        LEFT JOIN themen_termine USING (termin_id) LEFT JOIN themen as th USING (issue_id)
                        LEFT JOIN seminar_user su ON (su.Seminar_id=t.range_id) "
