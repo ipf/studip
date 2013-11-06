@@ -140,7 +140,7 @@ class SingleDate {
     }
 
     function getComment() {
-        if (!$this->isExTermin()) return false;
+        if (!$this->isExTermin()) return '';
         return $this->content;
     }
 
