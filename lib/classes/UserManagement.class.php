@@ -209,7 +209,8 @@ class UserManagement
                     $downgrade->execute(array(
                         'user_id' => $this->user_data['auth_user_md5.user_id'],
                         'old_status' => $old_status,
-                        'studygroups' => studygroup_sem_types()
+                        'studygroups' => studygroup_sem_types(),
+                        'new_max_status' => $this->user_data['auth_user_md5.perms']
                     ));
                 }
 
