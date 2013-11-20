@@ -32,16 +32,15 @@
 
     <? if (!empty($inst_result['datafield'])): ?>
         <table cellspacing="0" cellpadding="0" border="0">
-        <? foreach ($inst_result['datafield'] as $datafield): ?>
-            <tr>
-                <td>&nbsp;</td>
-                <td><?= htmlReady($datafield['name']) ?>:</td>
-                <td>
-                    <?= $datafield['value'] ?>
-                    <? if ($datafield['show_start']) echo '*'; ?>
-                </td>
-            </tr>
-        <? endforeach; ?>
+            <? foreach ($inst_result['datafield'] as $datafield): ?>
+                <tr>
+                    <td style="padding-right: 5px"><?= htmlReady($datafield['name']) ?>:</td>
+                    <td>
+                        <?= $datafield['value'] ?>
+                        <? if ($datafield['show_start']) echo '*'; ?>
+                    </td>
+                </tr>
+            <? endforeach; ?>
         </table>
     <? endif; ?>
 
