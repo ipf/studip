@@ -221,7 +221,7 @@ function renumber_admission ($seminar_id, $send_message = TRUE)
                 $subject = sprintf(_('Ihre Position auf der Warteliste der Veranstaltung %s wurde verändert'), $temp['Name']);
                 restoreLanguage();
 
-                $messaging->insert_message(addslashes($message), $username, '____%system%____', FALSE, FALSE, '1', FALSE, $subject); 
+                $messaging->insert_message($message, $username, '____%system%____', FALSE, FALSE, '1', FALSE, $subject); 
             }
             $position += 1;
         }
@@ -263,7 +263,7 @@ function check_group($user_id, $username, $grouped_sems, $cur_name, $cur_id)
             $message = sprintf (_('Ihr Abonnement der Veranstaltung **%s (%s)** wurde aufgehoben, da Sie in der Veranstaltung **%s (%s)** von der Warteliste nachgerückt sind. Bei diesen Veranstaltungen handelt sich um gruppierte Veranstaltungen, der Wartelisteneintrag wurde somit bevorzugt behandelt.'), $name, view_turnus($seminar_id), $cur_name, view_turnus($cur_id));
             restoreLanguage();
 
-            $messaging->insert_message(addslashes($message), $username, '____%system%____', FALSE, FALSE, '1', FALSE, _('Ihre abbonierten Veranstaltungen wurden geändert')); 
+            $messaging->insert_message($message, $username, '____%system%____', FALSE, FALSE, '1', FALSE, _('Ihre abbonierten Veranstaltungen wurden geändert')); 
             update_admission($seminar_id, $send_message);
         }
     }
@@ -434,7 +434,7 @@ function normal_update_admission($seminar_id, $send_message = TRUE)
                         $subject = sprintf(_("Teilnahme an der Veranstaltung %s"),$seminar->getName());
                         restoreLanguage();
 
-                        $messaging->insert_message(addslashes($message), $row['username'], '____%system%____', FALSE, FALSE, '1', FALSE, addslashes($subject), true);
+                        $messaging->insert_message($message, $row['username'], '____%system%____', FALSE, FALSE, '1', FALSE, $subject, true);
                     }
                 }
             }
@@ -518,7 +518,7 @@ function normal_update_admission($seminar_id, $send_message = TRUE)
                             $subject = sprintf(_('Teilnahme an der Veranstaltung %s'), $seminar->getName());
                             restoreLanguage();
 
-                            $messaging->insert_message(addslashes($message), $row['username'], '____%system%____', FALSE, FALSE, '1', FALSE, addslashes($subject), true);
+                            $messaging->insert_message($message, $row['username'], '____%system%____', FALSE, FALSE, '1', FALSE, $subject, true);
                         }
                     }
                 }
@@ -681,7 +681,7 @@ function check_admission ($send_message=TRUE)
                         $message = sprintf (_('Sie wurden als TeilnehmerIn der Veranstaltung **%s** ausgelost. Die endgültige Zulassung zu der Veranstaltung ist noch von weiteren Bedingungen abhängig, die Sie bitte der Veranstaltungsbeschreibung entnehmen.'), 
                                             $seminar->getName());
                         restoreLanguage();
-                        $messaging->insert_message(addslashes($message), $winner['username'], '____%system%____', FALSE, FALSE, '1', FALSE, sprintf(_('Teilnahme an der Veranstaltung %s'), $seminar->getName())); 
+                        $messaging->insert_message($message, $winner['username'], '____%system%____', FALSE, FALSE, '1', FALSE, sprintf(_('Teilnahme an der Veranstaltung %s'), $seminar->getName())); 
                     }
                 } else {
                     $group = select_group($seminar->getSemesterStartTime());
@@ -703,7 +703,7 @@ function check_admission ($send_message=TRUE)
                             $message = sprintf (_("Sie wurden als TeilnehmerIn der Veranstaltung **%s** ausgelost. Ab sofort finden Sie die Veranstaltung in der Übersicht Ihrer Veranstaltungen. Damit sind Sie auch als TeilnehmerIn der Präsenzveranstaltung zugelassen."),
                                                 $seminar->getName());
                             restoreLanguage();
-                            $messaging->insert_message(addslashes($message), $winner['username'], '____%system%____', FALSE, FALSE, '1', FALSE, sprintf(_('Teilnahme an der Veranstaltung %s'),$seminar->getName())); 
+                            $messaging->insert_message($message, $winner['username'], '____%system%____', FALSE, FALSE, '1', FALSE, sprintf(_('Teilnahme an der Veranstaltung %s'),$seminar->getName())); 
                         }
                     }
                 }
@@ -753,7 +753,7 @@ function check_admission ($send_message=TRUE)
                         $seminar->getId()
                     ));
                 }
-                $messaging->insert_message(addslashes($message), $row['username'], '____%system%____', FALSE, FALSE, '1', FALSE, sprintf(_('Teilnahme an der Veranstaltung %s'), $seminar->getName()));
+                $messaging->insert_message($message, $row['username'], '____%system%____', FALSE, FALSE, '1', FALSE, sprintf(_('Teilnahme an der Veranstaltung %s'), $seminar->getName()));
                 restoreLanguage();
             }
             
