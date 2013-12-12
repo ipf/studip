@@ -739,18 +739,25 @@ function CheckAllAdded($adresses_array, $rec_array) {
 
 function show_precform() {
 
-    global $sms_data, $user, $my_messaging_settings;
+    global $sms_data, $user, $my_messaging_settings, $receiver, $_fullname_sql;
 
-    $tmp_01 = min(sizeof($sms_data["p_rec"]), 12);
+    $tmp_01 = min(sizeof($receiver), 12);
     $tmp = "";
 
-    if (sizeof($sms_data["p_rec"]) == "0") {
+    if (sizeof($receiver) == "0") {
         $tmp .= "<font size=\"-1\">"._("Bitte w&auml;hlen Sie mindestens einen Empf&auml;nger aus.")."</font>";
     } else {
         $tmp .= "<select size=\"$tmp_01\" id=\"del_receiver\" name=\"del_receiver[]\" multiple style=\"width: 250\">";
-        if ($sms_data["p_rec"]) {
-            foreach ($sms_data["p_rec"] as $a) {
-                $tmp .= "<option value=\"$a\">".get_fullname_from_uname($a,'full',true)."</option>";
+        if ($receiver) {
+             $query = "SELECT username, {$_fullname_sql['full_rev']} AS fullname
+                       FROM auth_user_md5
+                       LEFT JOIN user_info USING (user_id)
+                       WHERE username IN (?)
+                       ORDER BY Nachname ASC";
+            $statement = DBManager::get()->prepare($query);
+            $statement->execute(array($receiver));
+            foreach ($statement->fetchAll(PDO::FETCH_KEY_PAIR) as $a_username => $a_fullname) {
+                $tmp .= "<option value=\"". htmlReady($a_username) . "\">" . htmlReady($a_fullname) . "</option>";
             }
         }
         $tmp .= "</select><br>";
@@ -767,7 +774,7 @@ function show_precform() {
 
 function show_addrform()
 {
-    global $sms_data, $user, $adresses_array, $search_exp, $my_messaging_settings, $_fullname_sql;
+    global $sms_data, $user, $adresses_array, $search_exp, $my_messaging_settings, $_fullname_sql, $receiver;
 
     $picture = 'icons/16/yellow/arr_2up.png';
 
@@ -793,14 +800,14 @@ function show_addrform()
 
     } else if (!empty($adresses_array)) { // test if all adresses are added?
 
-        if (CheckAllAdded($adresses_array, $sms_data["p_rec"]) == TRUE) { // all adresses already added
+        if (CheckAllAdded($adresses_array, $receiver) == TRUE) { // all adresses already added
             $tmp .= sprintf("<font size=\"-1\">"._("Bereits alle Personen des Adressbuchs hinzugef&uuml;gt!")."</font>");
         } else { // show adresses-select
             $tmp_count = 0;
 
             $statement->execute(array($user->id));
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-                if (empty($sms_data['p_rec']) || !in_array($row['username'], $sms_data['p_rec'])) {
+                if (empty($receiver) || !in_array($row['username'], $receiver)) {
                     $tmp_02 .= sprintf('<option value="%s">%s</option>',
                                        $row['username'],
                                        htmlReady(my_substr($row['fullname'],0,35)));
@@ -859,7 +866,7 @@ function show_addrform()
 
 function show_msgform() {
 
-    global $sms_data, $tmp_sms_content, $messagesubject, $message, $quote_username, $quote, $cmd;
+    global $sms_data, $tmp_sms_content, $messagesubject, $message, $quote_username, $quote, $cmd, $receiver;
 
     $temp_message = '';
     if ($quote) {
@@ -873,9 +880,7 @@ function show_msgform() {
     $template->cmd            = $cmd;
     $template->messagesubject = $messagesubject;
     $template->message        = $temp_message;
-    $template->show_submit    = count($sms_data['p_rec']) > 0;
-    // Redirect to specified page, defaults to message inbox
-    $template->return_to      = Request::get('sms_source_page', 'sms_box.php');
+    $template->show_submit    = count($receiver) > 0;
     return $template->render();
 
 }

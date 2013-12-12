@@ -6,7 +6,7 @@
     </label>
     <br>
     <input type="text" id="subject" name="messagesubject" style="width: 99%"
-           value="<?= trim(htmlready($messagesubject)) ?>"
+           value="<?= trim(htmlready($messagesubject)) ?>">
     </label>
 </div>
 
@@ -26,8 +26,8 @@
     <? endif; ?>
 
         <?= Button::create(_('Vorschau'), 'cmd') ?>
-        <?= LinkButton::createCancel(_('Abbrechen'), URLHelper::getURL($return_to)) ?>
+        <?= Button::create(_('Abbrechen'), 'cancel') ?>
     </div>
-    
+
     <br><br>
 </div>
