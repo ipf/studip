@@ -19,7 +19,7 @@
       <? if (PersonalNotifications::isActivated() && $GLOBALS['perm']->have_perm("autor")) : ?>
       STUDIP.jsupdate_enable = true;
       <? endif ?>
-      STUDIP.URLHelper.parameters = <?= json_encode(URLHelper::getLinkParams()) ?>;
+      STUDIP.URLHelper.parameters = <?= json_encode(studip_utf8encode(URLHelper::getLinkParams())) ?>;
     </script>
 </head>
 
