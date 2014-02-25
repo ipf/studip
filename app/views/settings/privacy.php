@@ -6,7 +6,7 @@ use Studip\Button, Studip\LinkButton;
 <form method="post" action="<?= $controller->url_for('settings/privacy/global') ?>">
     <?= CSRFProtection::tokenTag() ?>
     <input type="hidden" name="studipticket" value="<?= get_ticket() ?>">
-    
+
     <table id="main_content" class="settings zebra-hover">
         <colgroup>
             <col width="50%">
@@ -137,7 +137,7 @@ use Studip\Button, Studip\LinkButton;
 <form method="post" action="<?= $controller->url_for('settings/privacy/homepage') ?>">
     <?= CSRFProtection::tokenTag() ?>
     <input type="hidden" name="studipticket" value="<?= get_ticket() ?>">
-    
+
     <table class="settings zebra-hover">
         <colgroup>
             <col width="34%">

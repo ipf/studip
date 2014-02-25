@@ -113,12 +113,6 @@ class PluginAdministration
             throw new PluginInstallationException(_('Das Plugin enthält keine gültige Plugin-Klasse.'));
         }
 
-        // if we have a homepageplugin register some visibility
-        $pluginInfo = $plugin_manager->getPluginInfoById($pluginid);
-        if (in_array('HomepagePlugin', $pluginInfo['type'])) {
-            Visibility::addPrivacySettingForAll($pluginInfo['name'], "plugin" . $pluginInfo['id'], "plugins", 1, null, $pluginid);
-        }
-
         // register additional plugin classes in this package
         $additionalclasses = $manifest['additionalclasses'];
 
@@ -187,9 +181,6 @@ class PluginAdministration
 
         // delete database if needed
         $this->deleteDBSchema($plugindir, $manifest);
-
-        // delete visibility options
-        Visibility::removePlugin($plugin['id']);
 
         rmdirr($plugindir);
     }

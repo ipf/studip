@@ -226,7 +226,7 @@ class AdminModules extends ModulesNotification {
 
     function getModuleElearning_interfaceExistingItems($range_id) {
         $object_connections = new ObjectConnections($range_id);
-        return count($object_connections->getConnections());
+        return is_array($object_connections->getConnections()) ? count($object_connections->getConnections()) : 0;
     }
 
     function moduleElearning_interfaceDeactivate($range_id) {
