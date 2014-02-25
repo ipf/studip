@@ -128,9 +128,16 @@ class Modules {
             $type = $statement->fetchColumn();
         }
 
-        foreach ($this->registered_modules as $key=>$val) {
+        if ($range_type == 'sem') {
+            $sc = $SEM_CLASS[$SEM_TYPE[$type]['class']];
+        }
+
+        foreach ($this->registered_modules as $slot => $val) {
             if ($range_type == 'sem') {
-                $temp = $SEM_CLASS[$SEM_TYPE[$type]['class']][$key];
+                $temp = $sc[$slot];
+                if ($temp && $val['sem']) {
+                    $temp = $sc->isModuleActivated($sc->getSlotModule($slot));
+                }
             } else {
                 $temp = $INST_MODULES[$INST_MODULES[$type] ? $type : 'default'][$key];
             }

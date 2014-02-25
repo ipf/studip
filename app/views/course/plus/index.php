@@ -2,7 +2,7 @@
 
 /*
  *  Copyright (c) 2012  Rasmus Fuhse <fuhse@data-quest.de>
- * 
+ *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License as
  *  published by the Free Software Foundation; either version 2 of
@@ -23,6 +23,7 @@ use Studip\Button, Studip\LinkButton;
 <?= CSRFProtection::tokenTag() ?>
 <table class="default zebra">
     <colgroup>
+        <col>
         <col width="15%">
         <col width="100px">
         <col>
@@ -32,8 +33,8 @@ use Studip\Button, Studip\LinkButton;
 foreach ($registered_modules as $key => $val) {
     if ($sem_class) {
         $mod = $sem_class->getSlotModule($key);
-        $slot_editable = $mod 
-            && $sem_class->isModuleAllowed($mod) 
+        $slot_editable = $mod
+            && $sem_class->isModuleAllowed($mod)
             && !$sem_class->isModuleMandatory($mod);
     }
     if ($modules->isEnableable($key, $_SESSION['admin_modules_data']["range_id"])
@@ -46,14 +47,18 @@ foreach ($registered_modules as $key => $val) {
 
         ?>
     <tr>
+        <? if ($sem_class) {
+            $studip_module = $sem_class->getModule($mod);
+        } ?>
+        <td>
+            <input type="checkbox" name="<?=$key?>_value" value="TRUE" <?= $pre_check ? 'disabled' : '' ?>
+            <?= $modules->isBit($_SESSION['admin_modules_data']["changed_bin"], $val["id"]) ? "checked" : "" ?>>
+        </td>
         <td>
             <b><?=$val["name"]?></b>
-            <? if ($sem_class) : ?>
-            <? $studip_module = $sem_class->getModule($mod);
-            if ($sem_class && is_a($studip_module, "StandardPlugin")) : ?>
+            <? if ($sem_class && is_a($studip_module, "StandardPlugin")) : ?>
                 <? $already_displayed_plugins[] = $mod ?>
                 (<?= htmlReady($studip_module->getPluginName()) ?>)
-            <? endif ?>
             <? endif ?>
             <br>
         </td>
@@ -86,14 +91,18 @@ foreach ($registered_modules as $key => $val) {
 }
 
 foreach ($available_plugins as $plugin) {
-    if ((!$sem_class && !$plugin->isCorePlugin()) || 
-            ($sem_class && !$sem_class->isModuleMandatory($plugin->getPluginname()) 
+    if ((!$sem_class && !$plugin->isCorePlugin()) ||
+            ($sem_class && !$sem_class->isModuleMandatory($plugin->getPluginname())
                 && $sem_class->isModuleAllowed($plugin->getPluginname())
                 && !$sem_class->isSlotModule(get_class($plugin))
             )) :
         $plugin_activated = $plugin->isActivated($_SESSION['SessionSeminar']);
         ?>
         <tr>
+            <td>
+                <input type="checkbox" name="plugin_<?=$plugin->getPluginId()?>" value="TRUE"
+                <?= $plugin_activated ? "checked" : "" ?>>
+            </td>
             <td>
                 <b><?=$plugin->getPluginname()?></b><br>
             </td>
@@ -146,7 +155,7 @@ $infobox = array(
             )
         )
     )
-    
+
 );
 $infobox = array(
     'picture' => "infobox/modules.jpg",

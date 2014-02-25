@@ -2111,16 +2111,9 @@ table.attribute_table div[container] > div.droparea > div > h2 {
 table.attribute_table div[container] > div.droparea > div.deactivated {
   opacity: 0.5;
 }
-table.attribute_table div[container] > div.droparea > div.plugin .lock {
-  display: none;
-}
-table.attribute_table div[container] > div.droparea > div.plugin.sticky .lock {
-  display: inline-block;
-}
-table.attribute_table div[container]#nonactivated_plugins,
-table.attribute_table div[container]#activated_plugins {
-  width: 49%;
-  max-width: 49%;
+table.attribute_table div[container]#plugins {
+  width: 99%;
+  max-width: 99%;
   margin-left: auto;
   margin-right: auto;
 }
