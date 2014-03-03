@@ -213,6 +213,6 @@ class CoreForum extends StudipPlugin implements ForumModule
 
     function getDump($seminar_id)
     {
-        ForumEntry::getDump($seminar_id);
+        return ForumEntry::getDump($seminar_id);
     }
 }
