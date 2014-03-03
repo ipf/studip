@@ -175,11 +175,11 @@
 
 <? if(!empty($longDatafields)) :?>
     <? foreach ($longDatafields as $name => $entry) : ?>
-    <?=$this->render_partial($shared_box, array('admin_url' => null, 'title' => $name, 'content_for_layout' => $entry));?>
+    <?=$this->render_partial($shared_box, array('admin_url' => null, 'title' => $name .' '. $entry['visible'], 'content_for_layout' => $entry['content']));?>
     <? endforeach ?>
     <? $shared_box->clear_attributes()?>
 <?endif?>
-                    
+
 <?=$hompage_plugin?>
 
 <?if(!empty($categories)) :?>
