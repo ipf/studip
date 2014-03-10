@@ -1439,6 +1439,8 @@ if ($level == 4 && $GLOBALS['RESOURCES_ENABLE'] && $GLOBALS['RESOURCES_ALLOW_ROO
 
 //Neuen Studiengang zur Begrenzung aufnehmen
 if (Request::submitted('add_studg')) {
+    $sem_add_studg = Request::option('sem_add_studg');
+    $sem_add_ratio = Request::int('sem_add_ratio');
     if ($sem_add_studg && $sem_add_studg != 'all') {
         $query = "SELECT name FROM studiengaenge WHERE studiengang_id = ?";
         $statement = DBManager::get()->prepare($query);
