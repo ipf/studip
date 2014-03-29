@@ -1,0 +1,213 @@
+
+# /
+/.swp
+/.project
+/nbproject
+/.idea
+
+# /app/views/admin/sem_classes/
+
+# /app/views/course/plus/
+
+# /config/
+/config/config_local.inc.php
+/config/studip-httpd.conf
+
+# /data/archiv/
+/data/archiv/[0-9a-f]*
+
+# /data/extern_config/
+/data/extern_config/*.cfg
+
+# /data/media_cache/
+/data/media_cache/[0-9a-f]*
+
+# /data/upload_doc/
+/data/upload_doc/[0-9a-f][0-9a-f]
+
+# /lib/classes/
+/lib/classes/dBug.php
+
+# /lib/modules/
+
+# /public/assets/images/
+/public/assets/images/icons_working
+/public/assets/images/apple-touch-icon.psd
+
+# /public/assets/images/icons/
+/public/assets/images/icons/32 new
+
+# /public/assets/images/icons/12/
+
+# /public/assets/images/icons/12/blue/
+
+# /public/assets/images/icons/32/black/
+
+# /public/assets/images/icons/32/blue/
+
+# /public/assets/images/icons/40/
+
+# /public/assets/images/icons/40/blue/
+
+# /public/assets/javascripts/mathjax/
+
+# /public/assets/javascripts/mathjax/config/
+
+# /public/assets/javascripts/mathjax/fonts/
+
+# /public/assets/javascripts/mathjax/fonts/HTML-CSS/
+
+# /public/assets/javascripts/mathjax/fonts/HTML-CSS/TeX/
+
+# /public/assets/javascripts/mathjax/fonts/HTML-CSS/TeX/eot/
+
+# /public/assets/javascripts/mathjax/fonts/HTML-CSS/TeX/otf_/
+
+# /public/assets/javascripts/mathjax/fonts/HTML-CSS/TeX/woff/
+
+# /public/assets/javascripts/mathjax/images/
+
+# /public/assets/javascripts/mathjax/jax/
+
+# /public/assets/javascripts/mathjax/jax/output/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/autoload/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/AMS/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Caligraphic/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Caligraphic/Bold/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Caligraphic/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Fraktur/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Fraktur/Bold/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Fraktur/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Greek/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Greek/Bold/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Greek/BoldItalic/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Greek/Italic/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Greek/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Main/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Main/Bold/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Main/Italic/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Main/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Math/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Math/BoldItalic/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Math/Italic/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/SansSerif/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/SansSerif/Bold/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/SansSerif/Italic/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/SansSerif/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Script/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Script/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Size1/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Size1/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Size2/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Size2/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Size3/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Size3/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Size4/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Size4/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Typewriter/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/Typewriter/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/WinChrome/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/WinChrome/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/WinIE6/
+
+# /public/assets/javascripts/mathjax/jax/output/HTML-CSS/fonts/TeX/WinIE6/Regular/
+
+# /public/assets/javascripts/mathjax/jax/output/NativeMML/
+
+# /public/pictures/banner/
+/public/pictures/banner/*.gif
+/public/pictures/banner/*.jpeg
+/public/pictures/banner/*.jpg
+/public/pictures/banner/*.png
+
+# /public/pictures/blubberstream/
+
+# /public/pictures/course/
+/public/pictures/course/[0-9a-f]*.png
+
+# /public/pictures/institute/
+/public/pictures/institute/[0-9a-f]*.png
+
+# /public/pictures/smile/
+/public/pictures/smile/*.gif
+/public/pictures/smile/*.jpeg
+/public/pictures/smile/*.jpg
+/public/pictures/smile/*.png
+
+# /public/pictures/tex/
+/public/pictures/tex/[0-9a-f]*.png
+
+# /public/pictures/user/
+/public/pictures/user/[0-9a-f]*.png
+
+# /public/plugins_packages/core/
+
+# /public/plugins_packages/core/Blubber/
+
+# /public/plugins_packages/core/Blubber/assets/
+
+# /public/plugins_packages/core/Blubber/assets/images/
+
+# /public/plugins_packages/core/Blubber/assets/javascripts/
+
+# /public/plugins_packages/core/Blubber/assets/stylesheets/
+
+# /public/plugins_packages/core/Blubber/controllers/
+
+# /public/plugins_packages/core/Blubber/models/
+
+# /public/plugins_packages/core/Blubber/views/
+
+# /public/plugins_packages/core/Blubber/views/streams/
+
+# /public/plugins_packages/core/Forum/
+/public/plugins_packages/core/Forum/.swp
+
+# /vendor/trails/
